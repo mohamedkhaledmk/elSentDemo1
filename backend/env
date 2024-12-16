@@ -1,0 +1,13 @@
+MONGODB_URI=mongodb+srv://yasminee455:IOdWtvtirallV9ot@cluster0.nmbb7.mongodb.net/BidFair?retryWrites=true&w=majority&appName=Cluster0
+
+
+PORT=8000
+CORS_ORIGIN=http://localhost:5173
+JWT_SECRET=auctionwebsite@@@$$$&&&
+JWT_EXPIRES_IN=90d
+RESET_TOKEN_SECRET=resetpassword@@@$$$&&&
+
+
+CLOUDINARY_CLOUD_NAME=dhgjisoza
+CLOUDINARY_API_KEY=744845531126683
+CLOUDINARY_API_SECRET=qU37dbVsVmp2zsqwIrcBdt6xuJk
