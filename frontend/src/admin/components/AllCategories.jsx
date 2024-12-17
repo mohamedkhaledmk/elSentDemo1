@@ -172,20 +172,20 @@ const AllCategories = () => {
               </span>
             </h3>
 
-            <h3 className="p-10 flex flex-col md:flex-row justify-between h-full bg-theme-bg2 rounded-lg">
+            <div className="p-10 flex flex-col md:flex-row justify-between h-full bg-theme-bg2 rounded-lg">
               <div className="flex flex-col">
                 Most Populated Category{" "}
                 <span className="font-bold text-4xl text-color-primary">
                   {categoriesDetail?.mostPopulatedCategory[0]?.name}
                 </span>
               </div>
-              <h3 className="flex flex-col ">
+              <div className="flex flex-col ">
                 Products{" "}
                 <span className="font-bold text-4xl text-color-primary">
                   {categoriesDetail?.mostPopulatedCategory[0]?.products}
                 </span>
-              </h3>
-            </h3>
+              </div>
+            </div>
             <h3 className="p-10 flex flex-col h-full bg-theme-bg2 rounded-lg">
               Recently Added Category{" "}
               <span className="font-bold text-4xl text-color-primary">
