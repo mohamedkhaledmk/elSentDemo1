@@ -7,23 +7,23 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import axios from "axios";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUser } from "../store/auth/authSlice";
 import { toast } from "react-toastify";
 
-const stripe = await loadStripe(`${process.env.STRIPE_KEY}`);
+// Load Stripe
+const stripePromise = loadStripe("pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA");
 
 const CheckoutForm = () => {
   const { user } = useSelector((state) => state.auth);
   const stripe = useStripe();
   const elements = useElements();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
-  ////console.log(user, "user in payment method..........");
   useEffect(()=>{
 
   },[user])
@@ -37,11 +37,14 @@ const CheckoutForm = () => {
     event.preventDefault();
 
     if (!stripe || !elements) {
+      console.error("Stripe.js has not yet loaded.");
+      toast.error("Stripe.js has not yet loaded.");
       return;
     }
 
     const cardElement = elements.getElement(CardElement);
 
+    // Create payment method
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: cardElement,
@@ -55,13 +58,10 @@ const CheckoutForm = () => {
     });
 
     if (error) {
-      ////console.log("[error]", error.message);
+      toast.error(`Error: ${error.message}`);
     } else {
-      ////console.log("[PaymentMethod]", paymentMethod);
-
-      // Send paymentMethod.id to your server
-      //use axios
-      if (user?.paymentVerified){
+      // Check if payment is verified
+      if (user?.paymentVerified) {
         axios
           .post(
             "http://localhost:8000/api/v1/payments/update-payment-method",
@@ -69,71 +69,55 @@ const CheckoutForm = () => {
             { withCredentials: true }
           )
           .then((response) => {
-            ////console.log(response.data);
-            //react toastfy
             toast.success("Payment Method Updated Successfully");
-            //empty inputs
             setName("");
             setEmail("");
             setAddress("");
-            //emptty cardelement
             cardElement.clear();
-            
           })
           .catch((error) => {
-            ////console.error(error);
+            console.error("Error updating payment method:", error);
+            toast.error(`Error updating: ${error.response?.data?.message || error.message || "Unknown error occurred"}`);
           });
-
-          ////console.log("Payment method updating........");
-
-        } else {
+      } else {
         axios
           .post(
             "http://localhost:8000/api/v1/payments/add-payment-method",
-            {
-              paymentMethodId: paymentMethod.id,
-            },
+            { paymentMethodId: paymentMethod.id },
             { withCredentials: true }
           )
           .then((response) => {
             if (response.status === 200) {
-              ////console.log(response.data); // Should log "Payment method added successfully"
-              //react toastfy
               toast.success("Payment Method Added Successfully");
-              //empty inputs
               setName("");
               setEmail("");
               setAddress("");
-              //emptty cardelement
               cardElement.clear();
-
             } else {
-              ////console.log("Failed to add payment method");
+              toast.error("Failed to add payment method");
             }
           })
           .catch((error) => {
-            ////console.error(error);
+            toast.error(`Error adding: ${error.response?.data?.message || error.message || "Unknown error occurred"}`);
           });
-          ////console.log("Payment method adding........");
-
       }
     }
   };
 
   return (
-    <div className=" px-7 pt-4 pb-10 w-full bg-theme-bg  rounded-2xl ">
-      <h1 className=" text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5 ">Payment Method</h1>
+    <div className="px-7 pt-4 pb-10 w-full bg-theme-bg rounded-2xl">
+      <h1 className="text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5">
+        Payment Method
+      </h1>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col lg:w-[450px] gap-3 inputs:outline-none inputs:px-2 inputs:py-[10px] inputs:rounded-md inputs:white [&_button[type=submit]]:bg-theme-color [&_button:hover[type=submit]]:bg-color-danger inputs:border inputs:border-border-info-color focus:inputs:border-theme-color select:border select:border-border-info-color inputs:placeholder-body-text-color inputs:text-sm [&_*]:transition-all "
+        className="flex flex-col lg:w-[450px] gap-3 inputs:outline-none inputs:px-2 inputs:py-[10px] inputs:rounded-md inputs:white [&_button[type=submit]]:bg-theme-color [&_button:hover[type=submit]]:bg-color-danger inputs:border inputs:border-border-info-color focus:inputs:border-theme-color select:border select:border-border-info-color inputs:placeholder-body-text-color inputs:text-sm [&_*]:transition-all"
       >
         <input
-       
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Full Name on card"
-          
           required
         />
         <input
@@ -142,7 +126,6 @@ const CheckoutForm = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
-          
         />
         <input
           type="text"
@@ -150,9 +133,8 @@ const CheckoutForm = () => {
           onChange={(e) => setAddress(e.target.value)}
           placeholder="Address"
           required
-          
         />
-        <CardElement className="  outline-none px-2 py-3 rounded-md bg-white border border-border-info-color focus:border-theme-color placeholder-body-text-color " />
+        <CardElement className="outline-none px-2 py-3 rounded-md bg-white border border-border-info-color focus:border-theme-color placeholder-body-text-color" />
         <button
           type="submit"
           disabled={!stripe}
@@ -168,20 +150,8 @@ const CheckoutForm = () => {
 };
 
 const PaymentMethod = () => {
-  // const [stripe, setStripe] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchStripe = async () => {
-  //     const stripe = await loadStripe(
-  //       "pk_test_51Oktd0SFo6ikMNdBYu3icDP4fdkOtxImlSZMcqCnXsmRMG3lNy7lELJaRbfZIbkbeYCUccuWpcDt6IkMoAfj1D6r004Rsy2XI5"
-  //     ); // Replace with your public key
-  //     setStripe(stripe);
-  //   };
-
-  //   fetchStripe();
-  // }, []);
   return (
-    <Elements stripe={stripe}>
+    <Elements stripe={stripePromise}>
       <CheckoutForm />
     </Elements>
   );
