@@ -8,10 +8,10 @@ const HeroHome = () => {
     <>
       <div className="lg:h-[85vh] py-20 p-5 lg:px-12 flex items-center justify-center flex-wrap lg:flex-nowrap gap-5 text-white">
         <div className="block overflow-hidden">
-          <div className="w-[300px] h-[300px] bg-[#5161F9] rounded-full blur-[150px] absolute left-[-50px] top-[-80px]"></div>
-          <div className="w-[200px] h-[200px] bg-[#09a4f1] rounded-full blur-[150px] absolute left-[45%] top-[100px]"></div>
-          <div className="w-[250px] h-[250px] bg-[#ca1dca] rounded-full blur-[150px] absolute  right-[50px] bottom-[80%] lg:bottom-[70%]"></div>
-        </div>
+        <div className="w-[300px] h-[300px] bg-[#D4AF37] rounded-full blur-[150px] absolute left-[-50px] top-[-80px]"></div>
+<div className="w-[200px] h-[200px] bg-[#C69C6D] rounded-full blur-[150px] absolute left-[45%] top-[100px]"></div>
+<div className="w-[250px] h-[250px] bg-[#FFD700] rounded-full blur-[150px] absolute right-[50px] bottom-[80%] lg:bottom-[70%]"></div>
+</div>
 
         <div className="w-full flex flex-col gap-4 z-[1]  ">
           <h3 className="tracking-wider">DISCOVER, COLLECT AND SELL</h3>

@@ -1,11 +1,22 @@
-
 const YoutubeLive = () => {
     return (
-        <div className="">
-            <iframe width="914" height="514" src="https://www.youtube.com/embed/YDvsBbKfLPA" title="Watch Sky News" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div className="flex flex-col items-center justify-center min-h-screen ">
+            <h2 className="text-2xl font-bold text-white mb-5">
+                Live Auction
+            </h2>
+            <div className="flex justify-center">
+                <iframe 
+                    width="914" 
+                    height="514" 
+                    src="https://www.youtube.com/embed/YDvsBbKfLPA" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share" 
+                    referrerPolicy="strict-origin-when-cross-origin" 
+                    allowFullScreen
+                ></iframe>
+            </div>
         </div>
     )
 }
 
 export default YoutubeLive;
-

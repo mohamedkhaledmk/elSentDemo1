@@ -14,28 +14,28 @@ export default {
         mlg: { max: "1200px" },
       },
       colors: {
-        "body-bg": "#061224",
-        "body-text-color": "#7386a8",
-        "heading-color": "#E8EAED",
-        "theme-color": "#00A3FF",
-        "theme-bg": "#071B36",
-        "theme-bg2": "#0E294D",
-        "theme-bg-light": "#0c2547",
-        "theme-color-light": "#ffffff99",
-        "color-white": "#ffffff",
-        "color-dark": "#181C32",
-        "color-success": "#10B981",
-        "color-primary": "#29B6F6",
-        "color-info": "#8358FF",
-        "color-danger": "#FF7782",
-        "color-warning": "#FFBB55",
-        "color-secondary": "#E9ECEF",
-        hover: "#FF7782",
-        "border-info-color": "#757f9540",
-        "border-white-color": "#ffffff14",
-        "footer-bg": "#071B36",
-        "footer-text-color": " #F5FAFF",
-      },
+        "body-bg": "#151417", // Dark background
+        "body-text-color": "#D6C5A3", // Light text for readability
+        "heading-color": "#ECE4CA", // Lighter heading to create contrast
+        "theme-color": "#917E62", // Key theme color (rich, earthy tone)
+        "theme-bg": "#231E19", // Main theme background
+        "theme-bg2": "#262321", // Slightly lighter variant for subtle separation
+        "theme-bg-light": "#3F3328", // Background for sections with slight difference
+        "theme-color-light": "#ECE4CA99", // Lightened color for subtle contrast
+        "color-white": "#ECE4CA", // Off-white to avoid harsh contrast
+        "color-dark": "#151417", // Main dark color for primary backgrounds
+        "color-success": "#10B981", // Keeping this since it's a standard success color
+        "color-primary": "#917E62", // Primary color to maintain consistency with theme
+        "color-info": "#5E584E", // Used for info notifications (neutral, calm shade)
+        "color-danger": "#FF7782", // Keeping this as-is (red for danger)
+        "color-warning": "#B1A791", // Light warning color
+        "color-secondary": "#D6C5A3", // Used for secondary texts
+        hover: "#917E62", // Hover effect uses the primary color for a smooth experience
+        "border-info-color": "#5E584E40", // Slightly transparent version for border
+        "border-white-color": "#ECE4CA14", // Slight transparency of the light color
+        "footer-bg": "#1D1C1F", // Footer background — darker than the body
+        "footer-text-color": "#ECE4CA", // Footer text matches primary text color
+    },    
       backgroundImage: {
         "hero-img": "url(./assets/bg.jpg)",
       },

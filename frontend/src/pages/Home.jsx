@@ -14,11 +14,9 @@ const Home = () => {
       <HeroHome />
       <div className="px-5 lg:px-12 flex flex-col gap-20">
         <LiveHome />
-        <UpcommingHome />
         <YoutubeLive />
         <ProcessHome />
         <div className="text-white flex flex-col gap-8">
-          <CreateEarnHome />
         </div>
       </div>
     </>
