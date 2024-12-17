@@ -11,9 +11,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { getCurrentUser } from "../store/auth/authSlice";
 import { toast } from "react-toastify";
 
-const stripe = await loadStripe(
-  "pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA"
-);
+const stripe = await loadStripe(`${process.env.STRIPE_KEY}`);
 
 const CheckoutForm = () => {
   const { user } = useSelector((state) => state.auth);

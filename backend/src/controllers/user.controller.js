@@ -9,8 +9,7 @@ import PaymentMethod from "../models/userPaymentMethod.model.js";
 import Stripe from 'stripe';
 import mongoose from "mongoose";
 
-const stripe = new Stripe("sk_test_51QWmgRGI6UEWLGcVrfkYdIitb29zTKm7WDBXgfklEyWexo6rCMgKxpUH0UeTMPI2FZX7UVhHVpXvNOu8VjfMGHoc004ZxQiqwE")
-
+const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`);
 
 // @desc Register user
 // @route POST /api/v1/users/register
@@ -163,7 +162,7 @@ const forgetPasswordSendEmail = asyncHandler(async (req, res) => {
       }
     });
   } catch (err) {
-    return res.status(500).json(new ApiResponse(500, "Error sending email"));
+    return res.status(500).json(new ApiResponse(500, "Error sending email")); 
   }
 
   return res
