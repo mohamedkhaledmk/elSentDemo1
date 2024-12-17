@@ -10,7 +10,7 @@ const router = Router();
 
 
 
-router.route("/").post(verifyUser,verifyAdmin, addCity );
+router.route("/").post(addCity ); //LLAASSTT router.route("/").post(verifyUser,verifyAdmin, addCity );
 router.route("/").get( getAllCities);
 
 
