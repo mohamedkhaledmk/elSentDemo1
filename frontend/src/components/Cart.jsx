@@ -16,7 +16,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchStripe = async () => {
       const stripe = await loadStripe(
-        "pk_test_51P5t81Lvvxf0OOpItZ5a94EMI92eFidBTy8oWVF7XTsHTwu17Q9BB292AQjV6s3fjSoWdp60vlG1jG090s6QgDm100UKAL5SIR"
+        "pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA"
       ); // Replace with your public key
       setStripe(stripe);
     };

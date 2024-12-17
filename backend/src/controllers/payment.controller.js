@@ -3,10 +3,8 @@ import ApiResponse from "../utils/ApiResponse.js";
 import PaymentMethod from "../models/userPaymentMethod.model.js";
 import Stripe from "stripe";
 import User from "../models/user.model.js";
-// const stripe = new Stripe(process.env.STRIPE_KEY);
-// const stripe = new Stripe("sk_test_51Oktd0SFo6ikMNdBlRddtnGqOJL1WRx92gJ4BTlpcP07172oQ2F3jTE5F0HtWeCSu3z0MA1GQhiAhG1oysUQ3Nq600eUow95pq")
 
-const stripe = new Stripe("sk_test_51P5t81Lvvxf0OOpIgdu78eLqln3YJO5Q7NfKMfNEl93qXkiLjy6FBzvY37O8p1QlhWOWwQUg6m9zU5WtDaYfKMLS00rhq7lcCT")
+const stripe = new Stripe("sk_test_51QWmgRGI6UEWLGcVrfkYdIitb29zTKm7WDBXgfklEyWexo6rCMgKxpUH0UeTMPI2FZX7UVhHVpXvNOu8VjfMGHoc004ZxQiqwE")
 
 
 // recluze
