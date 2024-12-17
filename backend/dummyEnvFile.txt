@@ -18,3 +18,27 @@ USER_PASSWORD=  "gmail password"
 CLOUDINARY_CLOUD_NAME=     "cloudinary cloud name"
 CLOUDINARY_API_KEY=         "cloudinary api key"
 CLOUDINARY_API_SECRET=        "cloudinary api secret"
+
+PORT = ? (the port where the server will be listening)
+
+MONGO_URI= ? (your MongoDB connection string)
+
+CORS_ORIGIN=?
+
+JWT_SECRET=?
+
+JWT_EXPIRES_IN=?
+
+RESET_TOKEN_SECRET=?
+
+USER_EMAIL=?
+
+USER_PASSWORD=?
+
+CLOUDINARY_CLOUD_NAME=?
+
+CLOUDINARY_API_KEY=?
+
+CLOUDINARY_API_SECRET=?
+
+STRIPE_KEY=?
