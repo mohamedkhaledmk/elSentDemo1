@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
-
+import ppImage from "C:\\Users\\yasmine\\Desktop\\elSentDemo1\\frontend\\src\\assets\\ppImg.jpg"; 
 const PrivacyPolicy = () => {
   return (
     <>
       <div className="text-white">
-        <div className="flex items-center justify-center flex-col h-[280px] bg-hero-img bg-cover">
+      <div
+          className="flex items-center justify-center flex-col h-[280px] bg-cover"
+          style={{ backgroundImage: `url(${ppImage})` }}
+        >
           <h1 className="text-center font-bold text-3xl">Privacy Policy</h1>
           <div className="flex gap-2 font-medium pt-2">
             <Link
