@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import ppImage from "C:\\Users\\yasmine\\Desktop\\elSentDemo1\\frontend\\src\\assets\\ppImg.jpg"; 
+import ppImage from "../assets/ppImg.jpg"; 
 const PrivacyPolicy = () => {
   return (
     <>
