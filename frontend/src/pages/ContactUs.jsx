@@ -59,7 +59,12 @@ toast.success("Email Send Successfully.",{
             </div>
             <div>
               <h2 className=" text-2xl font-bold">Address</h2>
-              <span>Mandi Bahauddin Punjab, Pakistan</span>
+              <a href="https://maps.app.goo.gl/pEvmTH76xGtj6nGL8?g_st=com.google.maps.preview.copy" 
+   target="_blank" 
+   rel="noopener noreferrer" 
+   class="hover:text-[#F5F5DC]">
+    View on Google Maps
+</a>
             </div>
           </div>
           <div className="text-white flex flex-col gap-4 items-center justify-start p-8 rounded-2xl  bg-theme-bg text-center w-full  ">

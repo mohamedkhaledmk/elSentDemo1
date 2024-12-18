@@ -90,17 +90,18 @@ const Header = () => {
   >
     Live Auctions
   </Link>
-  <Link
-    to="/contact-us"
-    className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
-  >
-    Contact
-  </Link>
+ 
   <Link
     to="/about-us"
     className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
   >
     About
+  </Link>
+  <Link
+    to="/contact-us"
+    className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+  >
+    Contact
   </Link>
   <Link
     to="/privacy-policy"
