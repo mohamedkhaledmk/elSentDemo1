@@ -2,40 +2,36 @@ const ProcessHome = () => {
   return (
     <div className="">
       <h2 className="text-4xl font-medium text-white mb-10 text-center">
-        Create And Sell{" "}
-        <span className="text-color-primary">Your Products</span>
+        Bid and Buy{" "}
+        <span className="text-color-primary">Your Favorite Jewelry</span>
       </h2>
-      <div className="grid grid-cols-1 m-auto gap-5   w-full  md:grid-cols-2 lg:grid-cols-4">
-        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg ">
+      <div className="grid grid-cols-1 m-auto gap-5 w-full md:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg">
           <h2 className="text-5xl font-bold text-stroke">01</h2>
-          <h3 className="text-2xl font-bold">Setup your Account</h3>
+          <h3 className="text-2xl font-bold">Browse Available Auctions</h3>
           <p className="text-body-text-color">
-            Register for a free account and unlock the power to sell anything,
-            anytime.
+            Explore a wide range of jewelery available for bidding, from collectibles to masterpieces.
           </p>
         </div>
-        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg ">
+        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg">
           <h2 className="text-5xl font-bold text-stroke">02</h2>
-          <h3 className="text-2xl font-bold">Create Your Auction</h3>
+          <h3 className="text-2xl font-bold">Place Your Bid</h3>
           <p className="text-body-text-color">
-            Create a compelling listing that showcases your item and attracts
-            potential buyers.
+            Find the jewelery you're interested in, and place a competitive bid to secure your item.
           </p>
         </div>
-        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg ">
+        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg">
           <h2 className="text-5xl font-bold text-stroke">03</h2>
-          <h3 className="text-2xl font-bold">Add Starting Price for Bid</h3>
+          <h3 className="text-2xl font-bold">Track Auction Progress</h3>
           <p className="text-body-text-color">
-            Determine your starting bid and consider a reserve price for added
-            control.
+            Keep an eye on your bid as the auction progresses, and outbid others to increase your chances of winning.
           </p>
         </div>
-        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg ">
+        <div className="flex flex-col text-white gap-4 justify-start p-8 rounded-2xl bg-theme-bg">
           <h2 className="text-5xl font-bold text-stroke">04</h2>
-          <h3 className="text-2xl font-bold">List Product for Sale</h3>
+          <h3 className="text-2xl font-bold">Win the Auction</h3>
           <p className="text-body-text-color">
-            Publish your Product and watch the bids come in, turning your unused
-            items into revenue.
+            If you place the highest bid when the auction ends, the eye catching uniques masterpiece is yours! Complete the purchase and enjoy.
           </p>
         </div>
       </div>

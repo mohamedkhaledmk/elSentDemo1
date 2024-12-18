@@ -8,9 +8,9 @@ const HeroHome = () => {
     <>
       <div className="lg:h-[85vh] py-20 p-5 lg:px-12 flex items-center justify-center flex-wrap lg:flex-nowrap gap-5 text-white">
         <div className="block overflow-hidden">
-        <div className="w-[300px] h-[300px] bg-[#D4AF37] rounded-full blur-[150px] absolute left-[-50px] top-[-80px]"></div>
-<div className="w-[200px] h-[200px] bg-[#C69C6D] rounded-full blur-[150px] absolute left-[45%] top-[100px]"></div>
-<div className="w-[250px] h-[250px] bg-[#FFD700] rounded-full blur-[150px] absolute right-[50px] bottom-[80%] lg:bottom-[70%]"></div>
+        <div className="w-[300px] h-[300px] bg-[#C19A7D] rounded-full blur-[150px] absolute left-[-50px] top-[-80px]"></div>
+<div className="w-[200px] h-[200px] bg-[#C0B298] rounded-full blur-[150px] absolute left-[45%] top-[100px]"></div>
+<div className="w-[250px] h-[250px] bg-[#C19A7D] rounded-full blur-[150px] absolute right-[50px] bottom-[80%] lg:bottom-[70%]"></div>
 </div>
 
         <div className="w-full flex flex-col gap-4 z-[1]  ">
@@ -45,8 +45,16 @@ const HeroHome = () => {
           </div>
         </div>
         <div className="w-full lg:p-20 animate-float ">
-          <img src={herovector} alt="Hero-img" />
-        </div>
+        <img 
+  src={herovector} 
+  alt="Hero-img" 
+  className="hero-image"  
+  style={{
+    borderRadius: '100px', // Optional: round the corners
+   // Safari support
+  }}
+/>
+     </div>
       </div>
     </>
   );

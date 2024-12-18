@@ -205,22 +205,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
           </div>
 
           <div className="pt-4 border-t border-border-info-color">
-            {/* Creator */}
-            <div className="flex gap-8">
-              <div id="author-item" className="text-heading-color">
-                <span className="font-medium capitalize  ">Seller</span>
-                <div id="author-info" className="flex items-center gap-2 pt-2">
-                  <img
-                    src={singleAuction?.seller?.profilePicture}
-                    alt="avatar"
-                    className="w-[45px] rounded-full"
-                  />
-                  <a href="#" className="font-medium ">
-                    {singleAuction?.seller?.fullName}
-                  </a>
-                </div>
-              </div>
-            </div>
+            
             {/* TABS buttons */}
             <div className="flex gap-4 pt-4 font-bold text-white ">
               <button

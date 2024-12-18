@@ -24,8 +24,8 @@ const LiveHome = (props) => {
       <div id="livehome">
         <div className="flex gap-2 items-center mb-5">
           <div>
-            <span className="absolute animate-ping flex rounded-full h-3 w-3 bg-sky-500"></span>
-            <span className="relative flex rounded-full h-3 w-3 bg-sky-500"></span>
+            <span className="absolute animate-ping flex rounded-full h-3 w-3 bg-color-warning"></span>
+            <span className="relative flex rounded-full h-3 w-3 bg-color-warning"></span>
           </div>
           <h2 className="text-2xl font-bold text-white">{ props.onlyAuction==="onlyAuction" ?"": "Live Auctions"}</h2>
 
