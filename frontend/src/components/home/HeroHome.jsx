@@ -14,14 +14,12 @@ const HeroHome = () => {
 </div>
 
         <div className="w-full flex flex-col gap-4 z-[1]  ">
-          <h3 className="tracking-wider">DISCOVER, COLLECT AND SELL</h3>
+          <h3 className="tracking-wider">Discover and Bid on Exquisite Gold & Jewelry</h3>
           <h1 className="text-5xl font-bold">
-            Discover Rare Products And Bid in Real-Time
+          Experience the Elegance of Real-Time Auctions
           </h1>
           <p>
-            Our real-time auctions let you join the thrill of selling, hunting
-            and bidding live on rare Products. Explore our listings to start
-            bidding or sell your own products!
+          Uncover a dazzling collection of rare gold and fine jewelry. Our live auctions bring the excitement of discovering and bidding on exquisite treasures right to your fingertips. Explore unique listings and claim timeless pieces that radiate luxury and elegance.
           </p>
           <div className="flex gap-4">
             <Link

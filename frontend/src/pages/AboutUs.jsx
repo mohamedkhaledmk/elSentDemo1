@@ -5,7 +5,7 @@ import dev1 from "../assets/dev1.jpg";
 import dev2 from "../assets/dev2.jpg";
 import dev3 from "../assets/dev3.jpg";
 import CreateEarnHome from "../components/home/CreateEarnHome";
-
+import newAboutImage from "../assets/newAboutImage.jpg";
 const AboutUs = () => {
   const devs = [
     {
@@ -36,21 +36,23 @@ const AboutUs = () => {
 
   return (
     <>
-      <div className="text-white flex items-center justify-center flex-col h-[280px] bg-cover bg-hero-img">
-        <h1 id="home" className="text-center font-bold text-3xl">
-          About Us
-        </h1>
-        <div className="flex gap-2 font-medium pt-2">
-          <Link
-            to={"/"}
-            className=" no-underline hover:text-theme-color transition-all"
-          >
-            Home
-          </Link>
-          <span>/</span>
-          <span className="text-theme-color">About Us</span>
-        </div>
-      </div>
+      <div 
+  className="text-white flex items-center justify-center flex-col h-[280px] bg-cover" 
+  style={{ backgroundImage: `url(${newAboutImage})` }} // Corrected background image
+><h1 id="home" className="text-center font-bold text-3xl">
+    About Us
+  </h1>
+  <div className="flex gap-2 font-medium pt-2">
+    <Link
+      to={"/"}
+      className=" no-underline hover:text-theme-color transition-all"
+    >
+      Home
+    </Link>
+    <span>/</span>
+    <span className="text-theme-color">About Us</span>
+  </div>
+</div>
       {/* About US PARENT */}
       <div className="text-white flex flex-col gap-20 pt-20 px-6 lg:px-11 ">
         {/* ABOUT US Section */}
@@ -62,23 +64,16 @@ const AboutUs = () => {
                 About Us
               </span>
               <h2 className="mt-2 text-4xl font-medium">
-                Largest Marketplace To Collect, Buy And Sell Creative Digital
-                Assets
+                Largest Marketplace To Collect and Buy Unique Jewlery Pieces
               </h2>
             </div>
             <div className="text-body-text-color">
               <p className="mb-2">
-                We are an online auction platform dedicated to creative digital
-                assets. Here, artists, designers, and creators from all corners
-                of the globe come together to find, buy, and sell exceptional
-                digital works in a dynamic bidding environment.
+Al-Sent International Company was established in collaboration with the Makkah Gold and Jewelry Auction, with exclusive rights to leverage the cumulative expertise and knowledge gained from managing auctions for over 30 years in Makkah, Jeddah, and Madinah, as well as through televised auctions, satellite channels, and other events.
               </p>
               <p className="mb-2">
-                Need that perfect stock video clip to elevate your production?
-                Or maybe a one-of-a-kind logo design to launch your brand? Our
-                ever-expanding library boasts a vast collection of fonts,
-                graphics, 3D models, sound effects, and more – all waiting to be
-                discovered through the thrill of the auction.
+              Al-Sent International Company is committed to keeping pace with digital transformation and remote sales by launching a digital platform tailored to the needs of those interested in the gold and jewelry sector. The platform allows for precise identification of types and quality, ensuring alignment with global exchange reports and tables for accurate valuation. Users can utilize the built-in calculator as a reference tool, guided by global market indicators for gold, jewelry, gemstones, and craftsmanship costs. This enables participants in the auctions to make informed decisions and place bids based on available data. The auction is not responsible for any deviations from this information if participants choose otherwise.
+
               </p>
               <p>
                 Become a seller and showcase your talents! Auction off your
@@ -88,7 +83,7 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
-        {/* OUR TEAM SECTION*/}
+        {/* OUR TEAM SECTION
         <div className="m-auto">
           <div className="flex flex-col items-center text-center mb-10">
             <span className="text-lg tracking-[5px] uppercase text-theme-color font-semibold">
@@ -97,7 +92,7 @@ const AboutUs = () => {
             <h2 className="mt-2 text-4xl font-medium">Meet With Our Experts</h2>
           </div>
           <div className=" grid  md:grid-cols-3 items-center justify-center gap-5 max-w-[1500px]">
-            {/* dev component */}
+            {/* dev component
             {devs.map(({ id, src, name, skill, link1, link2 }) => (
               <div
                 key={id}
@@ -134,7 +129,7 @@ const AboutUs = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div>*/}
         <div className="max-w-[1500px] m-auto">
           <div className="mb-10 text-center">
             <span className="text-lg tracking-[5px] uppercase text-theme-color font-semibold">
@@ -180,7 +175,6 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
-        <CreateEarnHome />
       </div>
     </>
   );

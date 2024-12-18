@@ -14,6 +14,14 @@ const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false); // To track scroll state
+  const [isArabic, setIsArabic] = useState(false); // Track if the website is in Arabic
+  const [translations, setTranslations] = useState({
+    home: "Home",
+    liveAuctions: "Live Auctions",
+    about: "About",
+    contact: "Contact",
+    privacyPolicy: "Privacy Policy",
+  });
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -60,6 +68,55 @@ const Header = () => {
     navigate("/login");
   };
 
+  // Function to translate text
+  const translateText = async (text) => {
+    const response = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        q: text,
+        source: "en",
+        target: "ar",
+      }),
+    });
+
+    const data = await response.json();
+    return data.translatedText;
+  };
+
+  // Function to handle translation to Arabic
+  const handleTranslateToArabic = async () => {
+    const translatedHome = await translateText("Home");
+    const translatedLiveAuctions = await translateText("Live Auctions");
+    const translatedAbout = await translateText("About");
+    const translatedContact = await translateText("Contact");
+    const translatedPrivacyPolicy = await translateText("Privacy Policy");
+
+    setTranslations({
+      home: translatedHome,
+      liveAuctions: translatedLiveAuctions,
+      about: translatedAbout,
+      contact: translatedContact,
+      privacyPolicy: translatedPrivacyPolicy,
+    });
+
+    setIsArabic(true);
+  };
+
+  // Function to reset translation back to English
+  const switchToEnglish = () => {
+    setTranslations({
+      home: "Home",
+      liveAuctions: "Live Auctions",
+      about: "About",
+      contact: "Contact",
+      privacyPolicy: "Privacy Policy",
+    });
+    setIsArabic(false);
+  };
+
   return (
     <div
       className={`sticky top-0 z-50 flex justify-between items-center px-2 sm:px-14 py-2 border-b-4 border-heading-color transition-all duration-300 ${
@@ -78,41 +135,46 @@ const Header = () => {
 
       {/* Links (Home, Contact, About) */}
       <div className="hidden sm:block">
-  <Link
-    to="/"
-    className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
-  >
-    Home
-  </Link>
-  <Link
-    to="/privacy-policy"
-    className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
-  >
-    Live Auctions
-  </Link>
-  <Link
-    to="/contact-us"
-    className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
-  >
-    Contact
-  </Link>
-  <Link
-    to="/about-us"
-    className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
-  >
-    About
-  </Link>
-  <Link
-    to="/privacy-policy"
-    className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
-  >
-    Privacy Policy
-  </Link>
-</div>
+        <Link
+          to="/"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+        >
+          {isArabic ? translations.home : "Home"}
+        </Link>
+        <Link
+          to="/privacy-policy"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+        >
+          {isArabic ? translations.liveAuctions : "Live Auctions"}
+        </Link>
+        <Link
+          to="/about-us"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+        >
+          {isArabic ? translations.about : "About"}
+        </Link>
+        <Link
+          to="/contact-us"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+        >
+          {isArabic ? translations.contact : "Contact"}
+        </Link>
+        <Link
+          to="/privacy-policy"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+        >
+          {isArabic ? translations.privacyPolicy : "Privacy Policy"}
+        </Link>
+      </div>
 
-
-      {/* User Profile and Notifications */}
+      {/* Translate Button */}
       <div className="flex items-center cursor-pointer z-[1]">
+        <button
+          onClick={isArabic ? switchToEnglish : handleTranslateToArabic}
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+        >
+          {isArabic ? "Switch to English" : "Translate to Arabic"}
+        </button>
         {user ? (
           <div className="flex justify-center items-center">
             <Link
@@ -147,8 +209,8 @@ const Header = () => {
             </Link>
           </div>
         ) : (
-          <>
-          <Link
+          <div>
+            <Link
               to="/register"
               className="bg-color no-underline font-Roboto text-base hover:text-hover transition-all duration-150 text-white py-1 sm:py-2 sm:px-3 px-2 rounded-md text-md font-semibold"
             >
@@ -160,89 +222,9 @@ const Header = () => {
             >
               Sign In
             </Link>
-            <Link
-              onClick={() => setNavbarOpen(!navbarOpen)}
-              className="text-white font-Roboto sm:hidden text-lg mx-3 order-3 z-50"
-            >
-              {navbarOpen ? <FaTimes size={25} /> : <FaBars size={25} />}
-            </Link>
-          </>
+          </div>
         )}
       </div>
-
-      {/* Sidebar for User */}
-      {user && sidebarOpen ? (
-        <div
-          className={`${
-            sidebarOpen ? "animate-fadein" : "hidden"
-          } rounded-xl origin-top-right overflow-hidden absolute right-12 top-16 mt-[4px] bg-body-bg z-50 w-[250px]`}
-        >
-          <nav className="pt-2 [&_a]:transition-all [&_a]:duration-100">
-            <Link
-              to="/user-profile/profile"
-              className="block no-underline text-white font-Roboto text-lg py-2 px-7 hover:bg-theme-bg-light"
-              onClick={() => setSidebarOpen(false)}
-            >
-              Profile
-            </Link>
-            <Link
-              to={
-                user.userType === "seller"
-                  ? "/user-profile/manage-items"
-                  : "/user-profile/bids-items"
-              }
-              className="block no-underline text-white font-Roboto text-lg py-2 px-7 hover:bg-theme-bg-light"
-              onClick={() => setSidebarOpen(false)}
-            >
-              {user.userType === "seller" ? "Manage Items" : "Bids Items"}
-            </Link>
-            <Link
-              to="/user-profile/account-settings"
-              className="block no-underline text-white font-Roboto text-lg py-2 px-7 hover:bg-theme-bg-light"
-              onClick={() => setSidebarOpen(false)}
-            >
-              Account Setting
-            </Link>
-            <Link
-              onClick={() => {
-                logoutHandle();
-                setSidebarOpen(false);
-              }}
-              className="block no-underline text-white font-Roboto text-lg py-2 px-7 hover:bg-theme-bg-light"
-            >
-              Logout
-            </Link>
-          </nav>
-        </div>
-      ) : null}
-
-      {/* Navbar for Mobile */}
-      {navbarOpen && (
-        <ul className="flex sm:hidden flex-col justify-center items-center absolute top-16 left-0 w-full h-screen bg-gradient-to-b from-theme-bg2 to-theme-bg text-body-text-color z-10 [&_li]:flex [&_li]:w-full link:w-full link:px-4 link:py-6 hover:link:bg-theme-bg2 text-center">
-          <li className="cursor-pointer capitalize text-4xl">
-            <Link to="/" onClick={() => setNavbarOpen(!navbarOpen)}>
-              Home
-            </Link>
-          </li>
-          <li className="cursor-pointer capitalize text-4xl">
-            <Link to="/contact-us" onClick={() => setNavbarOpen(!navbarOpen)}>
-              Contact
-            </Link>
-          </li>
-          <li className="cursor-pointer capitalize text-4xl">
-            <Link to="/about-us" onClick={() => setNavbarOpen(!navbarOpen)}>
-              About
-            </Link>
-          </li>
-          <li className="cursor-pointer capitalize text-4xl">
-            {user && (
-              <Link to="/user-profile/cart" onClick={() => setNavbarOpen(!navbarOpen)}>
-                Cart
-              </Link>
-            )}
-          </li>
-        </ul>
-      )}
     </div>
   );
 };
