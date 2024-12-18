@@ -4,7 +4,7 @@ import PaymentMethod from "../models/userPaymentMethod.model.js";
 import Stripe from "stripe";
 import User from "../models/user.model.js";
 
-const stripe = new Stripe(`${process.env.STRIPE_SECRET_KEY}`);
+const stripe = new Stripe("sk_test_51QWmgRGI6UEWLGcVrfkYdIitb29zTKm7WDBXgfklEyWexo6rCMgKxpUH0UeTMPI2FZX7UVhHVpXvNOu8VjfMGHoc004ZxQiqwE");
 
 
 // recluze

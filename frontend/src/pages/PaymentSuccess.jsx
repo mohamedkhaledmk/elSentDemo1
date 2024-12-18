@@ -25,7 +25,7 @@ const PaymentSuccess = () => {
       />
       <div className="flex flex-col gap-2 text-center animate-[successkey_700ms]">
         <h2 className="text-3xl font-bold ">Payment Successfull!</h2>
-        <p className="text-[16px]">Thank You For Your Billing.</p>
+        <p className="text-[16px]">Thank You For Your Billing Our Team Will Contact You Soon.</p>
       </div>
     </div>
   );

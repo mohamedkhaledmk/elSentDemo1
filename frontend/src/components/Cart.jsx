@@ -15,7 +15,7 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchStripe = async () => {
-      const stripe = await loadStripe(`${process.env.STRIPE_KEY}`);
+      const stripe = await loadStripe("pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA");
       setStripe(stripe);
     };
 
