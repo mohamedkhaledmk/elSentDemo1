@@ -1,38 +1,10 @@
 import { Link } from "react-router-dom";
 import { FaLinkedinIn, FaGithub } from "react-icons/fa";
 import aboutimg from "../assets/aboutus.png";
-import dev1 from "../assets/dev1.jpg";
-import dev2 from "../assets/dev2.jpg";
-import dev3 from "../assets/dev3.jpg";
 import CreateEarnHome from "../components/home/CreateEarnHome";
 import newAboutImage from "../assets/newAboutImage.jpg";
 const AboutUs = () => {
-  const devs = [
-    {
-      id: 1,
-      src: dev1,
-      name: "Abdul Rehman Butt",
-      skill: "Frontend Developer",
-      link1: "https://www.linkedin.com/in/abdul-rehman-butt-b73946206/",
-      link2: "https://github.com/Abdul-Rehmanpk",
-    },
-    {
-      id: 2,
-      src: dev2,
-      name: "Yasir Mukhtar",
-      skill: "BackEnd Developer",
-      link1: "https://www.linkedin.com/in/yasir-mukhtar-85b590228/",
-      link2: "https://github.com/Yasir-Mukthar",
-    },
-    {
-      id: 3,
-      src: dev3,
-      name: "Hassaan Ali",
-      skill: "Frontend Developer",
-      link1: "https://www.linkedin.com/in/hassaanvfx/",
-      link2: "https://github.com/hassaancode",
-    },
-  ];
+ 
 
   return (
     <>
