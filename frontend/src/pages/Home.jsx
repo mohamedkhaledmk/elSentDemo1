@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <>
       <HeroHome />
-      <div className="px-5 lg:px-12 flex flex-col gap-20">
+      <div className="px-5 lg:px-15 flex flex-col gap-20">
         <LiveHome />
         <YoutubeLive />
         <ProcessHome />

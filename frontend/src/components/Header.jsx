@@ -60,24 +60,28 @@ const Header = () => {
     navigate("/login");
   };
 
-  // Add Google Translate Script
+  // Dynamically add Google Translate Script using a different approach
   useEffect(() => {
-    const addGoogleTranslateScript = () => {
+    if (typeof window !== "undefined") {
       const script = document.createElement("script");
       script.src =
         "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
+      script.onload = () => {
+        window.googleTranslateElementInit = () => {
+          new window.google.translate.TranslateElement(
+            { pageLanguage: "en" },
+            "google-translate-element"
+          );
+        };
+      };
       document.body.appendChild(script);
-    };
 
-    window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement(
-        { pageLanguage: "en" },
-        "google-translate-element"
-      );
-    };
-
-    addGoogleTranslateScript();
+      // Cleanup script on component unmount
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
   }, []);
 
   return (

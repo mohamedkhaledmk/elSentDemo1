@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -10,8 +10,8 @@ const Footer = () => {
   }, [pathname]);
 
   return (
-    <footer className="absolute bottom-0 bg-theme-bg shadow w-full">
-      <div className="lg:w-[80%] mx-auto p-4 md:py-8">
+    <footer className="absolute bottom-150 bg-theme-bg shadow w-full flex-shrink-0">
+      <div className="lg:w-[80%] mx-auto p-4 md:py-8 flex flex-col justify-between h-full">
         <div className="sm:flex items-center justify-between">
           <Link
             to="/"
@@ -39,15 +39,6 @@ const Footer = () => {
                 Privacy Policy
               </Link>
             </li>
-            {/* <li>
-              <Link
-                to=""
-                className=" me-4 md:me-6 text-white no-underline hover:text-theme-color"
-              >
-                Licensing
-              </Link>
-            </li> */}
-            
             <li>
               <Link
                 to="/contact-us"
