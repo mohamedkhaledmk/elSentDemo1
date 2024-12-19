@@ -14,14 +14,6 @@ const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false); // To track scroll state
-  const [isArabic, setIsArabic] = useState(false); // Track if the website is in Arabic
-  const [translations, setTranslations] = useState({
-    home: "Home",
-    liveAuctions: "Live Auctions",
-    about: "About",
-    contact: "Contact",
-    privacyPolicy: "Privacy Policy",
-  });
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -68,54 +60,29 @@ const Header = () => {
     navigate("/login");
   };
 
-  // Function to translate text
-  const translateText = async (text) => {
-    const response = await fetch("https://libretranslate.de/translate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        q: text,
-        source: "en",
-        target: "ar",
-      }),
-    });
+  // Dynamically add Google Translate Script using a different approach
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const script = document.createElement("script");
+      script.src =
+        "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      script.onload = () => {
+        window.googleTranslateElementInit = () => {
+          new window.google.translate.TranslateElement(
+            { pageLanguage: "en" },
+            "google-translate-element"
+          );
+        };
+      };
+      document.body.appendChild(script);
 
-    const data = await response.json();
-    return data.translatedText;
-  };
-
-  // Function to handle translation to Arabic
-  const handleTranslateToArabic = async () => {
-    const translatedHome = await translateText("Home");
-    const translatedLiveAuctions = await translateText("Live Auctions");
-    const translatedAbout = await translateText("About");
-    const translatedContact = await translateText("Contact");
-    const translatedPrivacyPolicy = await translateText("Privacy Policy");
-
-    setTranslations({
-      home: translatedHome,
-      liveAuctions: translatedLiveAuctions,
-      about: translatedAbout,
-      contact: translatedContact,
-      privacyPolicy: translatedPrivacyPolicy,
-    });
-
-    setIsArabic(true);
-  };
-
-  // Function to reset translation back to English
-  const switchToEnglish = () => {
-    setTranslations({
-      home: "Home",
-      liveAuctions: "Live Auctions",
-      about: "About",
-      contact: "Contact",
-      privacyPolicy: "Privacy Policy",
-    });
-    setIsArabic(false);
-  };
+      // Cleanup script on component unmount
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, []);
 
   return (
     <div
@@ -125,7 +92,7 @@ const Header = () => {
     >
       {/* Logo */}
       <div className="flex items-center px-1 z-[1]">
-        <Link to="/dashboard" className="no-underline">
+        <Link to="/" className="no-underline">
           <h1 className="text-3xl font-bold text-white font-Roboto">
             <span className="uppercase text-theme-color">E</span>l
             <span className="uppercase text-theme-color">S</span>ent
@@ -139,42 +106,37 @@ const Header = () => {
           to="/"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
         >
-          {isArabic ? translations.home : "Home"}
+          Home
         </Link>
         <Link
           to="/privacy-policy"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
         >
-          {isArabic ? translations.liveAuctions : "Live Auctions"}
+          Live Auctions
         </Link>
+
         <Link
           to="/about-us"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
         >
-          {isArabic ? translations.about : "About"}
+          About
         </Link>
         <Link
           to="/contact-us"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
         >
-          {isArabic ? translations.contact : "Contact"}
+          Contact
         </Link>
         <Link
           to="/privacy-policy"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
         >
-          {isArabic ? translations.privacyPolicy : "Privacy Policy"}
+          Privacy Policy
         </Link>
       </div>
 
-      {/* Translate Button */}
+      {/* User Profile and Notifications */}
       <div className="flex items-center cursor-pointer z-[1]">
-        <button
-          onClick={isArabic ? switchToEnglish : handleTranslateToArabic}
-          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
-        >
-          {isArabic ? "Switch to English" : "Translate to Arabic"}
-        </button>
         {user ? (
           <div className="flex justify-center items-center">
             <Link
@@ -209,7 +171,8 @@ const Header = () => {
             </Link>
           </div>
         ) : (
-          <div>
+          <>
+            <div id="google-translate-element"></div>
             <Link
               to="/register"
               className="bg-color no-underline font-Roboto text-base hover:text-hover transition-all duration-150 text-white py-1 sm:py-2 sm:px-3 px-2 rounded-md text-md font-semibold"
@@ -222,7 +185,13 @@ const Header = () => {
             >
               Sign In
             </Link>
-          </div>
+            <Link
+              onClick={() => setNavbarOpen(!navbarOpen)}
+              className="text-white font-Roboto sm:hidden text-lg mx-3 order-3 z-50"
+            >
+              {navbarOpen ? <FaTimes size={25} /> : <FaBars size={25} />}
+            </Link>
+          </>
         )}
       </div>
     </div>
