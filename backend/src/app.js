@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 app.use('/api/v1', metalPriceRoutes);
 
-cron.schedule('34 4 * * *', async () => {
+cron.schedule('0 0 * * *', async () => {
   console.log('Cron job started: Fetching metal prices...');
   await fetchAndStoreMetalPricesCron();
   console.log('Cron job completed: Metal prices fetched and stored.');
