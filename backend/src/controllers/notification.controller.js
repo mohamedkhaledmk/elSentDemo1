@@ -86,7 +86,6 @@ const getUserNotifications = asyncHandler(async (req, res) => {
         path: "bids",
         model: "Bid",
       },
-    
     })
 
     if (!notifications) {
@@ -141,9 +140,6 @@ const markAllNotificationsAsRead = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "All notifications marked as read"));
 });
-
-
-
 
 export { 
   sendNotification,

@@ -25,8 +25,6 @@ connectDB()
   })
 )
 
-
-
 socketIoConnectioin()
 
 export { io, server }

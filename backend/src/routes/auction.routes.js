@@ -16,9 +16,6 @@ import {
 import { verifyAdmin, verifyUser,verifySeller } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
-
-
-
 const router = Router();
 
 // router.route("/register").post(registerUser);
@@ -37,13 +34,5 @@ router.route("/create-auction").post(verifyUser,verifySeller,  upload.single("im
 router.route("/:id").get(getSingleAuctionById);
 
 router.route("/admin-delete/:id").delete(verifyUser, verifyAdmin, deleteSingleAuctionById);
-
-
-
-
-
-
-
-
 
 export default router;

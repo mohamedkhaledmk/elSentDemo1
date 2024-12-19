@@ -8,7 +8,6 @@ import Cart from './models/cart.model.js';
 import { io } from "./index.js";
 
 
-
 async function updateAuctionStatus(auctionId, status) {
   const auction = await Auction.findById(auctionId);
 
@@ -50,7 +49,6 @@ async function selectAuctionWinner(auctionId) {
   await auction.save();
 
   await sendNotification(winnerUser,auction )
-  
 
 //first find the  user in cart then add item to that cart
   const userCart=await Cart.findOne({user:winnerUser.bidder._id});
@@ -60,11 +58,7 @@ async function selectAuctionWinner(auctionId) {
       userCart.products.push(auction._id);
       await userCart.save();
   }
-
   console.log(cartItem);
-  
-  
-
 }
 
 async function sendNotification(winner, auction){
@@ -105,8 +99,6 @@ async function sendNotification(winner, auction){
 
       await new Notification({ ...notification, user: id }).save();
     });
-
-    
 }
 
 // Watch for new auctions
@@ -133,8 +125,5 @@ changeStream.on('change', (change) => {
 
   } catch (err){
     console.log(err, "error in cronjobs")
-
   }
 });
-
-
