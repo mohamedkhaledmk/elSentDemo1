@@ -1,4 +1,3 @@
-import CreateEarnHome from "../components/home/CreateEarnHome";
 import HeroHome from "../components/home/HeroHome";
 import LiveHome from "../components/home/LiveHome";
 import ProcessHome from "../components/home/ProcessHome";
