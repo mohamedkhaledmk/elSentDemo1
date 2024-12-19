@@ -75,23 +75,23 @@ const Register = () => {
   // };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#061224] text-[#7386a8]">
-      <div className="flex w-[90%]  flex-col items-center justify-center rounded-xl bg-[#071B36] py-8 sm:w-2/5 sm:px-6">
+    <div className="flex min-h-screen w-full items-center justify-center bg-theme-bg2 text-[#7386a8]">
+      <div className="flex w-[90%]  flex-col items-center justify-center rounded-xl bg-body-bg py-8 sm:w-2/5 sm:px-6">
         <h1 className="text-3xl font-bold text-white">
-          <span className="uppercase text-[#00A3FF]">B</span>id
-          <span className="uppercase text-[#00A3FF]">F</span>air
+          <span className="uppercase text-theme-color">E</span>l
+          <span className="uppercase text-theme-color">S</span>ent
         </h1>
-        <p className="m-2 text-xl">Create your new account</p>
-        <p className="my-3 h-[1px] w-[80%] bg-[#747d9340]"></p>
+        <p className="m-2 text-xl text-theme-color">Create your new account</p>
+        <p className="my-3 h-[1px] w-[80%] bg-color-dark"></p>
         <form
           className="overflow-hidden flex w-[90%] flex-col sm:w-[90%] "
           onSubmit={handleRegister}
         >
-          <label className="my-1 text-lg">Full Name</label>
+          <label className="my-1 text-lg text-body-text-color">Full Name</label>
           <input
             type="text"
             placeholder="Your Name"
-            className=" w-full pl-5 py-3 rounded text-white bg-[#0E294D] placeholder-body-text-color outline-none mb-3 border border-border-info-color focus:border-theme-color"
+            className=" w-full pl-5 py-3 rounded text-white bg-border-info-color placeholder-body-text-color outline-none mb-3 border border-border-info-color focus:border-theme-color"
             name="fullName"
             value={formData.fullName}
             onChange={(e) =>
@@ -101,11 +101,11 @@ const Register = () => {
             // add validation here
             minLength={5}
           />
-          <label className="my-1 text-lg">Email Address</label>
+          <label className="my-1 text-lg text-body-text-color">Email Address</label>
           <input
             type="email"
             placeholder="Your Email"
-            className=" w-full pl-5 py-3 rounded text-white bg-[#0E294D] placeholder-body-text-color outline-none mb-3 border border-border-info-color focus:border-theme-color"
+            className=" w-full pl-5 py-3 rounded text-white bg-border-info-color placeholder-body-text-color outline-none mb-3 border border-border-info-color focus:border-theme-color"
             name="email"
             value={formData.email}
             onChange={(e) =>
@@ -113,12 +113,12 @@ const Register = () => {
             }
             required
           />
-          <label className="my-1 text-lg">Password</label>
-          <div className=" pr-3 overflow-hidden flex justify-between items-center w-full rounded bg-[#0E294D] outline-none mb-4 border border-border-info-color ">
+          <label className="my-1 text-lg text-body-text-color">Password</label>
+          <div className=" pr-3 overflow-hidden flex justify-between items-center w-full rounded bg-color-dark outline-none mb-4 border border-border-info-color ">
             <input
               type="password"
               placeholder="Your Password"
-              className=" w-full pl-5 py-3 bg-[#0E294D] text-white placeholder-body-text-color outline-none"
+              className=" w-full pl-5 py-3 bg-border-info-color text-white placeholder-body-text-color outline-none"
               name="password"
               value={formData.password}
               onChange={(e) =>
@@ -139,7 +139,7 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="my-4 font-Roboto outline-none border-none w-full rounded bg-[#00A3FF] px-4 py-3 font-bold hover:bg-color-danger  text-[#ffffff]"
+            className="my-4 font-Roboto outline-none border-none w-full rounded bg-theme-bg-light px-4 py-3 font-bold hover:bg-color-danger  text-[#ffffff]"
             disabled={isLoading ? true : false}
           >
             Sign Up
