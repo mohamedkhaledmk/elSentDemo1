@@ -4,7 +4,7 @@ import ProcessHome from "../components/home/ProcessHome";
 import UpcommingHome from "../components/home/UpcommingHome";
 import YoutubeLive from "../components/home/YoutubeLive";
 import { register } from "swiper/element/bundle";
-// register Swiper custom elements
+
 register();
 
 const Home = () => {

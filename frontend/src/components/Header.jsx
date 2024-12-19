@@ -88,7 +88,7 @@ const Header = () => {
     >
       {/* Logo */}
       <div className="flex items-center px-1 z-[1]">
-        <Link to="/dashboard" className="no-underline">
+        <Link to="/" className="no-underline">
           <h1 className="text-3xl font-bold text-white font-Roboto">
             <span className="uppercase text-theme-color">E</span>l
             <span className="uppercase text-theme-color">S</span>ent

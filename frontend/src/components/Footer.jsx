@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="lg:w-[80%] mx-auto p-4 md:py-8">
         <div className="sm:flex items-center justify-between">
           <Link
-            to="/dashboard"
+            to="/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 no-underline"
           >
             <h1 className="text-3xl font-bold text-white font-Roboto">
