@@ -22,7 +22,7 @@ const PublicRoute = () => {
 
   useEffect(() => {
     if (auth) {
-      navigate("/admin/users");
+      navigate("");
     }
   }, [auth, navigate]);
 
@@ -90,7 +90,7 @@ const AdminRoutes=()=>{
     const navigate = useNavigate();
   //console.log(auth, "auth.,,,,,seller routes,,,...........");
   if (auth && user.userType !== "admin") {
-    navigate("/dashboard");
+    navigate("/dashboad");
   }
     useEffect(() => {
       if (auth && user.userType !== "admin") {

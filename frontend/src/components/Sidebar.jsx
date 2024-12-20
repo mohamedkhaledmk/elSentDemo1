@@ -186,7 +186,7 @@ const Sidebar = () => {
               <IoWalletOutline
                 size={18}
                 className={`text-theme-color transition-all duration-500 ${
-                  activeLink === "/user-profile/payment-method"
+                  activeLink === "/user-profile/payment-method" 
                     ? " text-white"
                     : ""
                 }`}
