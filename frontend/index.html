@@ -3,20 +3,178 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href=""  />
+  <link rel="icon" href="" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
   <title>Elsent</title>
 </head>
+
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
-  <script type="module">
-    import Chatbot from "https://cdn.jsdelivr.net/gh/Yasir-Mukthar/FlowiseChat/dist/web.js"
-    Chatbot.init({
-        chatflowid: "99c7eb85-e4c7-48c1-84cf-21ce4cacc0e3",
-        apiHost: "http://localhost:3000",
-    })
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>Floating Calculator</title>
+  <style>
+    .floating-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background-color: rgb(136, 91, 13);
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      z-index: 1000;
+    }
+
+    .floating-button:hover {
+      transform: scale(1.1);
+    }
+
+    .calculator-container {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 300px;
+      padding: 20px;
+      background-color: #15141788;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .calculator-display {
+  width: 100%;
+  height: 60px;
+  background-color: rgba(224, 224, 224, 0.33); /* Slightly darker background for better contrast */
+  border-radius: 4px;
+  text-align: right;
+  padding: 10px;
+  font-size: 24px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  color: #f5f5f5; /* Off-white text color */
+}
+
+    .calculator-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    button {
+      padding: 20px;
+      font-size: 18px;
+      border: none;
+      background-color: #3F3328;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #917E62;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+
+<body>
+  <button id="calculatorToggle" class="floating-button">
+    <i class="fas fa-calculator"></i>
+  </button>
+
+  <div id="calculatorContainer" class="calculator-container">
+    <div id="display" class="calculator-display"></div>
+    <div id="buttons" class="calculator-buttons">
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button>÷</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>×</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>-</button>
+      <button>0</button>
+      <button>.</button>
+      <button>=</button>
+      <button>+</button>
+    </div>
+  </div>
+
+  <script>
+    class Calculator {
+      constructor() {
+        this.displayElement = document.getElementById('display');
+        this.initialize();
+      }
+
+      initialize() {
+        this.buttons = document.querySelectorAll('#buttons button');
+        this.currentInput = '';
+        this.bindEvents();
+      }
+
+      bindEvents() {
+        this.buttons.forEach(button => {
+          button.addEventListener('click', () => this.handleButtonClick(button.innerText));
+        });
+
+        const toggleButton = document.getElementById('calculatorToggle');
+        toggleButton.addEventListener('click', () => this.toggleCalculator());
+      }
+
+      handleButtonClick(value) {
+        if (value === '=') {
+          this.calculate();
+        } else {
+          this.currentInput += value;
+          this.updateDisplay();
+        }
+      }
+
+      calculate() {
+        try {
+          this.currentInput = eval(this.currentInput).toString();
+        } catch {
+          this.currentInput = 'Error';
+        }
+        this.updateDisplay();
+      }
+
+      updateDisplay() {
+        this.displayElement.innerText = this.currentInput;
+      }
+
+      toggleCalculator() {
+        const calculatorContainer = document.getElementById('calculatorContainer');
+        calculatorContainer.style.display = calculatorContainer.style.display === 'none' ? 'block' : 'none';
+      }
+    }
+
+    new Calculator();
+  </script>
+</body>
+
+</html>
 </script>
 </body>
 
