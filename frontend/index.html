@@ -90,6 +90,27 @@
     button:active {
       transform: scale(0.95);
     }
+
+    .metal-selection {
+      grid-column: span 4;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .metal-selection select {
+      width: 100%;
+      padding: 10px;
+      font-size: 18px;
+      background-color: #151417;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+    }
+    .metal-selection select option:hover {
+      background-color: #ccc; /* Change background color on hover for options */
+    }
   </style>
 </head>
 
@@ -101,6 +122,15 @@
   <div id="calculatorContainer" class="calculator-container">
     <div id="display" class="calculator-display"></div>
     <div id="buttons" class="calculator-buttons">
+      <div class="metal-selection">
+        <select id="category" required class="bg-theme-bg-light px-2 text-body-text-color w-full block sm:w-auto sm:inline py-3 rounded-lg outline-none border border-border-info-color cursor-pointer">
+          <option value="">Choose Metal Type</option>
+          <option value="Gold">Gold</option>
+          <option value="Silver">Silver</option>
+          <option value="Palladium">Palladium</option>
+          <option value="Platinum">Platinum</option>
+        </select>
+        </div>
       <button>7</button>
       <button>8</button>
       <button>9</button>
