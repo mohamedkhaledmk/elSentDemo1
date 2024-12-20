@@ -171,7 +171,6 @@ const AccountSetting = () => {
             }
           >
             <option value="user">User</option>
-            <option value="seller">Seller</option>
           </select>
           <textarea
             className="outline-none bg-theme-bg2 rounded-xl px-3 py-4 border border-border-info-color focus:border-theme-color placeholder-body-text-color"

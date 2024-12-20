@@ -22,7 +22,7 @@ const PublicRoute = () => {
 
   useEffect(() => {
     if (auth) {
-      navigate("/dashboard");
+      navigate("/admin/users");
     }
   }, [auth, navigate]);
 
