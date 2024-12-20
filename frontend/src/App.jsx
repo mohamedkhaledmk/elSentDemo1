@@ -38,7 +38,7 @@ console.log(user,"...")
       {user && user.userType === "admin" ? <AdminHeader /> : <Header />}
  
         <Routes>
-          {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
+           <Route path="/admin/login" element={<Login />} /> 
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
