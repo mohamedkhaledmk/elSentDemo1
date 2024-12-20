@@ -178,7 +178,7 @@
       handleButtonClick(value) {
         if (value === '=') {
           this.calculate();
-        } else if (value === 'AC') {
+        } else if (value === 'Erase' || value === "مسح") {
           this.clear();
         } else {
           this.currentInput += value;
