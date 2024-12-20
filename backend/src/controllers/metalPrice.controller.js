@@ -28,7 +28,6 @@ const fetchAndStoreMetalPrices = asyncHandler(async (req, res, next) => {
     };
 
     for (const metalCode of Object.keys(metalMapping)) {
-
       const priceInOunce = prices[metalCode];
       if (priceInOunce) {
         const formattedPrice = Number((priceInOunce / 31.1035).toFixed(2));
@@ -67,4 +66,18 @@ const fetchAndStoreMetalPricesCron = async () => {
   }
 };
 
-export { fetchAndStoreMetalPrices, fetchAndStoreMetalPricesCron };
+const getAllMetalPrices = asyncHandler(async (req, res) => {
+  try {
+    const metalPrices = await MetalPrice.find({});
+
+    if (!metalPrices) {
+      return res.status(404).json(new ApiResponse(404, 'Metal prices not found'));
+    }
+
+    return res.status(200).json(new ApiResponse(200, 'Metal prices found', metalPrices));
+  } catch (error) {
+    return res.status(500).json(new ApiResponse(500, error?.message || 'Internal server error'));
+  }
+});
+
+export { fetchAndStoreMetalPrices, fetchAndStoreMetalPricesCron, getAllMetalPrices };

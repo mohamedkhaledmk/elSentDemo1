@@ -1,8 +1,9 @@
 import express from 'express';
-import { fetchAndStoreMetalPrices } from '../controllers/metalPrice.controller.js';
+import { fetchAndStoreMetalPrices, getAllMetalPrices } from '../controllers/metalPrice.controller.js';
 
 const router = express.Router();
 
-router.get('/metal-prices', fetchAndStoreMetalPrices);
+router.route("/metals/fetch").get(fetchAndStoreMetalPrices);
+router.route("/").get(getAllMetalPrices);
 
 export default router;

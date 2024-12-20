@@ -8,6 +8,7 @@ import bidReducer from './bid/bidSlice';
 import notificationReducer from './notification/notificationSlice';
 import cartReducer from "./cart/cartSlice"
 import userReducer from "./user/userSlice"
+import metalReducer from "./metals/metalsSlice"
 
 export const store= configureStore({
     reducer: {
@@ -19,10 +20,8 @@ export const store= configureStore({
         bid: bidReducer,
         notification: notificationReducer,
         cart: cartReducer,
-        user:userReducer,
-
-
-        
+        user: userReducer,
+        metal: metalReducer,
     }
     ,
     middleware: (getDefaultMiddleware) =>
