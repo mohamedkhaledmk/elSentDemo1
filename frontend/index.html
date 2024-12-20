@@ -53,17 +53,17 @@
     }
 
     .calculator-display {
-  width: 100%;
-  height: 60px;
-  background-color: rgba(224, 224, 224, 0.33); /* Slightly darker background for better contrast */
-  border-radius: 4px;
-  text-align: right;
-  padding: 10px;
-  font-size: 24px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-  color: #f5f5f5; /* Off-white text color */
-}
+      width: 100%;
+      height: 60px;
+      background-color: rgba(224, 224, 224, 0.33); /* Slightly darker background for better contrast */
+      border-radius: 4px;
+      text-align: right;
+      padding: 10px;
+      font-size: 24px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      color: #f5f5f5; /* Off-white text color */
+    }
 
     .calculator-buttons {
       display: grid;
@@ -115,6 +115,7 @@
       <button>-</button>
       <button>0</button>
       <button>.</button>
+      <button id="allClear">AC</button>
       <button>=</button>
       <button>+</button>
     </div>
@@ -124,12 +125,12 @@
     class Calculator {
       constructor() {
         this.displayElement = document.getElementById('display');
+        this.currentInput = '';
         this.initialize();
       }
 
       initialize() {
         this.buttons = document.querySelectorAll('#buttons button');
-        this.currentInput = '';
         this.bindEvents();
       }
 
@@ -145,6 +146,8 @@
       handleButtonClick(value) {
         if (value === '=') {
           this.calculate();
+        } else if (value === 'AC') {
+          this.clear();
         } else {
           this.currentInput += value;
           this.updateDisplay();
@@ -153,10 +156,21 @@
 
       calculate() {
         try {
-          this.currentInput = eval(this.currentInput).toString();
+          this.currentInput = this.evaluateExpression(this.currentInput);
         } catch {
           this.currentInput = 'Error';
         }
+        this.updateDisplay();
+      }
+
+      evaluateExpression(expression) {
+        // Use a safe regular expression to replace ÷ (divide) and × (multiply) symbols
+        expression = expression.replace('÷', '/').replace('×', '*');
+        return Function(`'use strict'; return (${expression})`)();
+      }
+
+      clear() {
+        this.currentInput = '';
         this.updateDisplay();
       }
 
@@ -172,10 +186,6 @@
 
     new Calculator();
   </script>
-</body>
-
-</html>
-</script>
 </body>
 
 </html>
