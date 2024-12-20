@@ -47,7 +47,7 @@ const AdminPublicRoute = () => {
 const Protected = () => {
   const auth = useAuth();
   const navigate = useNavigate();
-  //console.log(auth, "auth.,,,,,,,,.......protected....");
+  //console.log(auth, "auth protected....");
   useEffect(() => {
     if (!auth) {
       navigate("/login");

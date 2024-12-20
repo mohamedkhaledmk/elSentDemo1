@@ -28,7 +28,7 @@ const Register = () => {
       });
       dispatch(reset())
 
-      navigate("/login");
+      navigate("/auth");
     } else if (isError) {
       toast.error(message, {
         autoClose: 1000
