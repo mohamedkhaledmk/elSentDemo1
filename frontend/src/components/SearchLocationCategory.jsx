@@ -72,11 +72,11 @@ const SearchLocationCategory = () => {
 
   return (
     <div className="flex justify-center items-center my-5 min-h-[100px]">
-      <div className="flex-col   sm:flex-row sm:items-center   bg-[#061224] text-[#7386a8] rounded-md p-2">
+      <div className="flex-col   sm:flex-row sm:items-center   bg-color-dark text-body-text-color rounded-md p-2">
         <select
           required
           id="category"
-          className="bg-[#061224] px-2 text-[#7386a8] w-full block sm:w-auto sm:inline  py-3  rounded-lg outline-none border border-border-info-color cursor-pointer"
+          className="bg-theme-bg-light px-2 text-body-text-color w-full block sm:w-auto sm:inline  py-3  rounded-lg outline-none border border-border-info-color cursor-pointer"
           onChange={(e) => setFilter({ ...filter, location: e.target.value })}
         >
           <option value="">Select Location</option>
@@ -100,7 +100,7 @@ const SearchLocationCategory = () => {
         <select
           required
           id="category"
-          className="bg-[#061224] px-2 text-[#7386a8] w-full mt-2 sm:w-auto   sm:ml-4 block sm:inline   py-3  rounded-lg outline-none border border-border-info-color cursor-pointer"
+          className="bg-theme-bg-light px-2 text-body-text-color w-full mt-2 sm:w-auto   sm:ml-4 block sm:inline   py-3  rounded-lg outline-none border border-border-info-color cursor-pointer"
           onChange={(e) => setFilter({ ...filter, category: e.target.value })}
         >
           <option value="">Select Category</option>
@@ -113,8 +113,8 @@ const SearchLocationCategory = () => {
         </select>
         <input
           type="text"
-          placeholder="Search Name"
-          className="bg-[#061224] py-3 px-3 text-[#7386a8] mt-2 block sm:w-auto sm:inline rounded-lg  border border-border-info-color sm:mx-4 outline-none placeholder:text-[#7386a8]"
+          placeholder="Search Name"text
+          className="bg-theme-bg-light py-3 px-3 text-body-text-color mt-2 block sm:w-auto sm:inline rounded-lg  border border-border-info-color sm:mx-4 outline-none placeholder:text-body-text-color"
           value={filter.itemName}
           onChange={(e) => setFilter({ ...filter, itemName: e.target.value })}
         />

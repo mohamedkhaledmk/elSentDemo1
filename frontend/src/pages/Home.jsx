@@ -4,6 +4,7 @@ import ProcessHome from "../components/home/ProcessHome";
 import UpcommingHome from "../components/home/UpcommingHome";
 import YoutubeLive from "../components/home/YoutubeLive";
 import { register } from "swiper/element/bundle";
+import Dashboard from "./Dashboard";
 
 register();
 
@@ -12,7 +13,7 @@ const Home = () => {
     <>
       <HeroHome />
       <div className="px-5 lg:px-15 flex flex-col gap-20">
-        <LiveHome />
+        <Dashboard />
         <YoutubeLive />
         <ProcessHome />
         <div className="text-white flex flex-col gap-8">

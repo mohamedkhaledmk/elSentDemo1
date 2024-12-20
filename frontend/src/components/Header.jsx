@@ -109,7 +109,7 @@ const Header = () => {
           Home
         </Link>
         <Link
-          to="/privacy-policy"
+          to="/Dashboard"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
         >
           Live Auctions
