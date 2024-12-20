@@ -13,6 +13,7 @@ const io = new Server(server, {
     credentials: true
   }
 });
+//Hema heb soso w soso hebesh hema w khayfa w metwatara
 
 dotenv.config({
   path:"./env"
