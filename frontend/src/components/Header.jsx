@@ -152,6 +152,29 @@ const Header = () => {
               className="w-10 h-10 rounded-full order-2 cursor-pointer active:scale-[0.95] transition-all"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             />
+            {sidebarOpen && (
+  <div className="absolute top-16 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
+    <Link
+      to="/user-profile"
+      className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+    >
+      Profile
+    </Link>
+    <Link
+      to="/user-profile/settings"
+      className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+    >
+      Settings
+    </Link>
+    <button
+      onClick={logoutHandle}
+      className="block w-full text-left px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+    >
+      Logout
+    </button>
+  </div>
+)}
+
             <Link to="/user-profile/notifications" className="mr-2 relative">
               {unReadNotifications.length > 0 ? (
                 <span className="absolute right-0 top-0 w-[18px] h-[18px] flex items-center justify-center bg-theme-color rounded-full text-white text-xs font-bold">
