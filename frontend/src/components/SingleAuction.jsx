@@ -53,6 +53,9 @@ const SingleAuction = ({
           </div>
         ) : (
           <div className="flex justify-between item-center my-2 border-t border-border-info-color py-1">
+            <div className="flex flex-row">
+              <p className="text-[20px]">{name}</p>
+            </div>
             <div className="flex flex-col">
               <p className="text-[12px]">Current Bid</p>
               <p className="mt-2">$ {startingPrice}</p>
