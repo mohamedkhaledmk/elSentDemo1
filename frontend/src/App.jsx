@@ -25,6 +25,7 @@ import AdminHeader from "./admin/components/Header"
 import AdminLogin from "./admin/pages/Login"
 import AdminDashboard from "./admin/Admin"
 import ManageItems from "./components/ManageItems";
+import CalculatorComponent from "./store/CalculatorComponent";
 
 
 const App = () => {
@@ -82,6 +83,7 @@ console.log(user,"...")
 {user && user.userType === "admin" ? <AdminFooter />: <Footer /> }
 
       </BrowserRouter>
+      <CalculatorComponent />
       <ToastContainer />
     </>
   );
