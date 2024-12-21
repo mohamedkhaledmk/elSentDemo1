@@ -175,15 +175,16 @@ const Header = () => {
   </div>
 )}
 
-            <Link to="/user-profile/notifications" className="mr-2 relative">
+<Link to="/user-profile/notifications" className="mr-2 relative">
               {unReadNotifications.length > 0 ? (
-                <span className="absolute right-0 top-0 w-[18px] h-[18px] flex items-center justify-center bg-theme-color rounded-full text-white text-xs font-bold">
+                <span className="absolute right-0 top-0 w-[18px] h-[18px] flex items-center justify-center bg-theme-color rounded-full  text-white text-xs font-bold ">
                   {unReadNotifications.length}
                 </span>
               ) : null}
+
               <IoIosNotificationsOutline
                 size={37}
-                className="text-white text-xl cursor-pointer bg-theme-bg hover:text-theme-color rounded-full p-2 transition-all"
+                className="text-white text-xl cursor-pointer bg-theme-bg hover:text-theme-color rounded-full p-2 transition-all "
               />
             </Link>
             <Link
