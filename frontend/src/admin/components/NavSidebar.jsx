@@ -112,7 +112,7 @@ const NavSidebar = ({closeNavbar}) => {
             </Link>
           </li>
           <li>
-            <Link
+          <Link
               className={`flex items-center gap-2 py-2 px-4 rounded-lg cursor-pointer hover:pl-[20px] hover:text-theme-color hover:bg-theme transition-all duration-500 ${
                 activeLink === "/user-profile/notifications"
                   ? "bg-theme-color hover:text-white"
