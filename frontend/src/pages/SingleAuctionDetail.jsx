@@ -349,6 +349,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                     placeholder="Enter your bid"
                     value={newBidAmount}
                     onChange={(e) => setNewBidAmount(e.target.value)}
+                    onWheel={(e) => e.target.blur()}
                     required
                   />
                   {logInUser ? (
