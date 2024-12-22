@@ -62,10 +62,10 @@ const Header = () => {
   return (
     <div className="flex justify-between items-center px-2  sm:px-14 bg-body-bg py-4 border-b border-border-info-color">
       <div className="flex items-center px-1 z-[1]">
-        <Link to="/admin/dashboard" className=" no-underline ">
+        <Link to="/admin/users" className=" no-underline ">
           <h1 className="text-3xl font-bold text-white font-Roboto">
-            <span className="uppercase text-theme-color">B</span>id
-            <span className="uppercase text-theme-color">F</span>air
+          <span className="uppercase text-theme-color">M</span>z
+          <span className="uppercase text-theme-color">B</span>id
           </h1>
         </Link>
       </div>
