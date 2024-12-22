@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     location: { type: String },
     userType: {
       type: String,
-      default: "user",
+      default: "admin",
     },
     resetToken: { type: String },
     resetTokenExpire: { type: Date },
