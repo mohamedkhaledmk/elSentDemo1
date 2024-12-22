@@ -29,6 +29,7 @@ import AdminHeader from "./admin/components/Header";
 import AdminLogin from "./admin/pages/Login";
 import AdminDashboard from "./admin/Admin";
 import ManageItems from "./components/ManageItems";
+import YoutubeLive from "./pages/LinkDashboard";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/youtube-live" element={<YoutubeLive />} />
           <Route
             path="/single-auction-detail/:id"
             element={<SingleAuctionDetail />}

@@ -6,16 +6,17 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import PaymentMethod from "../models/userPaymentMethod.model.js";
-import Stripe from 'stripe';
+import Stripe from "stripe";
 import mongoose from "mongoose";
 
-const stripe = new Stripe("sk_test_51QWmgRGI6UEWLGcVrfkYdIitb29zTKm7WDBXgfklEyWexo6rCMgKxpUH0UeTMPI2FZX7UVhHVpXvNOu8VjfMGHoc004ZxQiqwE");
+const stripe = new Stripe(
+  "sk_test_51QWmgRGI6UEWLGcVrfkYdIitb29zTKm7WDBXgfklEyWexo6rCMgKxpUH0UeTMPI2FZX7UVhHVpXvNOu8VjfMGHoc004ZxQiqwE"
+);
 
 // @desc Register user
 // @route POST /api/v1/users/register
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  
   const { fullName, email, password } = req.body;
   if (fullName == "") {
     return res.status(400).json(new ApiResponse(400, "Full name is required"));
@@ -34,15 +35,16 @@ const registerUser = asyncHandler(async (req, res) => {
     return res.status(409).json(new ApiResponse(409, "User already exists"));
   }
 
-  const customer=await stripe.customers.create({
-    email:email,
-    name:fullName
-});
+  const customer = await stripe.customers.create({
+    email: email,
+    name: fullName,
+  });
 
-
-if(!customer){
-  return res.status(500).json(new ApiResponse(500, "Error creating user. Please try again"));
-}
+  if (!customer) {
+    return res
+      .status(500)
+      .json(new ApiResponse(500, "Error creating user. Please try again"));
+  }
 
   const user = await User.create({
     fullName: fullName.toLowerCase(),
@@ -67,13 +69,10 @@ if(!customer){
     .json(new ApiResponse(201, "User Registered successfully", createdUser));
 });
 
-
-
 // @desc Login user
 // @route POST /api/v1/users/login
 // @access Public
 const loginUser = asyncHandler(async (req, res) => {
-
   const { email, password } = req.body;
   if (!password && !email) {
     res
@@ -99,7 +98,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const options = {
     //httpOnly: true,
     secure: true,
-    maxAge: 1 * 24 * 60 * 60 * 1000
+    maxAge: 1 * 24 * 60 * 60 * 1000,
   };
 
   return res
@@ -117,7 +116,6 @@ const loginUser = asyncHandler(async (req, res) => {
 // @route POST /api/v1/users/forgot-password
 // @access Public
 const forgetPasswordSendEmail = asyncHandler(async (req, res) => {
-
   const { email } = req.body;
   if (!email) {
     res.status(400).json(new ApiResponse(400, "Email is required"));
@@ -162,7 +160,7 @@ const forgetPasswordSendEmail = asyncHandler(async (req, res) => {
       }
     });
   } catch (err) {
-    return res.status(500).json(new ApiResponse(500, "Error sending email")); 
+    return res.status(500).json(new ApiResponse(500, "Error sending email"));
   }
 
   return res
@@ -237,24 +235,33 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   //return respons
 
   try {
-    const { fullName, email, location, userType, phone, address, city ,gender, description} =
-      req.body;
+    const {
+      fullName,
+      email,
+      location,
+      userType,
+      phone,
+      address,
+      city,
+      gender,
+      description,
+    } = req.body;
     const profilePath = req.file?.path;
     const userId = req.user?._id;
     console.log(req.body, "req.body");
-    console.log(profilePath, "req.file")
+    console.log(profilePath, "req.file");
 
     const user = await User.findById(userId);
     if (!user) {
       return res.status(400).json(new ApiResponse(400, "User not found"));
     }
-    if(profilePath){
-    var imgUrlCloudinary = await uploadOnCloudinary(profilePath);
-    //console.log(imgUrlCloudinary);
-    if (!imgUrlCloudinary?.url) {
-      return res.status(400).json(new ApiResponse(400, "Invalid image"));
+    if (profilePath) {
+      var imgUrlCloudinary = await uploadOnCloudinary(profilePath);
+      //console.log(imgUrlCloudinary);
+      if (!imgUrlCloudinary?.url) {
+        return res.status(400).json(new ApiResponse(400, "Invalid image"));
+      }
     }
-  }
 
     user.fullName = fullName ? fullName : user.fullName;
     user.email = email ? email : user.email;
@@ -262,17 +269,19 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.userType = userType ? userType : user.userType;
     user.profilePicture = imgUrlCloudinary?.url
       ? imgUrlCloudinary.url
-      : user.profilePicture || "https://res.cloudinary.com/dnsxaor2k/image/upload/v1709735601/vsauyvodor9ykjca5zvj.jpg";
+      : user.profilePicture ||
+        "https://res.cloudinary.com/dnsxaor2k/image/upload/v1709735601/vsauyvodor9ykjca5zvj.jpg";
     user.phone = phone ? phone : user.phone;
     user.address = address ? address : user.address;
     user.city = city ? city : user.city;
-    user.gender=  gender ? gender: user.gender ;
-    user.description= description? description: user.description;
-
+    user.gender = gender ? gender : user.gender;
+    user.description = description ? description : user.description;
 
     await user.save();
 
-    res.json(new ApiResponse(200, "User profile updated successfully",{user:user}));
+    res.json(
+      new ApiResponse(200, "User profile updated successfully", { user: user })
+    );
   } catch (error) {
     console.error(error);
     res
@@ -296,10 +305,12 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     const userId = req.user._id;
     //get old password and new password from frontend
     const { oldPassword, newPassword } = req.body;
-   // console.log(oldPassword, newPassword, "old and new password")
+    // console.log(oldPassword, newPassword, "old and new password")
     //validate old password and new password
     if (!oldPassword || !newPassword) {
-      return res.status(400).json(new ApiResponse(400, "All fields are required"));
+      return res
+        .status(400)
+        .json(new ApiResponse(400, "All fields are required"));
     }
 
     //check if the old password is correct
@@ -334,7 +345,9 @@ const getCurrentUser = asyncHandler(async (req, res) => {
   try {
     console.log("getting current user.....");
     const user = await User.findById(req.user._id).select("-password");
-    return res.status(200).json(new ApiResponse(200, "User fetched", { user:user}));
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "User fetched", { user: user }));
   } catch (error) {
     res
       .status(error.statusCode || 500)
@@ -366,7 +379,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc get current user
 // @route GET /api/v1/users/:userid
 // @access Admin
@@ -374,7 +386,9 @@ const getUserById = asyncHandler(async (req, res) => {
   try {
     console.log("getting user by id.....");
     const user = await User.findById(req.params.userid).select("-password");
-    return res.status(200).json(new ApiResponse(200, "User fetched", { user:user}));
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "User fetched", { user: user }));
   } catch (error) {
     res
       .status(error.statusCode || 500)
@@ -387,7 +401,6 @@ const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc update user profile by id
 // @route POST /api/v1/users/update-user/:id
 // @access Admin
@@ -395,37 +408,44 @@ const getUserById = asyncHandler(async (req, res) => {
 const updateUserById = asyncHandler(async (req, res) => {
   try {
     console.log("updated profle in admin filed");
-    const { fullName, email, location, userType, phone, address, city ,gender, description} =
-      req.body;
-      console.log(fullName, " fullname, ");
-      console.log(email, " email, ");
-      console.log(location, " location, ");
-      console.log(userType, " userType, ");
+    const {
+      fullName,
+      email,
+      location,
+      userType,
+      phone,
+      address,
+      city,
+      gender,
+      description,
+    } = req.body;
+    console.log(fullName, " fullname, ");
+    console.log(email, " email, ");
+    console.log(location, " location, ");
+    console.log(userType, " userType, ");
     const profilePath = req.file?.path;
-    
+
     const userId = req?.params?.id;
-    console.log(userId," KDJFKJ");
-    //check user id is correct format which is for models not any other like string 
+    console.log(userId, " KDJFKJ");
+    //check user id is correct format which is for models not any other like string
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json(new ApiResponse(400, "Invalid user id"));
     }
-    
 
-   
     console.log(req.body, "req.body");
-    console.log(profilePath, "req.file")
+    console.log(profilePath, "req.file");
 
     const user = await User.findById(userId);
     if (!user) {
       return res.status(400).json(new ApiResponse(400, "User not found"));
     }
-    if(profilePath){
-    var imgUrlCloudinary = await uploadOnCloudinary(profilePath);
-    //console.log(imgUrlCloudinary);
-    if (!imgUrlCloudinary?.url) {
-      return res.status(400).json(new ApiResponse(400, "Invalid image"));
+    if (profilePath) {
+      var imgUrlCloudinary = await uploadOnCloudinary(profilePath);
+      //console.log(imgUrlCloudinary);
+      if (!imgUrlCloudinary?.url) {
+        return res.status(400).json(new ApiResponse(400, "Invalid image"));
+      }
     }
-  }
 
     user.fullName = fullName ? fullName : user.fullName;
     user.email = email ? email : user.email;
@@ -433,17 +453,19 @@ const updateUserById = asyncHandler(async (req, res) => {
     user.userType = userType ? userType : user.userType;
     user.profilePicture = imgUrlCloudinary?.url
       ? imgUrlCloudinary.url
-      : user.profilePicture || "https://res.cloudinary.com/dnsxaor2k/image/upload/v1709735601/vsauyvodor9ykjca5zvj.jpg";
+      : user.profilePicture ||
+        "https://res.cloudinary.com/dnsxaor2k/image/upload/v1709735601/vsauyvodor9ykjca5zvj.jpg";
     user.phone = phone ? phone : user.phone;
     user.address = address ? address : user.address;
     user.city = city ? city : user.city;
-    user.gender=  gender ? gender: user.gender ;
-    user.description= description? description: user.description;
-
+    user.gender = gender ? gender : user.gender;
+    user.description = description ? description : user.description;
 
     await user.save();
 
-    res.json(new ApiResponse(200, "User profile updated successfully",{user:user}));
+    res.json(
+      new ApiResponse(200, "User profile updated successfully", { user: user })
+    );
   } catch (error) {
     console.error(error);
     res
@@ -457,7 +479,6 @@ const updateUserById = asyncHandler(async (req, res) => {
   }
 });
 
-
 // @desc delete a user by id
 // @route DELETE /api/v1/users/:id
 // @access Admin
@@ -469,13 +490,12 @@ const deleteUserById = asyncHandler(async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json(new ApiResponse(400, "Invalid user id"));
     }
-    
+
     const user = await User.findByIdAndDelete(userId);
     if (!user) {
       return res.status(404).json(new ApiResponse(404, "User not found"));
     }
     return res.json(new ApiResponse(200, "User deleted successfully"));
-
   } catch (error) {
     return res
       .status(error.statusCode || 500)
@@ -486,8 +506,7 @@ const deleteUserById = asyncHandler(async (req, res) => {
         )
       );
   }
-})
-
+});
 
 // @desc TOP 5 SELLERS WHO UPLOADED MORE ITEMS AND SOLD(STATUS IS PAID)
 // @route GET /api/v1/users/top-sellers
@@ -495,8 +514,6 @@ const deleteUserById = asyncHandler(async (req, res) => {
 
 const getTopSellers = asyncHandler(async (req, res) => {
   try {
-    
-    
     const topSellers = await User.aggregate([
       {
         $lookup: {
@@ -526,10 +543,9 @@ const getTopSellers = asyncHandler(async (req, res) => {
               },
             },
           },
-
         },
       },
-        
+
       {
         $sort: { totalAuctions: -1 },
       },
@@ -537,9 +553,10 @@ const getTopSellers = asyncHandler(async (req, res) => {
         $limit: 5,
       },
     ]);
-         
-    
-    res.json(new ApiResponse(200, "Top sellers fetched successfully", topSellers));
+
+    res.json(
+      new ApiResponse(200, "Top sellers fetched successfully", topSellers)
+    );
   } catch (error) {
     return res
       .status(error.statusCode || 500)
@@ -550,33 +567,34 @@ const getTopSellers = asyncHandler(async (req, res) => {
         )
       );
   }
-})
-
+});
 
 // @desc TOP FIVE CITIES WHICH HAVE MOST USERS
 // @route GET /api/v1/users/top-cities
 // @access Admin
 
-const getTopCities= asyncHandler(async(req, res)=>{
-  try{
-    const topCities= await User.aggregate([
+const getTopCities = asyncHandler(async (req, res) => {
+  try {
+    const topCities = await User.aggregate([
       {
-        $group:{
-          _id:"$city",
-          totalUsers:{$sum:1}
-        }
+        $group: {
+          _id: "$city",
+          totalUsers: { $sum: 1 },
+        },
       },
       {
-        $sort:{totalUsers:-1}
+        $sort: { totalUsers: -1 },
       },
       {
-        $limit:6
-      }
-    ])
+        $limit: 6,
+      },
+    ]);
     //remove first item
-    topCities.splice(0,1)
-    res.json(new ApiResponse(200, "Top cities fetched successfully", topCities));
-  }catch(error){
+    topCities.splice(0, 1);
+    res.json(
+      new ApiResponse(200, "Top cities fetched successfully", topCities)
+    );
+  } catch (error) {
     return res
       .status(error.statusCode || 500)
       .json(
@@ -586,8 +604,7 @@ const getTopCities= asyncHandler(async(req, res)=>{
         )
       );
   }
-})
-
+});
 
 export {
   registerUser,
