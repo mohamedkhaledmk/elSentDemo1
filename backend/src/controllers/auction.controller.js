@@ -22,6 +22,10 @@ const createAuction = asyncHandler(async (req, res) => {
       endTime,
       startingPrice,
       location,
+      height,
+      width,
+      materialUsed,
+      weight,
     } = req.body;
     const image = req.file?.path;
 
@@ -40,7 +44,11 @@ const createAuction = asyncHandler(async (req, res) => {
       !endTime ||
       !startingPrice ||
       !location ||
-      !image
+      !image ||
+      !height ||
+      !width ||
+      !materialUsed ||
+      !weight
     ) {
       return res
         .status(400)
@@ -88,7 +96,11 @@ const createAuction = asyncHandler(async (req, res) => {
       location,
       image: imgUrlCloudinary.url,
       startingPrice,
-      status,
+      status, 
+      height,
+      width,
+      materialUsed,
+      weight,
     });
 
     if (!auction) {
@@ -133,9 +145,6 @@ const getAllAuctions = asyncHandler(async (req, res) => {
 
       }
     }
-
-
-    
     console.log(req.body, "req.body");
 
     if (category) filter.category = category;
@@ -265,18 +274,14 @@ const getBidsAuctionsByUser = asyncHandler(async (req, res) => {
       populate: {
         path: "category",
         select: "name",
-       
       }
     })
     .sort({ createdAt: -1 });
     // it is not showing in reverse order
-    
 
     if (!bids) {
       return res.status(404).json(new ApiResponse(404, "No bids found"));
     }
-
-    
 
     return res.json(
       new ApiResponse(200, "bids retrieved successfully", bids)
@@ -374,6 +379,10 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
       endTime,
       startingPrice,
       location,
+      height,
+      width,
+      materialUsed,
+      weight,
     } = req.body;
     const image = req.file?.path;
 
@@ -425,6 +434,10 @@ if(auction.status === "over"){
     auction.endTime = endTime ? endTime : auction.endTime;
     auction.startingPrice = startingPrice ? startingPrice : auction.startingPrice;
     auction.location = location ? location : auction.location;
+    auction.height = height ? height : auction.height;
+    auction.width = width ? width : auction.width;
+    auction.materialUsed = materialUsed ? materialUsed : auction.materialUsed;
+    auction.weight = weight ? weight : auction.weight;
 
     auction.image = imgUrlCloudinary?.url
       ? imgUrlCloudinary.url

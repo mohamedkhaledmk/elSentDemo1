@@ -97,6 +97,22 @@ const AllAuctions = () => {
         accessor: "endTime",
       },
       {
+        Header: "Height",
+        accessor: "height",
+      },
+      {
+        Header: "Width",
+        accessor: "width",
+      },
+      {
+        Header: "Material Used",
+        accessor: "materialUsed",
+      },
+      {
+        Header: "Weight",
+        accessor: "weight",
+      },
+      {
         Header: "Payment Status",
         accessor: "paymentStatus",
         Cell: ({ value, row: { original } }) => (

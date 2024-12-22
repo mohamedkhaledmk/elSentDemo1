@@ -3,7 +3,6 @@ import { ApiError } from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import ProductCategory from "../models/productCategory.model.js";
-import Auction from "../models/auction.model.js";
 
 
 

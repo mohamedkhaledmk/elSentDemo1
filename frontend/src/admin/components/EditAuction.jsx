@@ -47,6 +47,10 @@ const EditAuction = () => {
     location: "",
     startingPrice: 0,
     imgUrl: "",
+    height: "",
+    width: "",
+    materialUsed: "",
+    weight: "",
   });
 
   useEffect(() => {
@@ -62,6 +66,10 @@ const EditAuction = () => {
       category: singleAuctionData?.category?._id || "",
       location: singleAuctionData?.location?._id || "",
       startingPrice: parseFloat(singleAuctionData?.startingPrice) || 0,
+      height: singleAuctionData?.height || "",
+      width: singleAuctionData?.width || "",
+      materialUsed: singleAuctionData?.materialUsed || "",
+      weight: singleAuctionData?.weight || "",
     });
     setImgUrl(singleAuctionData?.image || "");
   }, [singleAuctionData]);
@@ -94,6 +102,10 @@ const EditAuction = () => {
     data.append("endTime", formData.endTime);
     data.append("location", formData.location);
     data.append("description", formData.description);
+    data.append("height", formData.height);
+    data.append("width", formData.width);
+    data.append("materialUsed", formData.materialUsed);
+    data.append("weight", formData.weight);
 
     if (imgRef.current.files[0]) {
       data.append("image", imgRef.current.files[0]);
@@ -258,6 +270,24 @@ const EditAuction = () => {
               </select>
             </div>
           </div>
+          
+
+
+
+
+
+
+
+
+
+                  {/* FRONT END */}
+
+
+
+
+
+
+
           <div className="grid">
             <label htmlFor="description">Description</label>
             <textarea
