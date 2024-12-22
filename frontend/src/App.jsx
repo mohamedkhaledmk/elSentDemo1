@@ -82,6 +82,7 @@ console.log(user,"...")
 
 {user && user.userType === "admin" ? <AdminFooter />: <Footer /> }
       </BrowserRouter>
+      <CalculatorComponent />
       <ToastContainer />
     </>
   );

@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-// In CalculatorComponent.jsx
-import React, { useState } from "react";
-
-const CalculatorComponent = () => {
-  const [currentInput, setCurrentInput] = useState("");
-  const [calculatorVisible, setCalculatorVisible] = useState(false);
-
-  const toggleCalculator = () => {
-    setCalculatorVisible((prev) => !prev);
-  };
-
-  return (
-    <div>
-      <button
-        id="calculatorToggle"
-        className="floating-button"
-        onClick={toggleCalculator}
-      >
-=======
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllMetals } from "./metals/metalsSlice";
@@ -70,24 +50,12 @@ const CalculatorComponent = () => {
   return (
     <>
       <button id="calculatorToggle" className="floating-button" onClick={toggleCalculator}>
->>>>>>> 359372e43811b3f52f1fa9cddd0ee1717ac78be3
         <i className="fas fa-calculator"></i>
       </button>
 
       {calculatorVisible && (
         <div id="calculatorContainer" className="calculator-container">
           <div id="display" className="calculator-display">
-<<<<<<< HEAD
-            {currentInput || "0"}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default CalculatorComponent; // Correct export
-=======
             {currentInput}
           </div>
           <div id="buttons" className="calculator-buttons">
@@ -131,4 +99,3 @@ export default CalculatorComponent; // Correct export
 };
 
 export default CalculatorComponent;
->>>>>>> 359372e43811b3f52f1fa9cddd0ee1717ac78be3
