@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import logo from "../assets/logo.png";
 const Footer = () => {
   const { pathname } = useLocation();
 
@@ -17,10 +17,11 @@ const Footer = () => {
             to="/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 no-underline"
           >
-            <h1 className="text-3xl font-bold text-white font-Roboto">
-              <span className="uppercase text-theme-color">E</span>l
-              <span className="uppercase text-theme-color">S</span>ent
-            </h1>
+            <img 
+              src={logo} 
+              alt="ElSent Logo" 
+              className="w-28 h-28 mx-auto" 
+            />
           </Link>
           <ul className="flex flex-wrap items-center text-sm font-medium text-white list-none">
             <li>
@@ -54,8 +55,8 @@ const Footer = () => {
           © {new Date().getFullYear()}
           <Link to="/" className=" ml-1 no-underline">
             <p className="text-sm font-bold text-theme-color font-Roboto">
-              <span className="uppercase text-theme-color"> E</span>l
-              <span className="uppercase text-theme-color">S</span>ent
+              <span className="uppercase text-theme-color">MZ</span>
+              <span className="uppercase text-theme-color">B</span>id
             </p>
           </Link>
           . All Rights Reserved.

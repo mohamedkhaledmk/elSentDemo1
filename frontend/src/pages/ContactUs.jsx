@@ -73,7 +73,7 @@ toast.success("Email Send Successfully.",{
             </div>
             <div>
               <h2 className=" text-2xl font-bold">Call Us</h2>
-              <p>+92 3414544858</p>
+              <p>0550745599</p>
             </div>
           </div>
           <div className="text-white flex flex-col gap-4 items-center justify-start p-8 rounded-2xl  bg-theme-bg text-center w-full  ">
@@ -82,7 +82,7 @@ toast.success("Email Send Successfully.",{
             </div>
             <div>
               <h2 className=" text-2xl font-bold">Email Us</h2>
-              <p>arkoodapk@gmail.com</p>
+              <p>mazadjewelry@gmail.com </p>
             </div>
           </div>
         </div>
