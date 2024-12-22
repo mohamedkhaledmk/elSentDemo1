@@ -89,6 +89,15 @@ const Sidebar = () => {
                   Create Auction
                 </Link>
               </li>
+              <li>
+                <Link
+                  className="flex items-center gap-2  py-2 px-4 rounded-lg cursor-pointer hover:pl-[20px] hover:text-theme-color hover:bg-theme transition-all duration-500"
+                  to="/youtube-live"
+                >
+                  <FaCirclePlus size={16} className="text-theme-color" />
+                  Live URL update
+                </Link>
+              </li>
             </>
           )}
           <li>

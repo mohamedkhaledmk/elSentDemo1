@@ -47,7 +47,7 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/youtube-live" element={<YoutubeLive />} />
+         
           <Route
             path="/single-auction-detail/:id"
             element={<SingleAuctionDetail />}
@@ -70,7 +70,8 @@ const App = () => {
             <Route path="/edit-auction/:id" element={<EditAuction />} />
             <Route path="/success/:id" element={<PaymentSuccess />} />
             <Route element={<SellerRoutes />}>
-              <Route path="/create-auction" element={<UploadItem />} />
+              <Route path="/create-auction" element={<UploadItem />} /> 
+              <Route path="/youtube-live" element={<YoutubeLive />} />
               {/* <Route path="/user-profile/manage-items" element={<ManageItems />} /> */}
             </Route>
           </Route>
