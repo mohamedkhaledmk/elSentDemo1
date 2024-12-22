@@ -21,21 +21,27 @@ const AdminPanel = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center gap-4 p-4">
-      <h2 className="text-2xl font-bold mb-4">Admin Panel</h2>
-      <input
-        type="text"
-        value={link}
-        onChange={(e) => setLink(e.target.value)}
-        placeholder="Enter live stream link"
-        className="border p-2 rounded w-full max-w-md"
-      />
-      <button
-        onClick={updateLink}
-        className="bg-color-secondary text-white p-2 rounded hover:bg-[#917E62]"
-      >
-        Update Link
-      </button>
+    <div className="px-7 py-4 w-full bg-theme-bg text-slate-300 rounded-2xl">
+      <h2 className="text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5">
+        Admin Panel
+      </h2>
+
+      <div className="flex flex-col gap-4">
+        <input
+          type="text"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="Enter live stream link"
+          className="inputs:outline-none inputs:px-3 inputs:py-4 inputs:rounded-xl inputs:bg-theme-bg2 inputs:border inputs:border-border-info-color focus:inputs:border-theme-color select:border select:border-border-info-color inputs:placeholder-body-text-color transition-all"
+        />
+        <button
+          onClick={updateLink}
+          className="text-white bg-color-secondary p-2 rounded-xl hover:bg-[#917E62] transition-all"
+        >
+          Update Link
+        </button>
+      </div>
+
       {/* Toastify Container */}
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
