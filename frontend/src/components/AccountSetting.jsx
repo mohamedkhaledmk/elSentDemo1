@@ -161,6 +161,7 @@ const AccountSetting = () => {
             onChange={(e) =>
               setFormData({ ...formData, phone: e.target.value })
             }
+            onWheel={(e) => e.target.blur()}
           />
           <select
             className="outline-none bg-theme-bg2 rounded-xl px-3 py-4 cursor-pointer focus:border-theme-color "

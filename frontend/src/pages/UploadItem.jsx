@@ -213,6 +213,7 @@ const UploadItem = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, startingPrice: e.target.value })
                 }
+                onWheel={(e) => e.target.blur()}
                 value={formData.startingPrice}
               />
             </div>
