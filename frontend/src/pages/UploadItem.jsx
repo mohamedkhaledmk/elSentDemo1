@@ -35,18 +35,23 @@ const UploadItem = () => {
     location: "",
     startingPrice: "",
     description: "",
+    length: "",
+    width: "",
+    height: "",
+    weight: "",
+    materialUsed: "",
   });
 
   useEffect(() => {
     dispatch(reset());
     ////console.log(isSuccess  , " and ", isError);
 
-    if ( isError) {
+    if (isError) {
       toast.error(message, {
         autoClose: 500,
       });
       dispatch(reset());
-    } else if (isSuccess &&  isError===undefined  ) {
+    } else if (isSuccess && isError === undefined) {
       ////console.log(isSuccess  , " and ", isError);
       toast.success(message, {
         autoClose: 500,
@@ -61,6 +66,11 @@ const UploadItem = () => {
         location: "",
         startingPrice: "",
         description: "",
+        length: "",
+        width: "",
+        height: "",
+        weight: "",
+        materialUsed: "",
       });
       setImgUrl("");
     }
@@ -79,6 +89,11 @@ const UploadItem = () => {
     data.append("endTime", formData.endTime);
     data.append("location", formData.location);
     data.append("description", formData.description);
+    data.append("length", formData.length);
+    data.append("width", formData.width);
+    data.append("height", formData.height);
+    data.append("weight", formData.weight);
+    data.append("materialUsed", formData.materialUsed);
 
     if (!imgRef.current.files[0]) {
       return alert("Image is required");
@@ -237,6 +252,75 @@ const UploadItem = () => {
                   ))}
               </select>
             </div>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-4 mlg:grid-cols-1">
+            <div className="grid">
+              <label htmlFor="height">Height (cm)</label>
+              <input
+                required
+                id="height"
+                type="number"
+                min="0"
+                onChange={(e) =>
+                  setFormData({ ...formData, height: e.target.value })
+                }
+                value={formData.height}
+              />
+            </div>
+            <div className="grid">
+              <label htmlFor="weight">Weight (kg)</label>
+              <input
+                required
+                id="weight"
+                type="number"
+                min="0"
+                onChange={(e) =>
+                  setFormData({ ...formData, weight: e.target.value })
+                }
+                value={formData.weight}
+              />
+            </div>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-4 mlg:grid-cols-1">
+            <div className="grid">
+              <label htmlFor="length">Length (cm)</label>
+              <input
+                required
+                id="length"
+                type="number"
+                min="0"
+                onChange={(e) =>
+                  setFormData({ ...formData, length: e.target.value })
+                }
+                value={formData.length}
+              />
+            </div>
+            <div className="grid">
+              <label htmlFor="width">Width (cm)</label>
+              <input
+                required
+                id="width"
+                type="number"
+                min="0"
+                onChange={(e) =>
+                  setFormData({ ...formData, width: e.target.value })
+                }
+                value={formData.width}
+              />
+            </div>
+          </div>
+          <div className="grid">
+            <label htmlFor="material_used">Material Used</label>
+            <input
+              required
+              id="material_used"
+              placeholder="e.g. Wood, Steel, Canvas"
+              type="text"
+              onChange={(e) =>
+                setFormData({ ...formData, materialUsed: e.target.value })
+              }
+              value={formData.materialUsed}
+            />
           </div>
           <div className="grid">
             <label htmlFor="description">Description</label>

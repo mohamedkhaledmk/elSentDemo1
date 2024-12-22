@@ -15,13 +15,14 @@ const EditAuction = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { singleAuction, isLoading,message, isError, isSuccess } = useSelector((state) => state.auction);
+  const { singleAuction, isLoading, message, isError, isSuccess } = useSelector(
+    (state) => state.auction
+  );
   const [singleAuctionData, setSingleAuctionData] = useState(singleAuction);
   const [imgUrl, setImgUrl] = useState(singleAuction?.image || "");
   const imgRef = useRef(null);
   const { categories } = useSelector((state) => state.category);
   const { cities } = useSelector((state) => state.city);
-  //console.log("singleAuction........", singleAuction);
 
   useEffect(() => {
     dispatch(getSingleAuctionById(id));
@@ -39,20 +40,17 @@ const EditAuction = () => {
   }, []);
 
   useEffect(() => {
-    //console.log(isSuccess , " and " , isError);
     if (isSuccess && isError) {
       toast.error(message, {
         autoClose: 500,
       });
       dispatch(reset());
-    } else if (isSuccess && isError===undefined ) {
+    } else if (isSuccess && isError === undefined) {
       toast.success(message, {
         autoClose: 500,
       });
-      dispatch(reset());   
-       //console.log(isSuccess , " and " , isError);
+      dispatch(reset());
 
-      //clear form data
       setFormData({
         name: "",
         category: "",
@@ -61,14 +59,12 @@ const EditAuction = () => {
         location: "",
         startingPrice: "",
         description: "",
+        materialUsed: "",
       });
       setImgUrl("");
     }
     dispatch(reset());
   }, [isSuccess, isError, isLoading]);
-
-
-
 
   const [formData, setFormData] = useState({
     name: "",
@@ -79,6 +75,7 @@ const EditAuction = () => {
     location: "",
     startingPrice: 0,
     imgUrl: "",
+    materialUsed: "",
   });
 
   useEffect(() => {
@@ -94,31 +91,14 @@ const EditAuction = () => {
       category: singleAuctionData?.category?._id || "",
       location: singleAuctionData?.location?._id || "",
       startingPrice: parseFloat(singleAuctionData?.startingPrice) || 0,
+      materialUsed: singleAuctionData?.materialUsed || "",
     });
     setImgUrl(singleAuctionData?.image || "");
   }, [singleAuctionData]);
 
-  //console.log("categoreik   ", categories);
-
-  // const [formData, setFormData] = useState({
-  //   name: singleAuctionData?.name || "",
-  //   description: singleAuction?.description || "",
-  //   startTime: singleAuction?.startTime
-  //     ? new Date(singleAuction?.startTime).toISOString().slice(0, 16)
-  //     : "",
-  //   endTime: singleAuction?.endTime
-  //     ? new Date(singleAuction?.endTime).toISOString().slice(0, 16)
-  //     : "",
-  //   category: singleAuction?.category?._id || "",
-  //   location: singleAuction?.location?._id || "",
-  //   startingPrice: parseFloat(singleAuction?.startingPrice) || 0,
-  // });
-  //console.log(formData, "formData....");
   const handleProductUpload = (e) => {
     e.preventDefault();
-    //image data so use new formdata
     const data = new FormData();
-    //console.log(formData);
     data.append("name", formData.name);
     data.append("startingPrice", formData.startingPrice);
     data.append("category", formData.category);
@@ -126,6 +106,7 @@ const EditAuction = () => {
     data.append("endTime", formData.endTime);
     data.append("location", formData.location);
     data.append("description", formData.description);
+    data.append("materialUsed", formData.materialUsed);
 
     if (imgRef.current.files[0]) {
       data.append("image", imgRef.current.files[0]);
@@ -133,15 +114,7 @@ const EditAuction = () => {
       data.append("image", imgUrl);
     }
 
-    //print data
-    for (var pair of data.entries()) {
-      //console.log(`${pair[0]}, ${pair[1]}`);
-    }
-    //console.log(isSuccess , " and " , isError);
-
     dispatch(updateSingleAuction({ data: data, id: id }));
-    // toast.success("Auction updated successfully");
-
     dispatch(reset());
   };
 
@@ -197,7 +170,7 @@ const EditAuction = () => {
                 setFormData({ ...formData, name: e.target.value })
               }
               value={formData.name}
-            />{" "}
+            />
           </div>
 
           <div className="grid">
@@ -211,7 +184,7 @@ const EditAuction = () => {
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
-              value={formData.category} // Set the value attribute to formData.category
+              value={formData.category}
             >
               {categories.data &&
                 categories.data.map((category) => (
@@ -221,7 +194,8 @@ const EditAuction = () => {
                 ))}
             </select>
           </div>
-          <div className="grid  lg:grid-cols-2 gap-4 mlg:grid-cols-1">
+
+          <div className="grid lg:grid-cols-2 gap-4 mlg:grid-cols-1">
             <div className="grid">
               <label htmlFor="start_time" className="text-white">
                 Start Time
@@ -268,14 +242,13 @@ const EditAuction = () => {
                 value={formData.startingPrice}
               />
             </div>
-            <div className="grid ">
-              <label htmlFor="category" className="text-white">
+            <div className="grid">
+              <label htmlFor="location" className="text-white">
                 Area
               </label>
-
               <select
                 required
-                id="category"
+                id="location"
                 className="outline-none h-[50px] bg-theme-bg cursor-pointer focus:border-theme-color"
                 onChange={(e) =>
                   setFormData({ ...formData, location: e.target.value })
@@ -291,6 +264,7 @@ const EditAuction = () => {
               </select>
             </div>
           </div>
+
           <div className="grid">
             <label htmlFor="description">Description</label>
             <textarea
@@ -302,6 +276,21 @@ const EditAuction = () => {
                 setFormData({ ...formData, description: e.target.value })
               }
               value={formData.description}
+            />
+          </div>
+          <div className="grid">
+            <label htmlFor="material_used" className="text-white">
+              Material Used
+            </label>
+            <input
+              required
+              id="material_used"
+              type="text"
+              className="w-full py-3 mt-2 outline-none border-none rounded-lg"
+              onChange={(e) =>
+                setFormData({ ...formData, materialUsed: e.target.value })
+              }
+              value={formData.materialUsed}
             />
           </div>
 
