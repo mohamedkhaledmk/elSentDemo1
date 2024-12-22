@@ -427,17 +427,12 @@ const auctionSlice = createSlice({
       state.isSuccess = true;
       state.message = action.payload.message;
     });
-    builder.addCase(deleteAuctionByAdminById.rejected, (
-      state,
-      action
-    ) => {
+    builder.addCase(deleteAuctionByAdminById.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.isSuccess = false;
       state.message = action.payload.message;
-    }
-    );
-    
+    });
 
     // Handle other actions...
   },

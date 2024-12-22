@@ -1,85 +1,97 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect ,useState} from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   deleteSingleAuctionById,
   getSellerAuction,
   reset,
+  getAllAuctions,
 } from "../store/auction/auctionSlice";
 import { FaEye } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { toast } from "react-toastify";
-import Loading from "./Loading"
+import Loading from "./Loading";
 import Pagination from "./Pagination";
+
 const ManageItems = () => {
   const dispatch = useDispatch();
-  const { sellerAuction, isLoading } = useSelector((state) => state.auction);
+  const { sellerAuction, isLoading, isError, message, auction } = useSelector(
+    (state) => state.auction
+  );
+  console.log("elements", sellerAuction, isLoading, isError, message, auction);
 
-  // componentDidMount and component
+  // Fetch auctions when the component mounts
   useEffect(() => {
     dispatch(getSellerAuction());
   }, [dispatch]);
-  //console.log(sellerAuction, "sellerAuction....");
 
+  // Handle delete action
   const handleDeleteAuction = async (id) => {
-    //console.log(id, "delete id....");
     await dispatch(deleteSingleAuctionById(id)).then(() => {
-      toast.success("item deleted.", {
+      toast.success("Item deleted.", {
         autoClose: 500,
       });
     });
     dispatch(getSellerAuction());
   };
 
-   //pagination part
-   const [currentPage, setCurrentPage] = useState(1)
-   const [itemsPerPage, setitemsPerPage] = useState(6)
-   const indexOfLastItem = currentPage * itemsPerPage;
-   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = sellerAuction?.auctions?.slice(indexOfFirstItem, indexOfLastItem);
- 
-   const paginate = (pageNumber) => {
-     setCurrentPage(pageNumber)
-   }
-   const prevPage = () => {
-     setCurrentPage(currentPage-1)
-   }
-   const nextPage = () => {
-     setCurrentPage(currentPage+1)
-   }
+  // Pagination part
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setitemsPerPage] = useState(6);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = auction?.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const prevPage = () => setCurrentPage(currentPage - 1);
+  const nextPage = () => setCurrentPage(currentPage + 1);
+
+  // Render the loading, error or auction data
+  if (isLoading) {
+    return (
+      <div className="text-center">
+        <Loading width="sidebar" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div className="text-center text-red-500">{message}</div>;
+  }
 
   return (
-    <div className=" overflow-auto px-7 py-4 w-full bg-theme-bg text-white rounded-2xl ">
-      <h2 className=" text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5 ">
+    <div className="overflow-auto px-7 py-4 w-full bg-theme-bg text-white rounded-2xl ">
+      <h2 className="text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5 ">
         Manage Items
       </h2>
-      <div className=" overflow-auto px-4 bg-theme-bg2 rounded-2xl  border border-border-info-color">
+      {console.log("alooo", auction)}
+      <div className="overflow-auto px-4 bg-theme-bg2 rounded-2xl border border-border-info-color">
         <table className="text-left whitespace-nowrap w-full border-separate border-spacing-x-0 border-spacing-y-4">
-          <thead className="table-header-group ">
+          <thead className="table-header-group">
             <tr className="table-row bg-theme-color [&_th]:table-cell [&_th]:pl-5 [&_th]:pr-3 [&_th]:py-3">
               <th className="rounded-l-lg ">Product</th>
-              <th>Catagory</th>
+              <th>Category</th>
               <th>Bids</th>
               <th>Status</th>
               <th>Your Bid</th>
               <th>Winner</th>
-
               <th className="rounded-r-lg">Action</th>
             </tr>
           </thead>
-          
+
           <tbody className="table-row-group">
-            {sellerAuction?.auctions?.length === 0 ? (
-              <tr className="table-row bg-theme-bg ">
-                <td colSpan="7" className="text-center m-2 w-full p-10 h-[400px]">No Item</td>
+            {auction?.length === 0 ? (
+              <tr className="table-row bg-theme-bg">
+                <td
+                  colSpan="7"
+                  className="text-center m-2 w-full p-10 h-[400px]"
+                >
+                  No Item
+                </td>
               </tr>
             ) : (
-              isLoading ? <tr>
-                <td colSpan="7" className="text-center">
-                  <Loading width="sidebar"/>
-                </td>
-              </tr> : currentItems?.map((auction) => (
+              currentItems?.map((auction) => (
                 <tr
                   key={auction?._id}
                   className="table-row bg-theme-bg [&_td]:table-cell [&_td]:pl-5 [&_td]:pr-3 [&_td]:py-3"
@@ -145,12 +157,16 @@ const ManageItems = () => {
           </tbody>
         </table>
       </div>
- { sellerAuction?.auctions?.length ===0 ? <></> :<Pagination totalPosts={sellerAuction?.auctions?.length} postsPerPage={itemsPerPage} 
-        paginate={paginate}
-        currentPage={currentPage}
-        nextPage={nextPage}
-        prevPage={prevPage}
-        />}
+      {auction?.length > 0 && (
+        <Pagination
+          totalPosts={auction?.length}
+          postsPerPage={itemsPerPage}
+          paginate={paginate}
+          currentPage={currentPage}
+          nextPage={nextPage}
+          prevPage={prevPage}
+        />
+      )}
     </div>
   );
 };
