@@ -48,8 +48,8 @@ const Login = () => {
     <div className="flex min-h-screen w-full items-center justify-center bg-theme-bg2 text-[#7386a8]">
       <div className="flex w-[90%]  flex-col items-center rounded-xl bg-body-bg py-8 sm:w-2/5 sm:px-6">
         <h1 className="text-3xl font-bold text-white">
-        <span className="uppercase text-theme-color">E</span>l
-        <span className="uppercase text-theme-color">S</span>ent
+        <span className="uppercase text-theme-color">M</span>z
+        <span className="uppercase text-theme-color">B</span>id
         </h1>
 
         <p className="m-2 text-xl text-theme-color">Login with your account</p>

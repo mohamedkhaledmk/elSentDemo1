@@ -9,7 +9,7 @@ import { BsCart3 } from "react-icons/bs";
 import { FaBars, FaTimes } from "react-icons/fa";
 import socket from "../socket";
 import { getNotificationForUser } from "../store/notification/notificationSlice";
-
+import logo from "../assets/logo.png";
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -93,10 +93,11 @@ const Header = () => {
       {/* Logo */}
       <div className="flex items-center px-1 z-[1]">
         <Link to="/" className="no-underline">
-          <h1 className="text-3xl font-bold text-white font-Roboto">
-            <span className="uppercase text-theme-color">E</span>l
-            <span className="uppercase text-theme-color">S</span>ent
-          </h1>
+        <img 
+  src={logo} 
+  alt="ElSent Logo" 
+  className="w-28 h-28 mx-auto" 
+/>
         </Link>
       </div>
 
