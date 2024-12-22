@@ -60,10 +60,10 @@ const Footer = () => {
         <hr className="my-6 border-border-info-color sm:mx-auto lg:my-8" />
         <div className=" font-Roboto flex justify-center text-white items-center text-sm sm:text-center">
           © {new Date().getFullYear()}
-          <Link to="/admin/dashboard" className=" ml-1 no-underline">
+          <Link to="/admin/users" className=" ml-1 no-underline">
             <p className="text-sm font-bold text-theme-color font-Roboto">
-              <span className="uppercase text-theme-color"> B</span>id
-              <span className="uppercase text-theme-color">F</span>air
+              <span className="uppercase text-theme-color"> M</span>z
+              <span className="uppercase text-theme-color">B</span>id
             </p>
           </Link>
           . All Rights Reserved.
