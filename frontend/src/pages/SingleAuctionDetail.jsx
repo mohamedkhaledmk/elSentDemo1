@@ -20,7 +20,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
   const [activeTab, setActiveTab] = useState("description");
   const params = useParams();
   const dispatch = useDispatch();
-  const { singleAuction } = useSelector((state) => state.auction);
+  const { auction } = useSelector((state) => state.auction);
   const { bids } = useSelector((state) => state.bid);
   const [auctionStarted, setAuctionStarted] = useState(false);
   const [singleAuctionData, setSingleAuctionData] = useState();
@@ -28,8 +28,12 @@ const SingleAuctionDetail = ({ noPadding }) => {
   const [auctionWinnerDetailData, setAuctionWinnerDetailData] = useState();
   const [bidsData, setBidsData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  
+  // const { auction } = useSelector((state) => state.auction);
+  console.log("first", auction);
+  const [singleAuction, setSingleAuction] = useState(
+    auction ? auction.find((item) => item._id === params?.id) : auction[0]
+  );
+  console.log("second", singleAuction);
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().getTime();
@@ -52,7 +56,6 @@ const SingleAuctionDetail = ({ noPadding }) => {
     setAuctionStarted(false);
 
     setAuctionWinnerDetailData(data);
-    
   });
 
   const handleWinner = () => {
@@ -63,14 +66,14 @@ const SingleAuctionDetail = ({ noPadding }) => {
   //console.log(singleAuction);
   //console.log(isLoading);
 
-  useEffect(() => {
-    setIsLoading(true);
+  // useEffect(() => {
+  //   setIsLoading(true);
 
-    Promise.all([dispatch(getSingleAuctionById(params?.id))]).then(() => {
-      setIsLoading(false);
-    });
-    dispatch(getAllBidsForAuction(params?.id));
-  }, [params?.id]);
+  //   Promise.all([dispatch(getSingleAuctionById(params?.id))]).then(() => {
+  //     setIsLoading(false);
+  //   });
+  //   dispatch(getAllBidsForAuction(params?.id));
+  // }, [params?.id]);
 
   //console.log("useEffect is running.new new....");
   socket.on("newBidData", async (data) => {
@@ -89,12 +92,11 @@ const SingleAuctionDetail = ({ noPadding }) => {
       ...bidsData,
     ]);
 
-    
     setSingleAuctionData((prevState) => ({
       ...prevState,
       startingPrice: data.bidAmount,
     }));
-    
+
     // handleNewBid()
   });
   useEffect(() => {
@@ -111,9 +113,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
       //console.log(`Client connected with the id: ${socket.id}`);
     });
     socket.emit("joinAuction", logInUser?._id);
-    socket.on("newUserJoined", (data) => {
-      
-    });
+    socket.on("newUserJoined", (data) => {});
   }, []);
 
   const placeBidHandle = async (e) => {
@@ -205,7 +205,6 @@ const SingleAuctionDetail = ({ noPadding }) => {
           </div>
 
           <div className="pt-4 border-t border-border-info-color">
-            
             {/* TABS buttons */}
             <div className="flex gap-4 pt-4 font-bold text-white ">
               <button
