@@ -6,30 +6,11 @@
   <title>Elsent</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="src/index.css">
-  <style>
-    /* Ensure price display is visible */
-    #priceDisplay {
-      margin-top: 10px;
-      padding: 10px;
-      font-size: 1.2em;
-      background-color: #f3f3f3;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      text-align: center;
-      color: #333;
-      display: block; /* Ensure it's displayed */
-    }
-
-    .calculator-container {
-      margin-top: 20px;
-    }
-  </style>
 </head>
 <body>
   <!-- Root Div for React App -->
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
-  
   <!-- Floating Calculator Button -->
   <button id="calculatorToggle" class="floating-button">
     <i class="fas fa-calculator"></i>
@@ -38,8 +19,6 @@
   <!-- Calculator Container -->
   <div id="calculatorContainer" class="calculator-container">
     <div id="display" class="calculator-display"></div>
-    <!-- Separate div for displaying the price -->
-    <div id="priceDisplay" class="price-display"></div> 
     <div id="buttons" class="calculator-buttons">
       <div class="metal-selection">
         <select id="category" aria-label="Choose Metal Type" style="background-color: rgba(224, 224, 224, 0.33)">
@@ -48,6 +27,7 @@
           <option value="Palladium">Palladium</option>
           <option value="Platinum">Platinum</option>
         </select>
+        
       </div>
       <button>7</button>
       <button>8</button>
@@ -68,11 +48,8 @@
       <button id="allClear" style="grid-column: span 4">Erase</button>
     </div>
   </div>
-
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      console.log("DOMContentLoaded fired");
-
       // Function to scrape data from the table
       const scrapeTable = () => {
         const tableRows = document.querySelectorAll("tbody tr");
@@ -95,123 +72,99 @@
       // Function to populate the dropdown with scraped data
       const populateDropdown = (scrapedData) => {
         const categorySelect = document.getElementById("category");
-        console.log("Populating dropdown...");
-        
-        let optionsHTML = '';
+        scrapedData.forEach((data) => {
+          const option = document.createElement("option");
+          option.value = data.metal;
+          option.textContent = data.metal;
+          option.dataset.price = data.price; // Store the price as a data attribute
+          categorySelect.appendChild(option);
+        });
 
-  scrapedData.forEach((data) => {
-    optionsHTML += `<option value="${data.metal}" data-price="${data.price}">${data.metal}</option>`;
-  });
-
-  // Insert the options into the select element in one go
-  categorySelect.innerHTML = optionsHTML;
-
-  // Add event listener to update price display on selection
-  categorySelect.addEventListener("change", (event) => {
-    console.log("Dropdown changed");
-    const selectedOption = event.target.selectedOptions[0];
-    const selectedPrice = selectedOption?.dataset?.price;
-    console.log("Selected Price:", selectedPrice);
-
-    if (selectedPrice) {
-      updatePriceDisplay(selectedPrice);
-    }
-  });
-};
-      // Function to update the price display
-      const updatePriceDisplay = (price) => {
-        const priceDisplayElement = document.getElementById("priceDisplay");
-        // Remove 'SAR' and trim the value to get the numeric part of the price
-        const numericValue = price.replace('SAR', '').trim();
-
-        console.log("Displaying price:", numericValue); // Debug: log the price before displaying
-        
-        // Check if the value is a valid number
-        if (numericValue) {
-          priceDisplayElement.textContent = `Price: SAR ${numericValue}`; // Display numeric value
-        } else {
-          priceDisplayElement.textContent = "Invalid price"; // Handle invalid price format
-        }
+        // Add event listener to update calculator display on selection
+        categorySelect.addEventListener("change", (event) => {
+          const selectedOption = event.target.selectedOptions[0];
+          const selectedPrice = selectedOption.dataset.price;
+          if (selectedPrice) {
+            updateCalculatorDisplay(selectedPrice);
+          }
+        });
       };
 
-      setTimeout(() => {
-        scrapeTable();
-      }, 1000); // Adjust timeout if needed
+      // Function to update the calculator display
+      const updateCalculatorDisplay = (price) => {
+  const displayElement = document.getElementById("display");
+  const priceValue = price.replace('SAR', '').trim(); // Remove the 'SAR' if you want only the number
+  displayElement.textContent = priceValue;
+      };
+
+      setTimeout(scrapeTable, 1000); // Adjust timeout if needed
     });
   </script>
-
   <script>
     class Calculator {
-  constructor() {
-    this.displayElement = document.getElementById('display');
-    this.currentInput = '';
-    this.initialize();
-  }
+      constructor() {
+        this.displayElement = document.getElementById('display');
+        this.currentInput = '';
+        this.initialize();
+      }
 
-  initialize() {
-    this.buttons = document.querySelectorAll('#buttons button');
-    this.bindEvents();
-  }
+      initialize() {
+        this.buttons = document.querySelectorAll('#buttons button');
+        this.bindEvents();
+      }
 
-  bindEvents() {
-    this.buttons.forEach(button => {
-      button.addEventListener('click', () => this.handleButtonClick(button.innerText));
-    });
+      bindEvents() {
+        this.buttons.forEach(button => {
+          button.addEventListener('click', () => this.handleButtonClick(button.innerText));
+        });
 
-    const toggleButton = document.getElementById('calculatorToggle');
-    toggleButton.addEventListener('click', () => this.toggleCalculator());
-  }
+        const toggleButton = document.getElementById('calculatorToggle');
+        toggleButton.addEventListener('click', () => this.toggleCalculator());
+      }
 
-  handleButtonClick(value) {
-    if (value === '=') {
-      this.calculate();
-    } else if (value === 'Erase' || value === "مسح") {
-      this.clear();
-    } else if (!isNaN(value) || value === '.') {
-      // If the value is a number or decimal, append to current input
-      this.currentInput += value;
-      this.updateDisplay();
-    } else {
-      // Handle operations like +, -, ÷, ×
-      this.currentInput += ` ${value} `;
-      this.updateDisplay();
+      handleButtonClick(value) {
+        if (value === '=') {
+          this.calculate();
+        } else if (value === 'Erase' || value === "مسح") {
+          this.clear();
+        } else {
+          this.currentInput += value;
+          this.updateDisplay();
+        }
+      }
+
+      calculate() {
+        try {
+          this.currentInput = this.evaluateExpression(this.currentInput).toString();
+        } catch {
+          this.currentInput = 'Error';
+        }
+        this.updateDisplay();
+      }
+
+      evaluateExpression(expression) {
+        // Use a safe regular expression to replace ÷ (divide) and × (multiply) symbols
+        expression = expression.replace('÷', '/').replace('×', '*');
+        return Function(`"use strict"; return (${expression})`)();
+      }
+
+      clear() {
+        this.currentInput = '';
+        this.updateDisplay();
+      }
+
+      updateDisplay() {
+        this.displayElement.innerText = this.currentInput;
+      }
+
+      toggleCalculator() {
+        const calculatorContainer = document.getElementById('calculatorContainer');
+        calculatorContainer.style.display = calculatorContainer.style.display === 'none' ? 'block' : 'none';
+      }
     }
-  }
 
-  calculate() {
-    try {
-      // Evaluate the expression in currentInput as a valid mathematical expression
-      this.currentInput = this.evaluateExpression(this.currentInput).toString();
-    } catch {
-      this.currentInput = 'Error';
-    }
-    this.updateDisplay();
-  }
-
-  evaluateExpression(expression) {
-    // Replace custom symbols with standard operators
-    expression = expression.replace(/÷/g, '/').replace(/×/g, '*');
-    // Evaluate the mathematical expression
-    return Function(`"use strict"; return (${expression})`)();
-  }
-
-  clear() {
-    this.currentInput = '';
-    this.updateDisplay();
-  }
-
-  updateDisplay() {
-    this.displayElement.innerText = this.currentInput;
-  }
-
-  toggleCalculator() {
-    const calculatorContainer = document.getElementById('calculatorContainer');
-    calculatorContainer.style.display = calculatorContainer.style.display === 'none' ? 'block' : 'none';
-  }
-}
-
-new Calculator();
-
+    new Calculator();
   </script>
 </body>
+
 </html>
