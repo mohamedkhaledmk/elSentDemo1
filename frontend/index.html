@@ -92,8 +92,9 @@
 
       // Function to update the calculator display
       const updateCalculatorDisplay = (price) => {
-        const displayElement = document.getElementById("display");
-        displayElement.textContent = price;
+  const displayElement = document.getElementById("display");
+  const priceValue = price.replace('SAR', '').trim(); // Remove the 'SAR' if you want only the number
+  displayElement.textContent = priceValue;
       };
 
       setTimeout(scrapeTable, 1000); // Adjust timeout if needed
