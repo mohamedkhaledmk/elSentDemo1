@@ -201,7 +201,18 @@ const SingleAuctionDetail = ({ noPadding }) => {
               </a>
             </div>
 
-            {/* border */}
+            {/* Product Properties */}
+            <div className="pt-4 border-t border-border-info-color">
+              <h3 className="text-heading-color font-medium">
+                Product Specifications
+              </h3>
+              <ul className="text-body-text-color">
+                <li>Length: {singleAuction?.length} cm</li>
+                <li>Width: {singleAuction?.width} cm</li>
+                <li>Height: {singleAuction?.height} cm</li>
+                <li>Weight: {singleAuction?.weight} kg</li>
+              </ul>
+            </div>
           </div>
 
           <div className="pt-4 border-t border-border-info-color">
