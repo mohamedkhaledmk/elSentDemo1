@@ -16,29 +16,31 @@ import SingleAuctionDetail from "./pages/SingleAuctionDetail";
 import UserProfile from "./pages/UserProfile";
 import EditAuction from "./pages/EditAuction";
 import ErrorPage from "./pages/ErrorPage";
-import Protected, { PublicRoute, SellerRoutes, AdminRoutes } from "./auth/Protected";
+import Protected, {
+  PublicRoute,
+  SellerRoutes,
+  AdminRoutes,
+} from "./auth/Protected";
 import PaymentSuccess from "./pages/PaymentSuccess";
-import Admin from "./admin/Admin"
+import Admin from "./admin/Admin";
 import { useSelector } from "react-redux";
-import AdminFooter from "./admin/components/Footer"
-import AdminHeader from "./admin/components/Header"
-import AdminLogin from "./admin/pages/Login"
-import AdminDashboard from "./admin/Admin"
+import AdminFooter from "./admin/components/Footer";
+import AdminHeader from "./admin/components/Header";
+import AdminLogin from "./admin/pages/Login";
+import AdminDashboard from "./admin/Admin";
 import ManageItems from "./components/ManageItems";
 
-
 const App = () => {
+  const { user } = useSelector((state) => state.auth);
 
-const { user } = useSelector((state) => state.auth);
-
-console.log(user,"...")
+  console.log(user, "...");
   return (
     <>
       <BrowserRouter>
-      {user && user.userType === "admin" ? <AdminHeader /> : <Header />}
- 
+        {user && user.userType === "admin" ? <AdminHeader /> : <Header />}
+
         <Routes>
-           <Route path="/admin/login" element={<Login />} /> 
+          <Route path="/admin/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
@@ -68,18 +70,15 @@ console.log(user,"...")
             <Route element={<SellerRoutes />}>
               <Route path="/create-auction" element={<UploadItem />} />
               {/* <Route path="/user-profile/manage-items" element={<ManageItems />} /> */}
-
-
             </Route>
-           
           </Route>
           {/* <Route element={<AdminRoutes />}> */}
-              <Route path="/admin/*" element={<AdminDashboard />} />
-              
-            {/* </Route> */}
+          <Route path="/admin/*" element={<AdminDashboard />} />
+
+          {/* </Route> */}
         </Routes>
 
-{user && user.userType === "admin" ? <AdminFooter />: <Footer /> }
+        {user && user.userType === "admin" ? <AdminFooter /> : <Footer />}
       </BrowserRouter>
       <ToastContainer />
     </>
