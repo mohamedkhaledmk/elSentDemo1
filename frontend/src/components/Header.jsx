@@ -10,15 +10,16 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import socket from "../socket";
 import { getNotificationForUser } from "../store/notification/notificationSlice";
 import logo from "../assets/logo.png";
+
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
-  const [scrolling, setScrolling] = useState(false); // To track scroll state
+  const [scrolling, setScrolling] = useState(false);
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { notifications } = useSelector((state) => state.notification);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const logInUser = JSON.parse(localStorage.getItem("user"));
 
@@ -36,19 +37,18 @@ const Header = () => {
     });
   }, []);
 
-  // Scroll event to detect when the user scrolls
   const handleScroll = () => {
     if (window.scrollY > 0) {
-      setScrolling(true); // Activate blur effect when scrolled
+      setScrolling(true);
     } else {
-      setScrolling(false); // Remove blur when at the top
+      setScrolling(false);
     }
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll); // Add event listener
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll); // Cleanup on unmount
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -60,7 +60,6 @@ const Header = () => {
     navigate("/login");
   };
 
-  // Dynamically add Google Translate Script using a different approach
   useEffect(() => {
     if (typeof window !== "undefined") {
       const script = document.createElement("script");
@@ -77,7 +76,6 @@ const Header = () => {
       };
       document.body.appendChild(script);
 
-      // Cleanup script on component unmount
       return () => {
         document.body.removeChild(script);
       };
@@ -90,56 +88,98 @@ const Header = () => {
         scrolling ? "backdrop-blur-lg bg-dark shadow-md" : "bg-body-bg"
       }`}
     >
-      {/* Logo */}
       <div className="flex items-center px-1 z-[1]">
         <Link to="/" className="no-underline">
-        <img 
-  src={logo} 
-  alt="ElSent Logo" 
-  className="w-28 h-28 mx-auto" 
-/>
+          <img src={logo} alt="ElSent Logo" className="w-28 h-28 mx-auto" />
         </Link>
       </div>
 
-      {/* Links (Home, Contact, About) */}
-      <div className="hidden sm:block">
+      <div
+        className={`fixed top-0 right-0 h-full w-[250px] bg-body-bg z-50 transition-transform duration-300 transform ${
+          navbarOpen ? "translate-x-0" : "translate-x-full"
+        } sm:hidden`}
+      >
+        <button
+          onClick={() => setNavbarOpen(false)}
+          className="absolute top-4 right-4 text-white"
+        >
+          <FaTimes size={25} />
+        </button>
+        <nav className="flex flex-col items-center mt-16">
+          <Link
+            to="/"
+            className="text-white text-lg py-2 hover:text-color-primary"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            to="/Dashboard"
+            className="text-white text-lg py-2 hover:text-color-primary"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Live Auctions
+          </Link>
+          <Link
+            to="/about-us"
+            className="text-white text-lg py-2 hover:text-color-primary"
+            onClick={() => setNavbarOpen(false)}
+          >
+            About
+          </Link>
+          <Link
+            to="/contact-us"
+            className="text-white text-lg py-2 hover:text-color-primary"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Contact
+          </Link>
+          <Link
+            to="/privacy-policy"
+            className="text-white text-lg py-2 hover:text-color-primary"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Privacy Policy
+          </Link>
+        </nav>
+      </div>
+
+      <div className="hidden sm:flex">
         <Link
           to="/"
-          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary"
         >
           Home
         </Link>
         <Link
           to="/Dashboard"
-          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary"
         >
           Live Auctions
         </Link>
-
         <Link
           to="/about-us"
-          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary"
         >
           About
         </Link>
         <Link
           to="/contact-us"
-          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary"
         >
           Contact
         </Link>
         <Link
           to="/privacy-policy"
-          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+          className="text-white font-Roboto text-lg mx-3 hover:text-color-primary"
         >
           Privacy Policy
         </Link>
       </div>
 
-      {/* User Profile and Notifications */}
       <div className="flex items-center cursor-pointer z-[1]">
         {user ? (
-          <div className="flex justify-center items-center">
+          <div className="flex items-center">
             <Link
               to="/user-profile/cart"
               className="text-white font-Roboto text-lg mx-3"
@@ -148,76 +188,63 @@ const Header = () => {
             </Link>
             <img
               src={user?.profilePicture}
-              key={user.profilePicture}
               alt="user image"
-              className="w-10 h-10 rounded-full order-2 cursor-pointer active:scale-[0.95] transition-all"
+              className="w-10 h-10 rounded-full cursor-pointer"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             />
             {sidebarOpen && (
-  <div className="absolute top-16 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
-    <Link
-      to="/user-profile/profile"
-      className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
-    >
-      Profile
-    </Link>
-    <Link
-      to="/user-profile/settings"
-      className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
-    >
-      Settings
-    </Link>
-    <button
-      onClick={logoutHandle}
-      className="block w-full text-left px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
-    >
-      Logout
-    </button>
-  </div>
-)}
-
-<Link to="/user-profile/notifications" className="mr-2 relative">
-              {unReadNotifications.length > 0 ? (
-                <span className="absolute right-0 top-0 w-[18px] h-[18px] flex items-center justify-center bg-theme-color rounded-full  text-white text-xs font-bold ">
+              <div className="absolute top-16 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
+                <Link
+                  to="/user-profile/profile"
+                  className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/user-profile/settings"
+                  className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+                >
+                  Settings
+                </Link>
+                <button
+                  onClick={logoutHandle}
+                  className="block w-full text-left px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+            <Link to="/user-profile/notifications" className="relative">
+              {unReadNotifications.length > 0 && (
+                <span className="absolute right-0 top-0 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">
                   {unReadNotifications.length}
                 </span>
-              ) : null}
-
-              <IoIosNotificationsOutline
-                size={37}
-                className="text-white text-xl cursor-pointer bg-theme-bg hover:text-theme-color rounded-full p-2 transition-all "
-              />
-            </Link>
-            <Link
-              onClick={() => setNavbarOpen(!navbarOpen)}
-              className="text-white font-Roboto sm:hidden text-lg mx-3 order-3"
-            >
-              {navbarOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+              )}
+              <IoIosNotificationsOutline size={30} />
             </Link>
           </div>
         ) : (
           <>
-            <div id="google-translate-element"></div>
             <Link
               to="/register"
-              className="bg-color no-underline font-Roboto text-base hover:text-hover transition-all duration-150 text-white py-1 sm:py-2 sm:px-3 px-2 rounded-md text-md font-semibold"
+              className="bg-primary text-white py-1 px-3 rounded-md mx-2"
             >
               Register
             </Link>
             <Link
               to="/login"
-              className="bg-color-secondary no-underline font-Roboto text-base hover:bg-hover transition-all duration-150 text-white py-1 sm:py-2 sm:px-3 px-2 rounded-md text-md font-semibold"
+              className="bg-secondary text-white py-1 px-3 rounded-md mx-2"
             >
               Sign In
             </Link>
-            <Link
-              onClick={() => setNavbarOpen(!navbarOpen)}
-              className="text-white font-Roboto sm:hidden text-lg mx-3 order-3 z-50"
-            >
-              {navbarOpen ? <FaTimes size={25} /> : <FaBars size={25} />}
-            </Link>
           </>
         )}
+        <button
+          onClick={() => setNavbarOpen(!navbarOpen)}
+          className="sm:hidden text-white"
+        >
+          <FaBars size={25} />
+        </button>
       </div>
     </div>
   );
