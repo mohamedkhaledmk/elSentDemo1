@@ -22,6 +22,7 @@ const createAuction = asyncHandler(async (req, res) => {
       location,
       height,
       width,
+      length,
       materialUsed,
       weight,
     } = req.body;
@@ -45,6 +46,7 @@ const createAuction = asyncHandler(async (req, res) => {
       !image ||
       !height ||
       !width ||
+      !length ||
       !materialUsed ||
       !weight
     ) {
@@ -98,6 +100,7 @@ const createAuction = asyncHandler(async (req, res) => {
       startingPrice,
       status,
       height,
+      length,
       width,
       materialUsed,
       weight,
@@ -425,6 +428,7 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
       : auction.startingPrice;
     auction.location = location ? location : auction.location;
     auction.height = height ? height : auction.height;
+    auction.length = length ? length : auction.length;
     auction.width = width ? width : auction.width;
     auction.materialUsed = materialUsed ? materialUsed : auction.materialUsed;
     auction.weight = weight ? weight : auction.weight;
