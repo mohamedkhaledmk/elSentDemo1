@@ -83,6 +83,7 @@ iframe {
   align-items: center;
   justify-content: space-between;
 }
+
 .floating-button {
   position: fixed;
   bottom: 20px;
@@ -106,7 +107,7 @@ iframe {
 }
 
 .calculator-container {
-  display: none;
+  display: block;
   position: fixed;
   bottom: 80px;
   right: 20px;
@@ -138,6 +139,17 @@ iframe {
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   width: 100%;
+}
+
+button {
+  padding: 20px;
+  font-size: 18px;
+  border: none;
+  background-color: #3F3328;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
