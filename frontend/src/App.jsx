@@ -49,6 +49,7 @@ const App = () => {
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/download-app" element={<Application />} />
          
           <Route
             path="/single-auction-detail/:id"
