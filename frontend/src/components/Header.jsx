@@ -138,6 +138,13 @@ const Header = () => {
 
       {/* User Profile and Notifications */}
       <div className="flex items-center cursor-pointer z-[1]">
+      <Link
+          to="/download-app"
+          className=" text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
+        >
+          Download <br />
+            Our App
+        </Link>
         {user ? (
           <div className="flex justify-center items-center">
             <Link
