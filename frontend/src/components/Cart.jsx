@@ -5,6 +5,7 @@ import { getCartItems, reset } from "../store/cart/cartSlice";
 import axios from "axios";
 import { useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [cartItem, setCartItem] = useState();
@@ -12,10 +13,13 @@ const Cart = () => {
   const dispatch = useDispatch();
   // const stripe = useStripe();
   const [stripe, setStripe] = useState(null);
+  const navigate = useNavigate(); // Add the useNavigate hook
 
   useEffect(() => {
     const fetchStripe = async () => {
-      const stripe = await loadStripe("pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA");
+      const stripe = await loadStripe(
+        "pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA"
+      );
       setStripe(stripe);
     };
 
@@ -34,44 +38,47 @@ const Cart = () => {
     }
   }, [cartItems]);
 
-  const redirectToCheckout = async (product) => {
-    // event.preventDefault();
-    const lineItems = [
-      {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: product.name,
-            images: [product.image],
-          },
-          unit_amount: product.startingPrice * 100, // because stripe interprets price in cents
-        },
-        quantity: 1,
-      },
-    ];
-    const sendProductData = { id: product._id, lineItems: lineItems };
-    const { data } = await axios.post(
-      "http://localhost:8000/api/v1/payments/checkout",
-      {
-        sendProductData,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+  // const redirectToCheckout = async (product) => {
+  //   // event.preventDefault();
+  //   const lineItems = [
+  //     {
+  //       price_data: {
+  //         currency: "usd",
+  //         product_data: {
+  //           name: product.name,
+  //           images: [product.image],
+  //         },
+  //         unit_amount: product.startingPrice * 100, // because stripe interprets price in cents
+  //       },
+  //       quantity: 1,
+  //     },
+  //   ];
+  //   const sendProductData = { id: product._id, lineItems: lineItems };
+  //   const { data } = await axios.post(
+  //     "http://localhost:8000/api/v1/payments/checkout",
+  //     {
+  //       sendProductData,
+  //     },
+  //     {
+  //       withCredentials: true,
+  //     }
+  //   );
 
-    const result = await stripe.redirectToCheckout({
-      sessionId: data.id,
-    });
-    //console.log(result);
+  //   const result = await stripe.redirectToCheckout({
+  //     sessionId: data.id,
+  //   });
+  //   //console.log(result);
 
-    if (result.error) {
-      //console.log(result.error.message);
-    } else {
-      alert("succes");
-    }
+  //   if (result.error) {
+  //     //console.log(result.error.message);
+  //   } else {
+  //     alert("succes");
+  //   }
+  // };
+  const redirectToCheckout = (product) => {
+    // Navigate to the payment page, passing product data via state
+    navigate("/payment", { state: { product } });
   };
-
   return (
     <div className=" px-7 py-4 w-full bg-theme-bg text-slate-300 rounded-2xl ">
       <h2 className=" text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5 ">
