@@ -50,7 +50,7 @@ const App = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/download-app" element={<Application />} />
-         
+          <Route path="/payment" element={<PaymentPage />} />
           <Route
             path="/single-auction-detail/:id"
             element={<SingleAuctionDetail />}
