@@ -10,6 +10,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import socket from "../socket";
 import { getNotificationForUser } from "../store/notification/notificationSlice";
 import logo from "../assets/logo.png";
+
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -93,16 +94,12 @@ const Header = () => {
       {/* Logo */}
       <div className="flex items-center px-1 z-[1]">
         <Link to="/" className="no-underline">
-        <img 
-  src={logo} 
-  alt="ElSent Logo" 
-  className="w-28 h-28 mx-auto" 
-/>
+          <img src={logo} alt="ElSent Logo" className="w-28 h-28 mx-auto" />
         </Link>
       </div>
 
       {/* Links (Home, Contact, About) */}
-      <div className="hidden sm:block">
+      <div className={`sm:flex hidden`}>
         <Link
           to="/"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
@@ -115,7 +112,6 @@ const Header = () => {
         >
           Live Auctions
         </Link>
-
         <Link
           to="/about-us"
           className="text-white font-Roboto text-lg mx-3 hover:text-color-primary transition-all tracking-wide"
@@ -136,6 +132,47 @@ const Header = () => {
         </Link>
       </div>
 
+      {/* Mobile Navigation Menu */}
+      {navbarOpen && (
+        <div className="absolute top-full left-0 w-full bg-dark flex flex-col items-center shadow-md sm:hidden z-[1000]">
+          <Link
+            to="/"
+            className="text-white font-Roboto text-lg py-2 w-full text-center hover:text-color-primary transition-all tracking-wide"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            to="/Dashboard"
+            className="text-white font-Roboto text-lg py-2 w-full text-center hover:text-color-primary transition-all tracking-wide"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Live Auctions
+          </Link>
+          <Link
+            to="/about-us"
+            className="text-white font-Roboto text-lg py-2 w-full text-center hover:text-color-primary transition-all tracking-wide"
+            onClick={() => setNavbarOpen(false)}
+          >
+            About
+          </Link>
+          <Link
+            to="/contact-us"
+            className="text-white font-Roboto text-lg py-2 w-full text-center hover:text-color-primary transition-all tracking-wide"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Contact
+          </Link>
+          <Link
+            to="/privacy-policy"
+            className="text-white font-Roboto text-lg py-2 w-full text-center hover:text-color-primary transition-all tracking-wide"
+            onClick={() => setNavbarOpen(false)}
+          >
+            Privacy Policy
+          </Link>
+        </div>
+      )}
+
       {/* User Profile and Notifications */}
       <div className="flex items-center cursor-pointer z-[1]">
         {user ? (
@@ -154,38 +191,38 @@ const Header = () => {
               onClick={() => setSidebarOpen(!sidebarOpen)}
             />
             {sidebarOpen && (
-  <div className="absolute top-16 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
-    <Link
-      to="/user-profile/profile"
-      className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
-    >
-      Profile
-    </Link>
-    <Link
-      to="/user-profile/settings"
-      className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
-    >
-      Settings
-    </Link>
-    <button
-      onClick={logoutHandle}
-      className="block w-full text-left px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
-    >
-      Logout
-    </button>
-  </div>
-)}
+              <div className="absolute top-16 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
+                <Link
+                  to="/user-profile/profile"
+                  className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/user-profile/settings"
+                  className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+                >
+                  Settings
+                </Link>
+                <button
+                  onClick={logoutHandle}
+                  className="block w-full text-left px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
 
-<Link to="/user-profile/notifications" className="mr-2 relative">
+            <Link to="/user-profile/notifications" className="mr-2 relative">
               {unReadNotifications.length > 0 ? (
-                <span className="absolute right-0 top-0 w-[18px] h-[18px] flex items-center justify-center bg-theme-color rounded-full  text-white text-xs font-bold ">
+                <span className="absolute right-0 top-0 w-[18px] h-[18px] flex items-center justify-center bg-theme-color rounded-full text-white text-xs font-bold">
                   {unReadNotifications.length}
                 </span>
               ) : null}
 
               <IoIosNotificationsOutline
                 size={37}
-                className="text-white text-xl cursor-pointer bg-theme-bg hover:text-theme-color rounded-full p-2 transition-all "
+                className="text-white text-xl cursor-pointer bg-theme-bg hover:text-theme-color rounded-full p-2 transition-all"
               />
             </Link>
             <Link
@@ -198,14 +235,13 @@ const Header = () => {
         ) : (
           <>
             <div id="google-translate-element"></div>
-            <br/>
+            <br />
             <Link
-          to="/download-app"
-          className=" bg-color-secondary no-underline font-Roboto text-base hover:bg-hover transition-all duration-150 text-white py-1 sm:py-2 sm:px-3 px-2 rounded-md text-md font-semibold"
-        >
-          Download
-            Our App
-        </Link>
+              to="/download-app"
+              className=" bg-color-secondary no-underline font-Roboto text-base hover:bg-hover transition-all duration-150 text-white py-1 sm:py-2 sm:px-3 px-2 rounded-md text-md font-semibold"
+            >
+              Download Our App
+            </Link>
             <Link
               to="/register"
               className="bg-color no-underline font-Roboto text-base hover:text-hover transition-all duration-150 text-white py-1 sm:py-2 sm:px-3 px-2 rounded-md text-md font-semibold"
