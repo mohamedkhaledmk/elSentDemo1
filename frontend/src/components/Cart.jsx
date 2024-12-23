@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getCartItems, reset } from "../store/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import axios from "axios";
 const Cart = () => {
   const [cartItem, setCartItem] = useState();
   const { cartItems } = useSelector((state) => state.cart);
@@ -22,10 +23,32 @@ const Cart = () => {
     }
   }, [cartItems]);
 
-  const redirectToCheckout = (product) => {
-    // Navigate to the payment page, passing product data via state
-    navigate("/payment", { state: { product } });
+  const handlePayment = async (product) => {
+    try {
+      const requestData = {
+        amount_cents: product.startingPrice * 100, // Convert price to cents
+      };
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/paymob", // Replace with your actual backend endpoint
+        requestData,
+        {
+          withCredentials: true, // If cookies or auth are required
+        }
+      );
+
+      if (response.data && response.data.payment_link) {
+        toast.success("Redirecting to payment...");
+        window.open(response.data.payment_link, "_blank"); // Open the payment link in a new tab
+      } else {
+        toast.error("Failed to get the payment link.");
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast.error("An error occurred while processing the payment.");
+    }
   };
+
   return (
     <div className=" px-7 py-4 w-full bg-theme-bg text-slate-300 rounded-2xl ">
       <h2 className=" text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5 ">
@@ -61,7 +84,7 @@ const Cart = () => {
                 </Link>
                 <button
                   className="bg-theme-color  p-3 rounded-lg text-white font-bold"
-                  onClick={() => redirectToCheckout(product)}
+                  onClick={() => handlePayment(product)}
                 >
                   Go to Checkout
                 </button>

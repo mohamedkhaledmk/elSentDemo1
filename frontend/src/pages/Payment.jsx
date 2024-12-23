@@ -3,15 +3,6 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the styles
 
-const countryList = [
-  { name: "Egypt", code: "EG" },
-  { name: "United States", code: "US" },
-  { name: "Canada", code: "CA" },
-  { name: "United Kingdom", code: "GB" },
-  { name: "Germany", code: "DE" },
-  // Add more countries as needed
-];
-
 const PaymentPage = () => {
   // State for user input
   const [firstName, setFirstName] = useState("");
@@ -20,13 +11,10 @@ const PaymentPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [amount, setAmount] = useState(1); // Default 1 EGP for testing
   const [currency] = useState("EGP"); // Egyptian Pound
-  const [productName, setProductName] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
-  const [state, setState] = useState("");
+  const [productName, setProductName] = useState("Product Name"); // Default product name
+  const [productDescription, setProductDescription] = useState(
+    "Payment for product/service"
+  ); // Default product description
   const [loading, setLoading] = useState(false);
   const [paymentLink, setPaymentLink] = useState("");
 
@@ -45,20 +33,23 @@ const PaymentPage = () => {
           last_name: lastName,
           email,
           phone_number: phoneNumber,
-          street,
-          city,
-          postal_code: postalCode,
-          country,
-          state,
+          street: "NA", // Can be updated if a street input field is added
+          city: "Cairo", // Default city, update if needed
+          postal_code: "NA", // Can be updated if postal code input is added
+          country: "EGY", // Default to Egypt, can be updated
+          state: "NA", // Can be updated if state input is added
         },
-        product_name: productName,
-        product_description: productDescription,
+        product_name: productName, // Pass the product name
+        product_description: productDescription, // Pass the product description
       };
 
       // Send request to the backend to create the payment order
       const response = await axios.post(
         "http://localhost:8000/api/v1/paymob", // Update the endpoint as needed
-        requestData
+        requestData,
+        {
+          withCredentials: true,
+        }
       );
 
       if (response.data && response.data.payment_link) {
@@ -186,84 +177,6 @@ const PaymentPage = () => {
               id="productDescription"
               value={productDescription}
               onChange={(e) => setProductDescription(e.target.value)}
-              required
-              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
-            />
-          </div>
-
-          {/* Shipping Address Fields */}
-          <div className="flex flex-col">
-            <label htmlFor="street" className="text-secondary text-sm">
-              Street Address
-            </label>
-            <input
-              type="text"
-              id="street"
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
-              required
-              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label htmlFor="city" className="text-secondary text-sm">
-              City
-            </label>
-            <input
-              type="text"
-              id="city"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              required
-              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label htmlFor="postalCode" className="text-secondary text-sm">
-              Postal Code
-            </label>
-            <input
-              type="text"
-              id="postalCode"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-              required
-              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
-            />
-          </div>
-
-          {/* Country Dropdown */}
-          <div className="flex flex-col">
-            <label htmlFor="country" className="text-secondary text-sm">
-              Country
-            </label>
-            <select
-              id="country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              required
-              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
-            >
-              <option value="">Select Country</option>
-              {countryList.map((countryItem) => (
-                <option key={countryItem.code} value={countryItem.code}>
-                  {countryItem.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col">
-            <label htmlFor="state" className="text-secondary text-sm">
-              State
-            </label>
-            <input
-              type="text"
-              id="state"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
               required
               className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
             />
