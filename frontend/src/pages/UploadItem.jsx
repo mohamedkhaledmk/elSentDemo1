@@ -268,7 +268,7 @@ const UploadItem = () => {
               />
             </div>
             <div className="grid">
-              <label htmlFor="weight">Weight (kg)</label>
+              <label htmlFor="weight">Weight (gm)</label>
               <input
                 required
                 id="weight"

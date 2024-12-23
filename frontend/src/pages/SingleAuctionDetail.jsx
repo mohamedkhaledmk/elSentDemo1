@@ -210,7 +210,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 <li>Length: {singleAuction?.length} cm</li>
                 <li>Width: {singleAuction?.width} cm</li>
                 <li>Height: {singleAuction?.height} cm</li>
-                <li>Weight: {singleAuction?.weight} kg</li>
+                <li>Weight: {singleAuction?.weight} gm</li>
               </ul>
             </div>
           </div>
