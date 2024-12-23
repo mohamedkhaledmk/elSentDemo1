@@ -3,6 +3,15 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Don't forget to import the styles
 
+const countryList = [
+  { name: "Egypt", code: "EG" },
+  { name: "United States", code: "US" },
+  { name: "Canada", code: "CA" },
+  { name: "United Kingdom", code: "GB" },
+  { name: "Germany", code: "DE" },
+  // Add more countries as needed
+];
+
 const PaymentPage = () => {
   // State for user input
   const [firstName, setFirstName] = useState("");
@@ -11,6 +20,13 @@ const PaymentPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [amount, setAmount] = useState(1); // Default 1 EGP for testing
   const [currency] = useState("EGP"); // Egyptian Pound
+  const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [street, setStreet] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
   const [loading, setLoading] = useState(false);
   const [paymentLink, setPaymentLink] = useState("");
 
@@ -29,12 +45,19 @@ const PaymentPage = () => {
           last_name: lastName,
           email,
           phone_number: phoneNumber,
+          street,
+          city,
+          postal_code: postalCode,
+          country,
+          state,
         },
+        product_name: productName,
+        product_description: productDescription,
       };
 
       // Send request to the backend to create the payment order
       const response = await axios.post(
-        "http://localhost:8000/api/v1/paymob",
+        "http://localhost:8000/api/v1/paymob", // Update the endpoint as needed
         requestData
       );
 
@@ -131,6 +154,116 @@ const PaymentPage = () => {
               id="amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
+              required
+              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
+            />
+          </div>
+
+          {/* Product Name */}
+          <div className="flex flex-col">
+            <label htmlFor="productName" className="text-secondary text-sm">
+              Product Name
+            </label>
+            <input
+              type="text"
+              id="productName"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              required
+              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
+            />
+          </div>
+
+          {/* Product Description */}
+          <div className="flex flex-col">
+            <label
+              htmlFor="productDescription"
+              className="text-secondary text-sm"
+            >
+              Product Description
+            </label>
+            <textarea
+              id="productDescription"
+              value={productDescription}
+              onChange={(e) => setProductDescription(e.target.value)}
+              required
+              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
+            />
+          </div>
+
+          {/* Shipping Address Fields */}
+          <div className="flex flex-col">
+            <label htmlFor="street" className="text-secondary text-sm">
+              Street Address
+            </label>
+            <input
+              type="text"
+              id="street"
+              value={street}
+              onChange={(e) => setStreet(e.target.value)}
+              required
+              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="city" className="text-secondary text-sm">
+              City
+            </label>
+            <input
+              type="text"
+              id="city"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              required
+              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="postalCode" className="text-secondary text-sm">
+              Postal Code
+            </label>
+            <input
+              type="text"
+              id="postalCode"
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+              required
+              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
+            />
+          </div>
+
+          {/* Country Dropdown */}
+          <div className="flex flex-col">
+            <label htmlFor="country" className="text-secondary text-sm">
+              Country
+            </label>
+            <select
+              id="country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              required
+              className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
+            >
+              <option value="">Select Country</option>
+              {countryList.map((countryItem) => (
+                <option key={countryItem.code} value={countryItem.code}>
+                  {countryItem.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="state" className="text-secondary text-sm">
+              State
+            </label>
+            <input
+              type="text"
+              id="state"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
               required
               className="mt-2 p-3 rounded-md bg-theme-bg2 text-body-text-color border-2 border-theme-color focus:outline-none focus:ring-2 focus:ring-theme-color"
             />

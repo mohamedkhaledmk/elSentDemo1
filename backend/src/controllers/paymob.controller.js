@@ -63,7 +63,7 @@ export const createPaymentOrder = async (req, res) => {
             apartment: "NA",
             email: email,
             floor: "NA",
-            first_name: "John", // Replace with dynamic customer data
+            first_name: first_name, // Replace with dynamic customer data
             street: "NA",
             building: "NA",
             phone_number: phone_number,
@@ -71,7 +71,7 @@ export const createPaymentOrder = async (req, res) => {
             postal_code: "NA",
             city: "NA",
             country: "EGY", // Replace with the user's actual country code
-            last_name: "Doe", // Replace with dynamic customer data
+            last_name: last_name, // Replace with dynamic customer data
             state: "NA",
           },
           currency,
