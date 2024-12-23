@@ -26,14 +26,27 @@ const createAuction = asyncHandler(async (req, res) => {
       materialUsed,
       weight,
     } = req.body;
-    const image = req.file?.path;
 
-    console.log(name, "name");
-    console.log(description, "description");
-    console.log(category, "category");
-    console.log(startTime, "startTime");
-    console.log(endTime, "endTime");
-    console.log(startingPrice, "startingPrice");
+    const files = req.files; // Assuming `req.files` contains the array of uploaded images
+    console.log("dehk", files);
+    // Check if images are provided
+    if (!files || files.length === 0) {
+      return res
+        .status(400)
+        .json(new ApiResponse(400, "At least one image is required"));
+    }
+
+    // Upload images to Cloudinary or your storage service
+    const uploadedImages = await Promise.all(
+      files.map(async (file) => {
+        const imgUrlCloudinary = await uploadOnCloudinary(file.path);
+        if (!imgUrlCloudinary) {
+          throw new Error("Error uploading images");
+        }
+        return imgUrlCloudinary.url; // Assuming Cloudinary returns an object with the URL
+      })
+    );
+
     // Check if fields are empty
     if (
       !name ||
@@ -43,7 +56,6 @@ const createAuction = asyncHandler(async (req, res) => {
       !endTime ||
       !startingPrice ||
       !location ||
-      !image ||
       !height ||
       !width ||
       !length ||
@@ -69,25 +81,16 @@ const createAuction = asyncHandler(async (req, res) => {
         .json(new ApiResponse(400, "Starting price must be a positive number"));
     }
 
-    const imgUrlCloudinary = await uploadOnCloudinary(image);
-
-    if (!imgUrlCloudinary) {
-      return res
-        .status(500)
-        .json(new ApiResponse(500, "Error uploading image"));
-    }
     let currentDate = new Date();
     let status = "upcoming";
-    console.log(
-      new Date(startTime).getTime() + " and time is .." + currentDate.getTime()
-    );
     if (new Date(startTime).getTime() < currentDate.getTime()) {
       status = "active";
     }
-    if (endTime < currentDate.getTime()) {
+    if (new Date(endTime).getTime() < currentDate.getTime()) {
       status = "over";
     }
 
+    // Create the auction
     const auction = await Auction.create({
       name,
       description,
@@ -96,7 +99,7 @@ const createAuction = asyncHandler(async (req, res) => {
       startTime,
       endTime,
       location,
-      image: imgUrlCloudinary.url,
+      images: uploadedImages, // Save the array of image URLs
       startingPrice,
       status,
       height,

@@ -6,12 +6,11 @@ import { getAllCities } from "../store/city/citySlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getAllAuctions } from "../store/auction/auctionSlice";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
 const UploadItem = () => {
   const dispatch = useDispatch();
-  const [imgUrl, setImgUrl] = useState("");
+  const [imgUrls, setImgUrls] = useState([]);
   const imgRef = useRef(null);
   const { auction, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auction
@@ -24,8 +23,6 @@ const UploadItem = () => {
     dispatch(getAllCategories());
     dispatch(getAllCities());
   }, [dispatch]);
-
-  ////console.log("categoreik   ", categories);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -44,7 +41,6 @@ const UploadItem = () => {
 
   useEffect(() => {
     dispatch(reset());
-    ////console.log(isSuccess  , " and ", isError);
 
     if (isError) {
       toast.error(message, {
@@ -52,12 +48,10 @@ const UploadItem = () => {
       });
       dispatch(reset());
     } else if (isSuccess && isError === undefined) {
-      ////console.log(isSuccess  , " and ", isError);
       toast.success(message, {
         autoClose: 500,
       });
       dispatch(reset());
-      //clear form data
       setFormData({
         name: "",
         category: "",
@@ -72,41 +66,38 @@ const UploadItem = () => {
         weight: "",
         materialUsed: "",
       });
-      setImgUrl("");
+      setImgUrls([]);
     }
     dispatch(reset());
   }, [isSuccess, isError, isLoading]);
 
   const handleProductUpload = async (e) => {
     e.preventDefault();
-    //image data so use new formdata
     const data = new FormData();
-    ////console.log(formData);
-    data.append("name", formData.name);
-    data.append("startingPrice", formData.startingPrice);
-    data.append("category", formData.category);
-    data.append("startTime", formData.startTime);
-    data.append("endTime", formData.endTime);
-    data.append("location", formData.location);
-    data.append("description", formData.description);
-    data.append("length", formData.length);
-    data.append("width", formData.width);
-    data.append("height", formData.height);
-    data.append("weight", formData.weight);
-    data.append("materialUsed", formData.materialUsed);
 
-    if (!imgRef.current.files[0]) {
-      return alert("Image is required");
-    } else if (imgRef.current.files[0].size > 1024 * 1024) {
-      return alert("Image size should be less than 1mb");
-    } else {
-      data.append("image", imgRef.current.files[0]);
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value);
+    });
+
+    if (!imgRef.current.files.length) {
+      return alert("At least one image is required");
     }
-    ////console.log("before data sentidn", isSuccess);
-    dispatch(createAuction(data));
 
-    //dispatch(getAllAuctions());
+    Array.from(imgRef.current.files).forEach((file) => {
+      if (file.size > 1024 * 1024) {
+        return alert("Each image size should be less than 1MB");
+      }
+      data.append("images", file);
+    });
+
+    dispatch(createAuction(data));
     dispatch(reset());
+  };
+
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+    const urls = Array.from(files).map((file) => URL.createObjectURL(file));
+    setImgUrls(urls);
   };
 
   return (
@@ -118,42 +109,45 @@ const UploadItem = () => {
         <div className="text-white lg:w-[22%] lg:min-w-[350px] ">
           <h1 className="text-white text-2xl font-bold mb-4">Upload Item</h1>
 
-          {imgUrl ? (
-            <img
-              src={imgUrl}
-              alt="upload img"
-              onClick={() => imgRef.current.click()}
-              className="w-full h-80 
-                    rounded-lg border-2 border-solid p-2 object-contain cursor-pointer
-                    "
-            />
-          ) : (
-            <div
-              onClick={() => imgRef.current.click()}
-              className="w-full h-80
-              rounded-xl border-2 border-dashed border-border-info-color 
-                    flex items-center justify-center
-                    cursor-pointer
-                    "
-            >
-              <div className="text-center flex flex-col items-center gap-2">
-                <IoCloudUploadOutline size={68} className="text-theme-color" />
-                <p>Click to Upload</p>
-                <span className="text-body-text-color">
-                  PNG,JPG,JPEG | Max Size 1MB
-                </span>
+          <div className="grid gap-4">
+            {imgUrls.length > 0 ? (
+              imgUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt="Uploaded"
+                  className="w-full h-40 rounded-lg border-2 border-solid p-2 object-contain"
+                />
+              ))
+            ) : (
+              <div
+                onClick={() => imgRef.current.click()}
+                className="w-full h-80 rounded-xl border-2 border-dashed border-border-info-color flex items-center justify-center cursor-pointer"
+              >
+                <div className="text-center flex flex-col items-center gap-2">
+                  <IoCloudUploadOutline
+                    size={68}
+                    className="text-theme-color"
+                  />
+                  <p>Click to Upload</p>
+                  <span className="text-body-text-color">
+                    PNG,JPG,JPEG | Max Size 1MB
+                  </span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           <input
             type="file"
             className="hidden"
-            onChange={(e) => setImgUrl(URL.createObjectURL(e.target.files[0]))}
+            onChange={handleImageChange}
             ref={imgRef}
             accept=".png, .jpg, .jpeg"
+            multiple
           />
         </div>
+
         {/* INPUTS */}
         <div className="flex flex-col gap-4 lg:w-[50%] inputs:outline-none p-8 inputs:px-4 inputs:py-3 inputs:rounded-xl select:px-4 select:py-3 select:rounded-xl select:cursor-pointer border border-border-info-color inputs:bg-theme-bg inputs:border inputs:border-border-info-color focus:inputs:border-theme-color select:border select:border-border-info-color inputs:placeholder-body-text-color text-slate-300 rounded-2xl [&_label]:mb-2 [&_label]:text-body-text-color [&_*]:transition-all">
           <div className="grid">

@@ -18,7 +18,11 @@ import {
   verifyUser,
   verifySeller,
 } from "../middlewares/auth.middleware.js";
-import { upload } from "../middlewares/multer.middleware.js";
+// import { upload } from "../middlewares/multer.middleware.js";
+import {
+  uploadSingle,
+  uploadMultiple,
+} from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
@@ -34,18 +38,21 @@ router.route("/user-bids").get(verifyUser, getBidsAuctionsByUser);
 router
   .route("/delete/:id")
   .delete(verifyUser, verifySeller, deleteSingleAuctionById);
-router
-  .route("/update/:id")
-  .put(
-    verifyUser,
-    verifySeller,
-    upload.single("image"),
-    updateSingleAuactionById
-  );
+router.route("/update/:id").put(
+  verifyUser,
+  verifySeller,
+  uploadSingle, // Use upload.single() for single file upload
+  updateSingleAuactionById
+);
+
 router.route("/user-auctions").get(verifyUser, verifySeller, getAuctionsByUser);
-router
-  .route("/create-auction")
-  .post(verifyUser, verifySeller, upload.single("image"), createAuction);
+router.route("/create-auction").post(
+  verifyUser,
+  verifySeller,
+  uploadMultiple, // Use upload.array() for multiple files upload
+  createAuction
+);
+
 router.route("/:id").get(getSingleAuctionById);
 
 router
