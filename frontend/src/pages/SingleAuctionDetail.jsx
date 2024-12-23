@@ -24,16 +24,13 @@ const SingleAuctionDetail = ({ noPadding }) => {
   const { bids } = useSelector((state) => state.bid);
   const [auctionStarted, setAuctionStarted] = useState(false);
   const [singleAuctionData, setSingleAuctionData] = useState();
-  //console.log((singleAuctionData, "singleAuctionData............"));
   const [auctionWinnerDetailData, setAuctionWinnerDetailData] = useState();
   const [bidsData, setBidsData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const { auction } = useSelector((state) => state.auction);
-  console.log("first", auction);
   const [singleAuction, setSingleAuction] = useState(
     auction ? auction.find((item) => item._id === params?.id) : auction[0]
   );
-  console.log("second", singleAuction);
+
   useEffect(() => {
     const interval = setInterval(() => {
       const currentTime = new Date().getTime();
@@ -54,7 +51,6 @@ const SingleAuctionDetail = ({ noPadding }) => {
 
   socket.on("winnerSelected", async (data) => {
     setAuctionStarted(false);
-
     setAuctionWinnerDetailData(data);
   });
 
@@ -62,22 +58,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
     socket.emit("selectWinner", params?.id);
   };
 
-  //console.log(params.id);
-  //console.log(singleAuction);
-  //console.log(isLoading);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-
-  //   Promise.all([dispatch(getSingleAuctionById(params?.id))]).then(() => {
-  //     setIsLoading(false);
-  //   });
-  //   dispatch(getAllBidsForAuction(params?.id));
-  // }, [params?.id]);
-
-  //console.log("useEffect is running.new new....");
   socket.on("newBidData", async (data) => {
-    //console.log(data, "newBidData,,,,,,,,,,,,,,,,,io,,,,,,io");
     setBidsData([
       {
         _id: new Date().getTime(),
@@ -96,12 +77,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
       ...prevState,
       startingPrice: data.bidAmount,
     }));
-
-    // handleNewBid()
   });
-  useEffect(() => {
-    //console.log("useEffect is running.new new bidsdata bidsdata bidsdata....");
-  }, [bidsData]);
 
   useEffect(() => {
     setBidsData(bids);
@@ -109,16 +85,13 @@ const SingleAuctionDetail = ({ noPadding }) => {
   }, [bids, singleAuction]);
 
   useEffect(() => {
-    socket.on("connect", () => {
-      //console.log(`Client connected with the id: ${socket.id}`);
-    });
+    socket.on("connect", () => {});
     socket.emit("joinAuction", logInUser?._id);
     socket.on("newUserJoined", (data) => {});
   }, []);
 
   const placeBidHandle = async (e) => {
     e.preventDefault();
-    //console.log((singleAuctionData, "singleAuctionData............"));
     if (user?.paymentVerified === false) {
       toast.info(
         "Please verify your payment method to place a bid. Go to settings..."
@@ -129,15 +102,12 @@ const SingleAuctionDetail = ({ noPadding }) => {
       amount: Math.floor(newBidAmount),
     };
     if (Math.floor(newBidAmount) <= singleAuctionData?.startingPrice) {
-      toast.info("Bid amount should be greater than the currnt bid");
-      //console.log(new Date().getTime() / 1000 + " seconds");
+      toast.info("Bid amount should be greater than the current bid");
     } else if (singleAuction?.endTime < new Date().getTime() / 1000) {
       toast.info("Auction time is over");
     } else {
       dispatch(placeABid(bidData));
       setNewBidAmount("");
-      // setSingleAuctionData(newBidAmount);
-
       socket.emit("newBid", {
         profilePicture: logInUser?.profilePicture,
         fullName: logInUser?.fullName,
@@ -163,29 +133,27 @@ const SingleAuctionDetail = ({ noPadding }) => {
       );
     }
   };
+
   if (isLoading) {
     return <Loading />;
   }
 
-  // Rest of your code
-
   return (
     <>
       <div
-        className={`flex place-content-between  py-10 px-5 lg:py-20  lg:px-10  items-start gap-7 flex-wrap md:flex-nowrap ${noPadding ? "lg:py-0 px-0" : "p-4"}`}
+        className={`flex place-content-between py-10 px-5 lg:py-20 lg:px-10 items-start gap-7 flex-wrap md:flex-nowrap ${noPadding ? "lg:py-0 px-0" : "p-4"}`}
         id="item01"
       >
         <img
-          className=" rounded-xl  md:max-w-[45%]  w-full "
+          className="rounded-xl md:max-w-[45%] w-full"
           src={singleAuction?.image}
           alt="product image"
         />
-        <div className="w-full flex gap-4 flex-col ">
+        <div className="w-full flex gap-4 flex-col">
           <div>
             <h2 className="text-3xl font-extrabold text-white">
               {singleAuction?.name}
             </h2>
-
             <div className="pt-4 flex flex-row gap-4 flex-wrap text-body-text-color capitalize">
               <a
                 href="#"
@@ -200,8 +168,6 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 {singleAuction?.location?.name}
               </a>
             </div>
-
-            {/* Product Properties */}
             <div className="pt-4 border-t border-border-info-color">
               <h3 className="text-heading-color font-medium">
                 Product Specifications
@@ -213,71 +179,61 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 <li>Weight: {singleAuction?.weight} gm</li>
               </ul>
             </div>
-          </div>
-
-          <div className="pt-4 border-t border-border-info-color">
-            {/* TABS buttons */}
-            <div className="flex gap-4 pt-4 font-bold text-white ">
-              <button
-                className={`px-5 py-2 rounded-xl   ${
-                  activeTab === "description"
-                    ? "bg-color-primary"
-                    : "bg-theme-bg2 text-body-text-color"
+            <div className="pt-4 border-t border-border-info-color">
+              <div className="flex gap-4 pt-4 font-bold text-white">
+                <button
+                  className={`px-5 py-2 rounded-xl ${
+                    activeTab === "description"
+                      ? "bg-color-primary"
+                      : "bg-theme-bg2 text-body-text-color"
+                  }`}
+                  onClick={() => setActiveTab("description")}
+                >
+                  Details
+                </button>
+                <button
+                  className={`px-5 py-2 rounded-xl ${
+                    activeTab === "bids"
+                      ? "bg-color-primary"
+                      : "bg-theme-bg2 text-body-text-color"
+                  }`}
+                  onClick={() => setActiveTab("bids")}
+                >
+                  Bids
+                </button>
+              </div>
+            </div>
+            <div>
+              <div
+                id="description"
+                className={`pt-4 border-t border-border-info-color ${
+                  activeTab === "description" ? "block" : "hidden"
                 }`}
-                onClick={() => setActiveTab("description")}
               >
-                Details
-              </button>
-              <button
-                className={`px-5 py-2 rounded-xl   ${
-                  activeTab === "bids"
-                    ? "bg-color-primary"
-                    : "bg-theme-bg2 text-body-text-color"
-                }`}
-                onClick={() => setActiveTab("bids")}
+                <h3 className="text-heading-color font-medium">Description</h3>
+                <p className="text-body-text-color">
+                  {singleAuction?.description}
+                </p>
+              </div>
+              <div
+                id="bids"
+                className={`pt-4 border-t border-border-info-color max-h-[250px] overflow-y-auto ${
+                  activeTab === "bids" ? "block" : "hidden"
+                } no-scrollbar`}
               >
-                Bids
-              </button>
+                {singleAuction?.bids?.length > 0 || bidsData.length > 0 ? (
+                  bidsData?.map((bid) => <BidCard key={bid._id} bid={bid} />)
+                ) : (
+                  <h1 className="text-white">No bids yet</h1>
+                )}
+              </div>
             </div>
           </div>
-          <div>
-            {/* Description */}
-            <div
-              id="description"
-              className={`pt-4 border-t border-border-info-color ${
-                activeTab === "description" ? "block" : "hidden"
-              }`}
-            >
-              <h3 className="text-heading-color font-medium">Description</h3>
-              <p className="text-body-text-color">
-                {singleAuction?.description}
-              </p>
-            </div>
-            {/* Bids */}
-            <div
-              id="bids"
-              className={`pt-4 border-t border-border-info-color max-h-[250px] overflow-y-auto  ${
-                activeTab === "bids" ? "block" : "hidden"
-              } no-scrollbar`}
-            >
-              {/* map over bids array */}
-              {singleAuction?.bids?.length > 0 || bidsData.length > 0 ? (
-                bidsData?.map((bid) => <BidCard key={bid._id} bid={bid} />)
-              ) : (
-                <h1 className="text-white">No bids yet</h1>
-              )}
-            </div>
-          </div>
-
           <div className="text-heading-color capitalize"></div>
-
-          {/* countdown timer */}
-
           <div className="flex flex-col gap-4 pt-4 border-t border-border-info-color">
             <div className="flex justify-between items-center">
               <div className="flex flex-col gap-2">
                 <h3 className="text-heading-color font-medium">
-                  {" "}
                   {singleAuction?.bids?.length > 0
                     ? "Current Bid"
                     : "Starting Price"}
@@ -287,7 +243,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 </p>
               </div>
               <div className="flex flex-col gap-2">
-                <h3 className="text-heading-color font-medium">Time </h3>
+                <h3 className="text-heading-color font-medium">Time</h3>
                 <p className="text-body-text-color">
                   <CountDownTimer
                     startTime={singleAuction?.startTime}
@@ -298,13 +254,9 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* // detail about current bid and timer  */}
-          <div className=" flex flex-col gap-4 pt-4 border-t border-border-info-color ">
-            {singleAuction?.status === "over" || auctionWinnerDetailData ? (
-              bidsData.length > 0 ? (
-                <>
+            <div className="flex flex-col gap-4 pt-4 border-t border-border-info-color">
+              {singleAuction?.status === "over" || auctionWinnerDetailData ? (
+                bidsData.length > 0 ? (
                   <div>
                     <h1 className="font-bold text-white">Winner</h1>
                     <div className="flex sm:gap-10 items-center border mt-2 justify-between md:w-[80%] py-1 px-2 md:px-5 border-theme-bg-light rounded-full">
@@ -340,74 +292,101 @@ const SingleAuctionDetail = ({ noPadding }) => {
                         {auctionWinnerDetailData?.bidAmount ||
                           singleAuction?.winner?.bidAmount}
                       </div>
-                    </div>{" "}
+                    </div>
                   </div>
-                </>
+                ) : (
+                  <h1 className="text-white">No bids</h1>
+                )
               ) : (
-                <h1 className="text-white">No bids</h1>
-              )
-            ) : (
-              auctionStarted && (
-                <form
-                  className="flex justify-between flex-wrap gap-4 items-center"
-                  onSubmit={placeBidHandle}
-                >
-                  {/* input button for bid */}
-                  <input
-                    type="number"
-                    className="outline-none text-slate-300 px-3 py-4 rounded-xl bg-theme-bg2 border border-border-info-color focus:border-theme-color transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                    placeholder="Enter your bid"
-                    value={newBidAmount}
-                    onChange={(e) => setNewBidAmount(e.target.value)}
-                    onWheel={(e) => e.target.blur()}
-                    required
-                  />
-                  {logInUser ? (
-                    user?.paymentVerified ? (
-                      <button
-                        type="submit"
-                        disabled={
-                          singleAuction?.seller?._id === logInUser?._id
-                            ? true
-                            : false || !auctionStarted
-                        }
-                        className={`bg-color-primary py-2 px-4 rounded-lg  text-white ${
-                          singleAuction?.seller?._id === logInUser?._id
-                            ? "bg-theme-bg2 text-body-text-color cursor-not-allowed border border-border-info-color hover:border-color-danger"
-                            : "bg-color-primary border cursor-pointer border-border-info-color hover:bg-color-danger"
-                        } ${
-                          !auctionStarted
-                            ? "bg-theme-bg2 text-body-text-color "
-                            : "bg-color-primary "
-                        } `}
-                      >
-                        Place Bid
-                      </button>
-                    ) : (
-                      <Link
-                        to="/user-profile/payment-method"
-                        className="bg-color-primary py-2 px-4 rounded-lg cursor-pointer text-white"
-                      >
-                        Attach Payment Method to Bid
-                      </Link>
-                    )
-                  ) : (
-                    <Link
-                      to="/login"
-                      className="bg-color-primary py-2 px-4 rounded-lg cursor-pointer text-white"
-                    >
-                      Place Bid
-                    </Link>
-                  )}
-                </form>
-              )
-            )}
+                auctionStarted && (
+                  <form
+                    className="flex justify-between items-center flex-wrap gap-4"
+                    onSubmit={placeBidHandle}
+                  >
+                    <div className="flex flex-col gap-4 pt-4 border-t border-border-info-color">
+                      {auctionStarted && (
+                        <form
+                          className="flex justify-between items-center gap-4"
+                          onSubmit={(e) => e.preventDefault()}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="text"
+                              className="outline-none text-slate-300 px-3 py-4 rounded-xl bg-theme-bg2 border border-border-info-color focus:border-theme-color transition-all"
+                              placeholder="Enter your bid"
+                              value={newBidAmount}
+                              readOnly
+                              required
+                            />
+                            <div className="flex flex-col">
+                              <button
+                                type="button"
+                                className="bg-theme-bg2 hover:bg-theme-color text-white px-2 py-1 rounded-t-md"
+                                onClick={() =>
+                                  setNewBidAmount((prev) =>
+                                    prev ? +prev + 500 : singleAuction?.startingPrice
+                                  )
+                                }
+                              >
+                                ▲
+                              </button>
+                              <button
+                                type="button"
+                                className="bg-theme-bg2 hover:bg-theme-color text-white px-2 py-1 rounded-b-md"
+                                onClick={() =>
+                                  setNewBidAmount((prev) =>
+                                    Math.max(
+                                      prev ? +prev - 500 : singleAuction?.startingPrice,
+                                      singleAuction?.startingPrice
+                                    )
+                                  )
+                                }
+                              >
+                                ▼
+                              </button>
+                            </div>
+                          </div>
+                          {logInUser ? (
+                            user?.paymentVerified ? (
+                              <div className="ml-auto">
+                              <button
+                                type="button"
+                                className="bg-color-primary py-2 px-4 rounded-lg text-white"
+                                onClick={() =>
+                                  toast.info(
+                                    `Your bid of $${newBidAmount} is ready! Click confirm to place it.`
+                                  )
+                                }
+                              >
+                                Confirm Bid
+                              </button>
+                              </div>
+                            ) : (
+                              <Link
+                                to="/user-profile/payment-method"
+                                className="bg-color-primary py-2 px-4 rounded-lg cursor-pointer text-white"
+                              >
+                                Attach Payment Method to Bid
+                              </Link>
+                            )
+                          ) : (
+                            <Link
+                              to="/login"
+                              className="bg-color-primary py-2 px-4 rounded-lg cursor-pointer text-white"
+                            >
+                              Place Bid
+                            </Link>
+                          )}
+                        </form>
+                      )}
+                    </div>
+                  </form>
+                )
+              )}
+            </div>
           </div>
         </div>
       </div>
-      {/* <div className="mx-8">
-        <LiveHome></LiveHome>
-      </div> */}
     </>
   );
 };
