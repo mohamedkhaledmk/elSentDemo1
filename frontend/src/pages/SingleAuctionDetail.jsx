@@ -12,6 +12,9 @@ import socket from "../socket";
 import { getAllBidsForAuction } from "../store/bid/bidSlice";
 import Loading from "../components/Loading";
 import LiveHome from "../components/home/LiveHome";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Example using react-icons
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 const SingleAuctionDetail = ({ noPadding }) => {
   const [newBidAmount, setNewBidAmount] = useState("");
@@ -30,6 +33,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
   const [singleAuction, setSingleAuction] = useState(
     auction ? auction.find((item) => item._id === params?.id) : auction[0]
   );
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -134,6 +138,18 @@ const SingleAuctionDetail = ({ noPadding }) => {
     }
   };
 
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex + 1 < singleAuction?.images?.length ? prevIndex + 1 : 0
+    );
+  };
+
+  const handlePreviousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex - 1 >= 0 ? prevIndex - 1 : singleAuction?.images?.length - 1
+    );
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -144,11 +160,25 @@ const SingleAuctionDetail = ({ noPadding }) => {
         className={`flex place-content-between py-10 px-5 lg:py-20 lg:px-10 items-start gap-7 flex-wrap md:flex-nowrap ${noPadding ? "lg:py-0 px-0" : "p-4"}`}
         id="item01"
       >
-        <img
-          className="rounded-xl md:max-w-[45%] w-full"
-          src={singleAuction?.image}
-          alt="product image"
-        />
+        <div className="relative rounded-xl md:max-w-[45%] w-full">
+          <img
+            className="rounded-xl w-full"
+            src={singleAuction?.images[currentImageIndex]}
+            alt={`Product image ${currentImageIndex + 1}`}
+          />
+          <button
+            className="absolute top-1/2 left-2 text-white bg-black bg-opacity-50 p-2 rounded-full"
+            onClick={handlePreviousImage}
+          >
+            <FaArrowLeft />
+          </button>
+          <button
+            className="absolute top-1/2 right-2 text-white bg-black bg-opacity-50 p-2 rounded-full"
+            onClick={handleNextImage}
+          >
+            <FaArrowRight />{" "}
+          </button>
+        </div>
         <div className="w-full flex gap-4 flex-col">
           <div>
             <h2 className="text-3xl font-extrabold text-white">
@@ -324,7 +354,9 @@ const SingleAuctionDetail = ({ noPadding }) => {
                                 className="bg-theme-bg2 hover:bg-theme-color text-white px-2 py-1 rounded-t-md"
                                 onClick={() =>
                                   setNewBidAmount((prev) =>
-                                    prev ? +prev + 500 : singleAuction?.startingPrice
+                                    prev
+                                      ? +prev + 500
+                                      : singleAuction?.startingPrice
                                   )
                                 }
                               >
@@ -336,7 +368,9 @@ const SingleAuctionDetail = ({ noPadding }) => {
                                 onClick={() =>
                                   setNewBidAmount((prev) =>
                                     Math.max(
-                                      prev ? +prev - 500 : singleAuction?.startingPrice,
+                                      prev
+                                        ? +prev - 500
+                                        : singleAuction?.startingPrice,
                                       singleAuction?.startingPrice
                                     )
                                   )
@@ -349,17 +383,17 @@ const SingleAuctionDetail = ({ noPadding }) => {
                           {logInUser ? (
                             user?.paymentVerified ? (
                               <div className="ml-auto">
-                              <button
-                                type="button"
-                                className="bg-color-primary py-2 px-4 rounded-lg text-white"
-                                onClick={() =>
-                                  toast.info(
-                                    `Your bid of $${newBidAmount} is ready! Click confirm to place it.`
-                                  )
-                                }
-                              >
-                                Confirm Bid
-                              </button>
+                                <button
+                                  type="button"
+                                  className="bg-color-primary py-2 px-4 rounded-lg text-white"
+                                  onClick={() =>
+                                    toast.info(
+                                      `Your bid of $${newBidAmount} is ready! Click confirm to place it.`
+                                    )
+                                  }
+                                >
+                                  Confirm Bid
+                                </button>
                               </div>
                             ) : (
                               <Link
