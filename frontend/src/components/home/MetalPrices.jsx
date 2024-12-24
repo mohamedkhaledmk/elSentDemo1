@@ -27,6 +27,9 @@ const MetalPrices = () => {
                   Metal
                 </th>
                 <th className="p-2 pr-5 select-none first:rounded-l-lg last:rounded-r-lg border-b border-border-info-color hover:bg-theme-bg2 transition-all">
+                  Purity
+                </th>
+                <th className="p-2 pr-5 select-none first:rounded-l-lg last:rounded-r-lg border-b border-border-info-color hover:bg-theme-bg2 transition-all">
                   Date
                 </th>
                 <th className="p-2 pr-5 select-none first:rounded-l-lg last:rounded-r-lg border-b border-border-info-color hover:bg-theme-bg2 transition-all">
@@ -35,20 +38,73 @@ const MetalPrices = () => {
               </tr>
             </thead>
             <tbody className="table-row-group">
-              {metals.map((metal) => (
-                <tr key={metal._id} className="border">
-                  <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-                    {metal.metal}
-                  </td>
-                  <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-                    {formattedDate}
-                  </td>
-                  <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-                    SAR {metal.price}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+  {metals.map((metal) => {
+    if (metal.metal.toLowerCase() === "gold") {
+      return (
+        <>
+          <tr key={`${metal._id}-1`} className="border">
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              {metal.metal}
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              24k
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              {formattedDate}
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              SAR {metal.price}
+            </td>
+          </tr>
+          <tr key={`${metal._id}-2`} className="border">
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              {metal.metal}
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              21k
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              {formattedDate}
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              SAR {metal.price}
+            </td>
+          </tr>
+          <tr key={`${metal._id}-3`} className="border">
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              {metal.metal}
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              18k
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              {formattedDate}
+            </td>
+            <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+              SAR {metal.price}
+            </td>
+          </tr>
+        </>
+      );
+    }
+    return (
+      <tr key={metal._id} className="border">
+        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+          {metal.metal}
+        </td>
+        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+          Purity
+        </td>
+        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+          {formattedDate}
+        </td>
+        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+          SAR {metal.price}
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
           </table>
         </div>
       ) : (
