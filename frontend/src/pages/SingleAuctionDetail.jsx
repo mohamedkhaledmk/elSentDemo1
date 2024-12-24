@@ -13,7 +13,6 @@ import { getAllBidsForAuction } from "../store/bid/bidSlice";
 import Loading from "../components/Loading";
 import LiveHome from "../components/home/LiveHome";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Example using react-icons
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 const SingleAuctionDetail = ({ noPadding }) => {
