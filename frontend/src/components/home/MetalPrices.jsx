@@ -58,7 +58,7 @@ const MetalPrices = () => {
           </tr>
           <tr key={`${metal._id}-2`} className="border">
             <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-              {metal.metal}
+              {metal.metal} 
             </td>
             <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
               21k
@@ -67,7 +67,7 @@ const MetalPrices = () => {
               {formattedDate}
             </td>
             <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-              SAR {metal.price}
+            SAR {(metal.price * 0.857).toFixed(2)}
             </td>
           </tr>
           <tr key={`${metal._id}-3`} className="border">
@@ -75,34 +75,36 @@ const MetalPrices = () => {
               {metal.metal}
             </td>
             <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-              18k
+              18k 
             </td>
             <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
               {formattedDate}
             </td>
             <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-              SAR {metal.price}
+            SAR {(metal.price * 0.75).toFixed(2)}
             </td>
           </tr>
         </>
       );
     }
-    return (
-      <tr key={metal._id} className="border">
-        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-          {metal.metal}
-        </td>
-        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-          Purity
-        </td>
-        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-          {formattedDate}
-        </td>
-        <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
-          SAR {metal.price}
-        </td>
-      </tr>
-    );
+    if (metal.metal.toLowerCase() === "silver") {
+      return (
+        <tr key={metal._id} className="border">
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+            {metal.metal}
+          </td>
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+            912
+          </td>
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+            {formattedDate}
+          </td>
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+            SAR {metal.price}
+          </td>
+        </tr>
+      );
+    }
   })}
 </tbody>
           </table>
