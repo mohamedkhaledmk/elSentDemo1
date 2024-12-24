@@ -47,6 +47,37 @@ const Dashboard = () => {
     setCurrentPage(currentPage + 1);
   };
 
+  // State to track the current image index for each auction when hovering
+  const [currentImageIndexes, setCurrentImageIndexes] = useState(
+    auctionData.map(() => 0)
+  );
+
+  // Handle hover effect
+  const handleMouseEnter = (index) => {
+    const imagesArray = auctionData[index]?.images || [];
+    if (imagesArray.length > 1) {
+      let currentIndex = 0;
+      const interval = setInterval(() => {
+        setCurrentImageIndexes((prevIndexes) => {
+          const updatedIndexes = [...prevIndexes];
+          updatedIndexes[index] = (currentIndex + 1) % imagesArray.length;
+          currentIndex++;
+          return updatedIndexes;
+        });
+      }, 1000);
+
+      // Stop the image cycling on mouse leave
+      const handleMouseLeave = () => {
+        clearInterval(interval);
+      };
+
+      // Attach mouse leave handler
+      document
+        .getElementById(`auction-item-${index}`)
+        .addEventListener("mouseleave", handleMouseLeave);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-4 items-start mb-5">
       <div className="flex items-center">
@@ -66,29 +97,42 @@ const Dashboard = () => {
           <Loading />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 md:grid-cols-3 lg:grid-cols-4 max-w-[1400px] mx-auto">
-            {" "}
             {auctionData &&
-              currentItems.map((item, index) => (
-                <div key={index}>
-                  <SingleAuction
-                    name={item?.name}
-                    startingPrice={item?.startingPrice}
-                    image={item?.images[0] || item?.image}
-                    endTime={item?.endTime}
-                    startTime={item?.startTime}
-                    id={item?._id}
-                    status={item?.status}
-                    sellerImage={item?.seller?.profilePicture}
-                    sellerName={item?.seller?.fullName}
-                    sellerId={item?.seller?._id}
-                    bidLength={item?.bids?.length}
-                    winnerFullName={item?.winner?.bidder?.fullName}
-                    winnerProfilePicture={item?.winner?.bidder?.profilePicture}
-                    winnerBidAmount={item?.winner?.bidAmount}
-                    winnerBidTime={item?.winner?.bidTime}
-                  />
-                </div>
-              ))}{" "}
+              currentItems.map((item, index) => {
+                const images = item?.images || [];
+                const currentImageIndex = currentImageIndexes[index];
+                const currentImage =
+                  images[currentImageIndex] || images[0] || item.image;
+
+                return (
+                  <div
+                    key={index}
+                    id={`auction-item-${index}`}
+                    onMouseEnter={() => handleMouseEnter(index)}
+                    className="relative"
+                  >
+                    <SingleAuction
+                      name={item?.name}
+                      startingPrice={item?.startingPrice}
+                      image={currentImage} // Show image based on the cycling index
+                      endTime={item?.endTime}
+                      startTime={item?.startTime}
+                      id={item?._id}
+                      status={item?.status}
+                      sellerImage={item?.seller?.profilePicture}
+                      sellerName={item?.seller?.fullName}
+                      sellerId={item?.seller?._id}
+                      bidLength={item?.bids?.length}
+                      winnerFullName={item?.winner?.bidder?.fullName}
+                      winnerProfilePicture={
+                        item?.winner?.bidder?.profilePicture
+                      }
+                      winnerBidAmount={item?.winner?.bidAmount}
+                      winnerBidTime={item?.winner?.bidTime}
+                    />
+                  </div>
+                );
+              })}
           </div>
         )}
         {auctionData && auctionData?.length !== 0 ? (
