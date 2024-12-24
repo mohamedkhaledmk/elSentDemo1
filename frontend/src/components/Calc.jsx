@@ -47,7 +47,7 @@ const Calc = () => {
   };
 
   return (
-    <div className="fixed bottom-20 right-10 bg-[#15141788] w-1/5 h-1/2 z-50 ">
+    <div className="fixed bottom-20 right-10 bg-[#15141788] w-1/4 h-1/2 z-50 rounded-lg p-4">
       {/* Dropdown Menu */}
       <div className="metal-selection">
         <select
