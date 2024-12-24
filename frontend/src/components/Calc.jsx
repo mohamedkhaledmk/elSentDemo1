@@ -47,7 +47,7 @@ const Calc = () => {
   };
 
   return (
-    <div className="fixed bottom-20 right-10 bg-[#15141788] w-1/5 h-3/4 z-50 ">
+    <div className="fixed bottom-20 right-10 bg-[#15141788] w-1/5 h-1/2 z-50 ">
       {/* Dropdown Menu */}
       <div className="metal-selection">
         <select
@@ -74,22 +74,7 @@ const Calc = () => {
 
       {/* Calculator Buttons */}
       <div id="buttons" className="calculator-buttons">
-        <button onClick={() => handleButtonClick("7")}>7</button>
-        <button onClick={() => handleButtonClick("8")}>8</button>
-        <button onClick={() => handleButtonClick("9")}>9</button>
-        <button onClick={() => handleButtonClick("÷")}>÷</button>
-        <button onClick={() => handleButtonClick("4")}>4</button>
-        <button onClick={() => handleButtonClick("5")}>5</button>
-        <button onClick={() => handleButtonClick("6")}>6</button>
-        <button onClick={() => handleButtonClick("×")}>×</button>
-        <button onClick={() => handleButtonClick("1")}>1</button>
-        <button onClick={() => handleButtonClick("2")}>2</button>
-        <button onClick={() => handleButtonClick("3")}>3</button>
-        <button onClick={() => handleButtonClick("-")}>-</button>
-        <button onClick={() => handleButtonClick("0")}>0</button>
-        <button onClick={() => handleButtonClick(".")}>.</button>
-        <button onClick={() => handleButtonClick("=")}>=</button>
-        <button onClick={() => handleButtonClick("+")}>+</button>
+        <button style={{ gridColumn: "span 4" }} onClick={() => handleButtonClick("=")}>=</button>
         <button
           id="allClear"
           style={{ gridColumn: "span 4" }}
