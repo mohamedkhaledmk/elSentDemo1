@@ -18,8 +18,8 @@ import ErrorPage from "./ErrorPage";
 import AllCategories from "../components/AllCategories";
 import EditCategory from "../components/EditCategory";
 import CreateCategory from "../components/CreateCategory";
-import SingleAuctionDetail from "../../pages/SingleAuctionDetail"
-
+import SingleAuctionDetail from "../../pages/SingleAuctionDetail";
+import Giveaway from "../components/giveaway";
 const Dashboard = () => {
   return (
     <div className=" ">
@@ -37,6 +37,7 @@ const Dashboard = () => {
             <Route path="/auctions/view/:id" element={<SingleAuctionDetail noPadding />} />
             <Route path="/categories/*" element={<AllCategories />} />
             <Route path="/categories/edit/:id" element={<EditCategory />} />
+            <Route path="/giveaway/*" element={<Giveaway />} />
             <Route
               path="/categories/create-category"
               element={<CreateCategory />}
