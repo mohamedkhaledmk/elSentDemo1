@@ -59,7 +59,18 @@ const SingleAuctionDetail = ({ noPadding }) => {
   const handleWinner = () => {
     socket.emit("selectWinner", params?.id);
   };
-
+  const confirmBid = () => {
+    console.log(user, "user");
+    const { fullName, email, phone, address } = user;
+    if (!fullName || !email || !phone || !address) {
+      toast.error("Please fill all the your profile fields first!");
+      return false;
+    } else {
+      toast.info(
+        "Your bid is ready. click on the confirm bid button to place your bid"
+      );
+    }
+  };
   socket.on("newBidData", async (data) => {
     setBidsData([
       {
@@ -365,7 +376,10 @@ const SingleAuctionDetail = ({ noPadding }) => {
                                 onClick={() =>
                                   setNewBidAmount((prev) =>
                                     prev
-                                      ? +prev + 500
+                                      ? +prev +
+                                        (singleAuction.incrementPrice
+                                          ? singleAuction?.incrementPrice
+                                          : 500)
                                       : singleAuction?.startingPrice
                                   )
                                 }
@@ -396,22 +410,21 @@ const SingleAuctionDetail = ({ noPadding }) => {
                                 <button
                                   type="button"
                                   className="bg-color-primary py-2 px-4 rounded-lg text-white"
-                                  onClick={() =>
-                                    toast.info(
-                                      `Your bid of $${newBidAmount} is ready! Click confirm to place it.`
-                                    )
-                                  }
+                                  onClick={() => confirmBid()}
                                 >
                                   Confirm Bid
                                 </button>
                               </div>
                             ) : (
-                              <Link
-                                to="/user-profile/payment-method"
-                                className="bg-color-primary py-2 px-4 rounded-lg cursor-pointer text-white"
-                              >
-                                Attach Payment Method to Bid
-                              </Link>
+                              <div className="ml-auto">
+                                <button
+                                  type="button"
+                                  className="bg-color-primary py-2 px-4 rounded-lg text-white"
+                                  onClick={() => confirmBid()}
+                                >
+                                  Confirm Bid
+                                </button>
+                              </div>
                             )
                           ) : (
                             <Link

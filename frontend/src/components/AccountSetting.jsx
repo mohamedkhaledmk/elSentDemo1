@@ -38,7 +38,7 @@ const AccountSetting = () => {
     //image data so use new formdata
     const data = new FormData();
     //console.log(formData);
-
+    console.log("gender", formData.gender);
     data.append("fullName", formData.fullName);
     data.append("email", formData.email);
     data.append("gender", formData.gender);
@@ -129,6 +129,7 @@ const AccountSetting = () => {
                 setFormData({ ...formData, gender: e.target.value })
               }
             >
+              <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>

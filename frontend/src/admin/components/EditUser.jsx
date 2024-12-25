@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserById,updateUserById, reset } from "../../store/user/userSlice";
+import { getUserById, updateUserById, reset } from "../../store/user/userSlice";
 import { useParams } from "react-router-dom";
 
 const EditUser = () => {
@@ -23,7 +23,7 @@ const EditUser = () => {
     //console.log("useEffect........");
     dispatch(getUserById(id));
   }, []);
-  useEffect(()=>{},[id])
+  useEffect(() => {}, [id]);
 
   useEffect(() => {
     if (singleUser) {
@@ -40,7 +40,7 @@ const EditUser = () => {
       });
       setImgUrl(singleUser.profilePicture);
     }
-  }, [singleUser,dispatch]);
+  }, [singleUser, dispatch]);
 
   const [imgUrl, setImgUrl] = useState(singleUser?.profilePicture);
   const imgRef = useRef(null);
@@ -68,7 +68,7 @@ const EditUser = () => {
       data.append("profilePicture", imgUrl);
     }
     //console.log(imgUrl);
-    dispatch(updateUserById({data,id}));
+    dispatch(updateUserById({ data, id }));
     setImgUrl(null);
     dispatch(getUserById(id));
 
