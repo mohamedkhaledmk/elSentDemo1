@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllMetals } from "../store/metals/metalsSlice";
+
 const Calc = () => {
   const { metals } = useSelector((state) => state.metal);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getAllMetals());
   }, [dispatch]);
+
   // State variables
   const [selectedPrice, setSelectedPrice] = useState("");
   const [currentInput, setCurrentInput] = useState("");
+
+  // Purity multipliers for gold
+  const goldPurities = [
+    { label: "24k", multiplier: 1 },
+    { label: "21k", multiplier: 0.857 },
+    { label: "18k", multiplier: 0.75 },
+  ];
+
   // Handle dropdown selection
   const handleMetalChange = (event) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
@@ -59,11 +70,24 @@ const Calc = () => {
           <option value="" disabled selected>
             Select Metal
           </option>
-          {metals.map((item) => (
-            <option key={item.metal} value={item.metal} data-price={item.price}>
-              {item.metal}
-            </option>
-          ))}
+          {metals.map((item) => {
+            if (item.metal.toLowerCase() === "gold") {
+              return goldPurities.map((purity) => (
+                <option
+                  key={`${item.metal}-${purity.label}`}
+                  value={`${item.metal}-${purity.label}`}
+                  data-price={(item.price * purity.multiplier).toFixed(2)}
+                >
+                  {item.metal} ({purity.label}) - SAR {(item.price * purity.multiplier).toFixed(2)}
+                </option>
+              ));
+            }
+            return (
+              <option key={item.metal} value={item.metal} data-price={item.price}>
+                {item.metal} - SAR {item.price}
+              </option>
+            );
+          })}
         </select>
       </div>
 
