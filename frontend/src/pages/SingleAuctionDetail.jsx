@@ -201,10 +201,22 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 Product Specifications
               </h3>
               <ul className="text-body-text-color">
-                <li>Length: {singleAuction?.length} cm</li>
-                <li>Width: {singleAuction?.width} cm</li>
-                <li>Height: {singleAuction?.height} cm</li>
-                <li>Weight: {singleAuction?.weight} gm</li>
+                {singleAuction.workManShipFee && (
+                  <li>Workmanship Fee: {singleAuction.workManShipFee} %</li>
+                )}
+                {singleAuction.length && (
+                  <li>Length: {singleAuction.length} cm</li>
+                )}
+                {singleAuction.width && (
+                  <li>Width: {singleAuction.width} cm</li>
+                )}
+                {singleAuction.height && (
+                  <li>Height: {singleAuction.height} cm</li>
+                )}
+                {singleAuction.weight && (
+                  <li>Weight: {singleAuction.weight} kg</li>
+                )}
+                {singleAuction.color && <li>Color: {singleAuction.color}</li>}
               </ul>
             </div>
             <div className="pt-4 border-t border-border-info-color">
