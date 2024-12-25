@@ -37,6 +37,8 @@ const UploadItem = () => {
     height: "",
     weight: "",
     materialUsed: "",
+    workmanshipFee: "",
+    incrementPrice: "",
   });
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const UploadItem = () => {
         endTime: "",
         location: "",
         startingPrice: "",
+        workmanshipFee: "", // Reset new field
         description: "",
         length: "",
         width: "",
@@ -99,7 +102,6 @@ const UploadItem = () => {
     const urls = Array.from(files).map((file) => URL.createObjectURL(file));
     setImgUrls(urls);
   };
-
   return (
     <div>
       <form
@@ -219,6 +221,8 @@ const UploadItem = () => {
                 required
                 id="starting_price"
                 type="number"
+                placeholder="e.g (1000)"
+                min="1"
                 onChange={(e) =>
                   setFormData({ ...formData, startingPrice: e.target.value })
                 }
@@ -314,6 +318,32 @@ const UploadItem = () => {
                 setFormData({ ...formData, materialUsed: e.target.value })
               }
               value={formData.materialUsed}
+            />
+          </div>
+          <div className="grid">
+            <label htmlFor="workmanship_fee">Workmanship Fee</label>
+            <input
+              required
+              id="workmanship_fee"
+              placeholder="e.g. 50"
+              type="number"
+              onChange={(e) =>
+                setFormData({ ...formData, workmanshipFee: e.target.value })
+              }
+              value={formData.workmanshipFee}
+            />
+          </div>
+          <div className="grid">
+            <label htmlFor="increment_price">Increment Price</label>
+            <input
+              required
+              id="increment_price"
+              type="number"
+              min="1"
+              onChange={(e) =>
+                setFormData({ ...formData, incrementPrice: e.target.value })
+              }
+              value={formData.incrementPrice || ""}
             />
           </div>
           <div className="grid">

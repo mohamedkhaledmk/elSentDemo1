@@ -99,7 +99,7 @@ const ManageItems = () => {
                   <td className="rounded-l-lg">
                     <div className="flex items-center gap-2">
                       <img
-                        src={auction?.image}
+                        src={auction?.images[0] || auction?.image}
                         alt="auction image"
                         className="w-[50px] h-[50px] rounded-full"
                       />
