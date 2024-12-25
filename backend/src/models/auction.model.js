@@ -28,6 +28,8 @@ const auctionSchema = new mongoose.Schema(
     width: { type: Number, required: [true, "Width is required"] },
     length: { type: Number, required: [true, "Length is required"] },
     weight: { type: Number, required: [true, "Weight is required"] },
+    incrementPrice: { type: Number, required: [true, "Increment is required"] },
+    workmanshipFee: { type: Number, required: [true, "Workmanship Fee is required"] },
     materialUsed: { type: String },
   },
   {

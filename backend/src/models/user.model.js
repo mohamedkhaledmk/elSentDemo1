@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
     gender: { type: String },
     description: { type: String },
     paymentVerified: { type: Boolean, default: false },
+    emailVerified: { type: Boolean, default: false },
 
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],

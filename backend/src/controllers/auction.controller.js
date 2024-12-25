@@ -25,6 +25,8 @@ const createAuction = asyncHandler(async (req, res) => {
       length,
       materialUsed,
       weight,
+      workmanshipFee,
+      incrementPrice,
     } = req.body;
 
     const files = req.files; // Assuming `req.files` contains the array of uploaded images
@@ -60,7 +62,9 @@ const createAuction = asyncHandler(async (req, res) => {
       !width ||
       !length ||
       !materialUsed ||
-      !weight
+      !weight || 
+      !workmanshipFee ||
+      !incrementPrice
     ) {
       return res
         .status(400)
@@ -107,6 +111,8 @@ const createAuction = asyncHandler(async (req, res) => {
       width,
       materialUsed,
       weight,
+      workmanshipFee,
+      incrementPrice,
     });
 
     if (!auction) {
@@ -366,6 +372,8 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
       width,
       materialUsed,
       weight,
+      workmanshipFee,
+      incrementPrice,
     } = req.body;
     const image = req.file?.path;
 
@@ -435,6 +443,8 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
     auction.width = width ? width : auction.width;
     auction.materialUsed = materialUsed ? materialUsed : auction.materialUsed;
     auction.weight = weight ? weight : auction.weight;
+    auction.workmanshipFee = workmanshipFee ? workmanshipFee : auction.workmanshipFee;
+    auction.incrementPrice = incrementPrice ? incrementPrice : auction.incrementPrice;
 
     auction.image = imgUrlCloudinary?.url
       ? imgUrlCloudinary.url
