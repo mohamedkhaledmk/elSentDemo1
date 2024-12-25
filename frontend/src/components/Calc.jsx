@@ -13,7 +13,8 @@ const Calc = () => {
   // State variables
   const [selectedPrice, setSelectedPrice] = useState("");
   const [currentInput, setCurrentInput] = useState("");
-  const [grams, setGrams] = useState(""); // New state for grams input
+  const [grams, setGrams] = useState(""); // State for grams input
+  const [workmanship, setWorkmanship] = useState(""); // State for workmanship input
 
   // Purity multipliers for gold
   const goldPurities = [
@@ -43,19 +44,31 @@ const Calc = () => {
   const clearInput = () => {
     setCurrentInput("");
     setGrams("");
+    setWorkmanship("");
   };
 
-  // Calculate total price based on grams
-  const handleGramsChange = (event) => {
-    const enteredGrams = event.target.value;
-    setGrams(enteredGrams);
-
-    if (selectedPrice && enteredGrams) {
-      const total = (parseFloat(selectedPrice) * parseFloat(enteredGrams)).toFixed(2);
+  // Calculate total price based on grams and workmanship
+  const calculateTotalPrice = () => {
+    if (selectedPrice && grams) {
+      const basePrice = parseFloat(selectedPrice) * parseFloat(grams);
+      const workmanshipFee = parseFloat(workmanship) || 0; // Default to 0 if empty
+      const total = (basePrice + workmanshipFee).toFixed(2);
       setCurrentInput(total); // Update the output field with the total price
     } else {
       setCurrentInput("");
     }
+  };
+
+  // Handle grams input change
+  const handleGramsChange = (event) => {
+    setGrams(event.target.value);
+    calculateTotalPrice();
+  };
+
+  // Handle workmanship input change
+  const handleWorkmanshipChange = (event) => {
+    setWorkmanship(event.target.value);
+    calculateTotalPrice();
   };
 
   return (
@@ -99,6 +112,18 @@ const Calc = () => {
           placeholder="Enter grams"
           value={grams}
           onChange={handleGramsChange}
+          className="w-full p-2 rounded-lg"
+          style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+        />
+      </div>
+
+      {/* Input Field for Workmanship */}
+      <div className="workmanship-input mb-4">
+        <input
+          type="number"
+          placeholder="Enter workmanship fee (SAR)"
+          value={workmanship}
+          onChange={handleWorkmanshipChange}
           className="w-full p-2 rounded-lg"
           style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
         />
