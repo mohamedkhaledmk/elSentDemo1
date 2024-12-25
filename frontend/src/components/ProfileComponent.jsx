@@ -20,17 +20,25 @@ const ProfileComponent = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 w-full">        
+      <div className="flex flex-col gap-4 w-full">
         <div className="flex min-h-[400px] flex-wrap gap-4 lg:flex-nowrap">
           <div className="px-7 py-4 w-full bg-theme-bg text-white rounded-2xl">
             <div className="font-bold flex justify-between items-center border-b border-border-info-color pb-3 mb-5 ">
               <h2 className="text-xl ">Personal Info</h2>
-              <Link
-                to="/user-profile/account-settings"
-                className=" flex items-center gap-1 px-4 py-2 bg-theme-color hover:bg-color-danger rounded-xl"
-              >
-                <FaRegEdit size={16} /> <span>Edit</span>
-              </Link>
+              <div className=" flex gap-2 justify-end">
+                <Link
+                  to="/user-profile/account-settings"
+                  className=" flex items-center gap-1 px-4 py-2 bg-theme-color hover:bg-color-danger rounded-xl"
+                >
+                  <FaRegEdit size={16} /> <span>Edit</span>
+                </Link>
+                <Link
+                  to="/user-profile/account-settings"
+                  className=" flex items-center gap-1 px-4 py-2 bg-theme-color hover:bg-color-danger rounded-xl"
+                >
+                  <FaRegEdit size={16} /> <span>Verify Email</span>
+                </Link>
+              </div>
             </div>
             <ul className="flex flex-col gap-3 font-medium text-body-text-color">
               <li>
@@ -48,6 +56,9 @@ const ProfileComponent = () => {
                 <span className="float-right font-normal">
                   {user?.email ? user.email : "-"}
                 </span>
+                <span className="text-sm text-green-500">
+                  {user?.emailVerified ? "(Verified)" : "(Not Verified)"}
+                </span>
               </li>
               <li>
                 Phone:{" "}
@@ -61,7 +72,7 @@ const ProfileComponent = () => {
                   {user?.gender ? user.gender : "---"}
                 </span>
               </li>
-            
+
               <li>
                 Location:{" "}
                 <span className="float-right font-normal">
@@ -76,12 +87,11 @@ const ProfileComponent = () => {
               </li>
               <li>
                 Join Date:{" "}
-                <span className="float-right font-normal">{
-                  user?.createdAt
+                <span className="float-right font-normal">
+                  {user?.createdAt
                     ? new Date(user.createdAt).toLocaleDateString()
-                    : "---"
-                
-}</span>
+                    : "---"}
+                </span>
               </li>
             </ul>
           </div>

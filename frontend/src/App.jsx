@@ -16,7 +16,7 @@ import SingleAuctionDetail from "./pages/SingleAuctionDetail";
 import UserProfile from "./pages/UserProfile";
 import EditAuction from "./pages/EditAuction";
 import ErrorPage from "./pages/ErrorPage";
-import  Application  from "./pages/Application";
+import Application from "./pages/Application";
 import Protected, {
   PublicRoute,
   SellerRoutes,
@@ -32,6 +32,7 @@ import AdminDashboard from "./admin/Admin";
 import ManageItems from "./components/ManageItems";
 import YoutubeLive from "./pages/LinkDashboard";
 import PaymentPage from "./pages/Payment";
+import EmailVerificationPage from "./pages/VerifyEmail";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
@@ -50,7 +51,8 @@ const App = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/download-app" element={<Application />} />
-          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/verify-email" element={<EmailVerificationPage />} />
           <Route
             path="/single-auction-detail/:id"
             element={<SingleAuctionDetail />}
@@ -73,7 +75,7 @@ const App = () => {
             <Route path="/edit-auction/:id" element={<EditAuction />} />
             <Route path="/success/:id" element={<PaymentSuccess />} />
             <Route element={<SellerRoutes />}>
-              <Route path="/create-auction" element={<UploadItem />} /> 
+              <Route path="/create-auction" element={<UploadItem />} />
               <Route path="/youtube-live" element={<YoutubeLive />} />
               {/* <Route path="/user-profile/manage-items" element={<ManageItems />} /> */}
             </Route>

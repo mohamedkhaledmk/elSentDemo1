@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
     description: { type: String },
     paymentVerified: { type: Boolean, default: false },
     emailVerified: { type: Boolean, default: false },
+    verificationCode: { type: Number },
 
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],
