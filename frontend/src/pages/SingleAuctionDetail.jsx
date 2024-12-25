@@ -60,15 +60,34 @@ const SingleAuctionDetail = ({ noPadding }) => {
     socket.emit("selectWinner", params?.id);
   };
   const confirmBid = () => {
-    console.log(user, "user");
     const { fullName, email, phone, address } = user;
+  
     if (!fullName || !email || !phone || !address) {
-      toast.error("Please fill all the your profile fields first!");
+      toast.error("Please fill all your profile fields first!");
       return false;
     } else {
-      toast.info(
-        "Your bid is ready. click on the confirm bid button to place your bid"
-      );
+      // Proceed to place the bid
+      const bidData = {
+        id: params.id,
+        amount: Math.floor(newBidAmount),
+      };
+  
+      if (Math.floor(newBidAmount) <= singleAuctionData?.startingPrice) {
+        toast.info("Bid amount should be greater than the current bid");
+      } else {
+        dispatch(placeABid(bidData));
+        setNewBidAmount("");
+        socket.emit("newBid", {
+          profilePicture: logInUser?.profilePicture,
+          fullName: logInUser?.fullName,
+          bidAmount: Math.floor(newBidAmount),
+          bidTime: new Date().getTime(),
+          auctionId: params.id,
+        });
+  
+        toast.success("Bid placed successfully!");
+        setActiveTab("bids");
+      }
     }
   };
   socket.on("newBidData", async (data) => {
