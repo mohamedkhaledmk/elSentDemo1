@@ -181,3 +181,22 @@ button:active {
 .metal-selection select option:hover {
   background-color: #ccc;
 }
+
+/* Custom animation for rolling with center scaling */
+@keyframes roll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%); /* Move the users completely off-screen */
+  }
+}
+
+.animate-roll {
+  animation: roll 1.5s linear infinite; /* Fast scroll duration */
+}
+
+.scale-125 {
+  transform: scale(1.25); /* Scale the winner's profile to 125% */
+}
+

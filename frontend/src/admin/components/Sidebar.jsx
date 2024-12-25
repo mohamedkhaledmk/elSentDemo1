@@ -96,7 +96,25 @@ const Sidebar = ({ closeNavbar }) => {
               Auctions
             </Link>
           </li>
-
+          <li>
+            <Link
+              className={`flex items-center gap-2  py-2 px-4 rounded-lg cursor-pointer hover:pl-[20px] hover:text-theme-color hover:bg-theme transition-all duration-500 ${
+                activeLink === "/admin/giveaway"
+                  ? "bg-theme-color hover:text-white"
+                  : ""
+              }`}
+              to="/admin/giveaway"
+              onClick={() => handleLinkClick("/admin/giveaway")}
+            >
+              <RiAuctionFill
+                size={16}
+                className={`text-theme-color transition-all duration-500 ${
+                  activeLink === "/admin/giveaway" ? " text-white" : ""
+                }`}
+              />
+              giveaway
+            </Link>
+          </li>
           <li>
             <Link
               className={`flex items-center gap-2 py-2 px-4 rounded-lg cursor-pointer hover:pl-[20px] hover:text-theme-color hover:bg-theme transition-all duration-500 ${
