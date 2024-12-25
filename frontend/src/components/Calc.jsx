@@ -13,6 +13,7 @@ const Calc = () => {
   // State variables
   const [selectedPrice, setSelectedPrice] = useState("");
   const [currentInput, setCurrentInput] = useState("");
+  const [grams, setGrams] = useState(""); // New state for grams input
 
   // Purity multipliers for gold
   const goldPurities = [
@@ -31,36 +32,36 @@ const Calc = () => {
 
   // Handle button clicks
   const handleButtonClick = (value) => {
-    if (value === "=") {
-      calculateResult();
-    } else if (value === "Erase") {
+    if (value === "Erase") {
       clearInput();
     } else {
       setCurrentInput((prev) => prev + value);
     }
   };
 
-  // Perform calculation
-  const calculateResult = () => {
-    try {
-      // Replace ÷ and × with / and * for valid JavaScript evaluation
-      const sanitizedInput = currentInput.replace("÷", "/").replace("×", "*");
-      const result = eval(sanitizedInput); // Safe here as input is user-controlled in UI
-      setCurrentInput(result.toString());
-    } catch {
-      setCurrentInput("Error");
-    }
-  };
-
   // Clear input
   const clearInput = () => {
     setCurrentInput("");
+    setGrams("");
+  };
+
+  // Calculate total price based on grams
+  const handleGramsChange = (event) => {
+    const enteredGrams = event.target.value;
+    setGrams(enteredGrams);
+
+    if (selectedPrice && enteredGrams) {
+      const total = (parseFloat(selectedPrice) * parseFloat(enteredGrams)).toFixed(2);
+      setCurrentInput(total); // Update the output field with the total price
+    } else {
+      setCurrentInput("");
+    }
   };
 
   return (
-    <div className="fixed bottom-20 right-10 bg-[#15141788] w-1/4 h-1/2 z-50 rounded-lg p-4">
+    <div className="fixed bottom-20 right-10 bg-[#15141788] w-1/4 h-auto z-50 rounded-lg p-4">
       {/* Dropdown Menu */}
-      <div className="metal-selection">
+      <div className="metal-selection mb-4">
         <select
           id="category"
           onChange={handleMetalChange}
@@ -91,17 +92,27 @@ const Calc = () => {
         </select>
       </div>
 
+      {/* Input Field for Grams */}
+      <div className="grams-input mb-4">
+        <input
+          type="number"
+          placeholder="Enter grams"
+          value={grams}
+          onChange={handleGramsChange}
+          className="w-full p-2 rounded-lg"
+          style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+        />
+      </div>
+
       {/* Display Screen */}
-      <div id="display" className="calculator-display">
+      <div id="display" className="calculator-display mb-4 text-white font-bold">
         {currentInput || "0"}
       </div>
 
       {/* Calculator Buttons */}
-      <div id="buttons" className="calculator-buttons">
-        <button style={{ gridColumn: "span 4" }} onClick={() => handleButtonClick("=")}>=</button>
+      <div id="buttons" className="calculator-buttons grid grid-cols-4 gap-2">
         <button
-          id="allClear"
-          style={{ gridColumn: "span 4" }}
+          className="col-span-4 bg-red-500 text-white p-2 rounded-lg"
           onClick={() => handleButtonClick("Erase")}
         >
           Erase
