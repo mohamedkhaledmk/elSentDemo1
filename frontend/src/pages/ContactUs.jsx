@@ -18,8 +18,8 @@ const ContactUs = () => {
     e.preventDefault();
 
     emailjs
-      .sendForm("service_qvbrhqd", "template_llfzueg", form.current, {
-        publicKey: "e2FbflmSwNqyMF6op",
+      .sendForm("service_0u2vh5d", "template_pd24sjk", form.current, {
+        publicKey: "-k-9c8m8y9tt2C-iN",
       })
       .then(
         () => {
@@ -98,7 +98,7 @@ toast.success("Email Send Successfully.",{
             <input type="text" name="from_name" placeholder="Full Name" />
             <input
               type="text"
-              value="Yasir"
+              value=""
               className="hidden"
               name="to_name"
             />
