@@ -48,11 +48,11 @@ const Calc = () => {
     setWorkmanship("");
   };
 
-  // Calculate total price based on grams and workmanship
-  const calculateTotalPrice = () => {
-    if (selectedPrice && grams) {
-      const basePrice = parseFloat(selectedPrice) * parseFloat(grams);
-      const workmanshipFee = parseFloat(workmanship) || 0; // Default to 0 if empty
+  // Calculate total price based on the most recent input values
+  const calculateTotalPrice = (updatedGrams = grams, updatedWorkmanship = workmanship) => {
+    if (selectedPrice && updatedGrams) {
+      const basePrice = parseFloat(selectedPrice) * parseFloat(updatedGrams);
+      const workmanshipFee = parseFloat(updatedWorkmanship) || 0; // Default to 0 if empty
       const total = (basePrice + workmanshipFee).toFixed(2);
       setCurrentInput(total); // Update the output field with the total price
     } else {
@@ -62,14 +62,16 @@ const Calc = () => {
 
   // Handle grams input change
   const handleGramsChange = (event) => {
-    setGrams(event.target.value);
-    calculateTotalPrice();
+    const value = event.target.value;
+    setGrams(value);
+    calculateTotalPrice(value, workmanship);
   };
 
   // Handle workmanship input change
   const handleWorkmanshipChange = (event) => {
-    setWorkmanship(event.target.value);
-    calculateTotalPrice();
+    const value = event.target.value;
+    setWorkmanship(value);
+    calculateTotalPrice(grams, value);
   };
 
   return (
