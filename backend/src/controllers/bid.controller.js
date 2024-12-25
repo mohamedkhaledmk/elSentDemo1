@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Bid from "../models/bid.model.js";
 import Auction from "../models/auction.model.js";
+import VoucherController from './voucher.controller.js';
 
 
 
@@ -38,6 +39,8 @@ const addBidOnItem = asyncHandler(async (req, res) => {
 
     await item.save();
 
+    await VoucherController.createVoucher({ body: { user } }, res);
+
     return res
       .status(201)
       .json(new ApiResponse(201, "Bid placed successfully", newBid));
@@ -47,9 +50,6 @@ const addBidOnItem = asyncHandler(async (req, res) => {
       .json(new ApiResponse(500, error?.message || "Internal server error"));
   }
 });
-
-
-
 
 //@desc Get all a winner of an auction
 //@route GET /api/auctions/:id/winner

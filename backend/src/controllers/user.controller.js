@@ -8,6 +8,7 @@ import nodemailer from "nodemailer";
 import PaymentMethod from "../models/userPaymentMethod.model.js";
 import Stripe from "stripe";
 import mongoose from "mongoose";
+import VoucherController from './voucher.controller.js';
 
 const stripe = new Stripe(
   "sk_test_51QWmgRGI6UEWLGcVrfkYdIitb29zTKm7WDBXgfklEyWexo6rCMgKxpUH0UeTMPI2FZX7UVhHVpXvNOu8VjfMGHoc004ZxQiqwE"
@@ -63,6 +64,8 @@ const registerUser = asyncHandler(async (req, res) => {
     stripeCustomerId: customer.id,
     userId: createdUser._id,
   });
+
+  await VoucherController.createVoucher({ body: { user } }, res);
 
   return res
     .status(201)
