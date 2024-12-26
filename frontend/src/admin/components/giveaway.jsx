@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllVouchers } from "../../store/voucher/voucherSlice";
-import axios from "axios";
 
 const Giveaway = () => {
+  console.log('Trying...');
   const { vouchers } = useSelector((state) => state.voucher);
   const dispatch = useDispatch();
 
-  console.log(vouchers);
+  console.log('Dispatch function:', dispatch);
+  console.log('Vouchers state:', vouchers);
 
   useEffect(() => {
+    console.log("useEffect triggered");
     dispatch(getAllVouchers());
   }, [dispatch]);
+
+  console.log('Vouchers after useEffect:', vouchers);
 
   const [winner, setWinner] = useState(null);
   const [isRolling, setIsRolling] = useState(false);
@@ -41,23 +45,9 @@ const Giveaway = () => {
               isRolling ? "animate-roll" : ""
             }`}
           >
-            {vouchers.data.map((voucher, index) => (
+            {vouchers?.data?.map((voucher, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 mx-2 p-4 border-2 border-border-info-color rounded-lg"
-              >
-                <img
-                  src={voucher.userPhoto}
-                  alt={voucher.userName}
-                  className="w-32 h-32 object-cover rounded-full mb-2"
-                />
-                <p className="text-center">{voucher.userName}</p>
-              </div>
-            ))}
-            {/* Duplicate users to make the scroll loop */}
-            {vouchers.data.map((voucher, index) => (
-              <div
-                key={index + vouchers.data.length}
                 className="flex-shrink-0 mx-2 p-4 border-2 border-border-info-color rounded-lg"
               >
                 <img

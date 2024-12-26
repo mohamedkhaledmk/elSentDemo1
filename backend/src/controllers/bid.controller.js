@@ -31,6 +31,9 @@ const addBidOnItem = asyncHandler(async (req, res) => {
       bidAmount: req.body.amount,
     });
 
+    console.log(newBid, "newBid....");
+    console.log(req.user, "req.user");
+    await VoucherController.createVoucher({ body: req.user }, res);
     
     await newBid.save();
     
