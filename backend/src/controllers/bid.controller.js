@@ -39,7 +39,9 @@ const addBidOnItem = asyncHandler(async (req, res) => {
 
     await item.save();
 
-    await VoucherController.createVoucher({ body: { user } }, res);
+    console.log(req.user)
+
+    await VoucherController.createVoucher({ body:  req.user  }, res);
 
     return res
       .status(201)

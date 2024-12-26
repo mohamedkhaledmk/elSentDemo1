@@ -55,58 +55,6 @@
       </div>
     </div> -->
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Function to scrape data from the table
-        const scrapeTable = () => {
-          const tableRows = document.querySelectorAll("tbody tr");
-          const scrapedData = [];
-
-          tableRows.forEach((row) => {
-            const cells = row.querySelectorAll("td");
-            const metal = cells[0]?.textContent.trim(); // Metal column
-            const price = cells[2]?.textContent.trim(); // Price column
-
-            if (metal && price) {
-              scrapedData.push({ metal, price });
-            }
-          });
-
-          console.log("Scraped Data:", scrapedData);
-          populateDropdown(scrapedData); // Pass scraped data to populate the dropdown
-        };
-
-        // Function to populate the dropdown with scraped data
-        const populateDropdown = (scrapedData) => {
-          const categorySelect = document.getElementById("category");
-          scrapedData.forEach((data) => {
-            const option = document.createElement("option");
-            option.value = data.metal;
-            option.textContent = data.metal;
-            option.dataset.price = data.price; // Store the price as a data attribute
-            categorySelect.appendChild(option);
-          });
-
-          // Add event listener to update calculator display on selection
-          categorySelect.addEventListener("change", (event) => {
-            const selectedOption = event.target.selectedOptions[0];
-            const selectedPrice = selectedOption.dataset.price;
-            if (selectedPrice) {
-              updateCalculatorDisplay(selectedPrice);
-            }
-          });
-        };
-
-        // Function to update the calculator display
-        const updateCalculatorDisplay = (price) => {
-          const displayElement = document.getElementById("display");
-          const priceValue = price.replace("SAR", "").trim(); // Remove the 'SAR' if you want only the number
-          displayElement.textContent = priceValue;
-        };
-
-        setTimeout(scrapeTable, 1000); // Adjust timeout if needed
-      });
-    </script>
-    <script>
       class Calculator {
         constructor() {
           this.displayElement = document.getElementById("display");
@@ -116,7 +64,11 @@
 
         initialize() {
           this.buttons = document.querySelectorAll("#buttons button");
+          if (this.buttons.length > 0) {
           this.bindEvents();
+          } else {
+            console.error("No buttons found with the selector '#buttons button'");
+          }
         }
 
         bindEvents() {
@@ -176,7 +128,9 @@
         }
       }
 
-      new Calculator();
+      document.addEventListener("DOMContentLoaded", () => {
+        new Calculator();
+      });
     </script>
   </body>
 </html>

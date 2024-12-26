@@ -9,6 +9,7 @@ import notificationReducer from './notification/notificationSlice';
 import cartReducer from "./cart/cartSlice"
 import userReducer from "./user/userSlice"
 import metalReducer from "./metals/metalsSlice"
+import voucherReducer from "./voucher/voucherSlice"
 
 export const store= configureStore({
     reducer: {
@@ -22,6 +23,7 @@ export const store= configureStore({
         cart: cartReducer,
         user: userReducer,
         metal: metalReducer,
+        voucher: voucherReducer
     }
     ,
     middleware: (getDefaultMiddleware) =>

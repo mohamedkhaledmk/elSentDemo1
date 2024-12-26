@@ -24,6 +24,7 @@ import metalsRouter from "./routes/metalPrice.routes.js";
 import liveRouter from "./routes/live.routes.js";
 import paymobRouter from "./routes/paymob.routes.js";
 import verifyRouter from "./routes/emailverification.routes.js";
+import voucherRouter from "./routes/voucher.routes.js";
 
 // routes declaration
 app.use("/api/v1/users", userRouter);
@@ -35,6 +36,7 @@ app.use("/api/v1/notifications", notificationRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/verify-email", verifyRouter);
+app.use("/api/v1/vouchers", voucherRouter);
 
 app.use("/api/v1/metals", metalsRouter);
 app.use("/api/v1/metals/fetch", metalsRouter);

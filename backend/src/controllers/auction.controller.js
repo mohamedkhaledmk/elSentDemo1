@@ -139,7 +139,6 @@ const createAuction = asyncHandler(async (req, res) => {
 const getAllAuctions = asyncHandler(async (req, res) => {
   try {
     const { location, category, itemName } = req.body;
-    console.log(req.body, "req.body");
 
     let filter = { status: { $ne: "over" } };
 
@@ -158,18 +157,14 @@ const getAllAuctions = asyncHandler(async (req, res) => {
 
     if (category) filter.category = category;
     if (itemName) filter.name = { $regex: itemName, $options: "i" };
-
-    console.log(JSON.stringify(filter, null, 2), "Final Filter");
-
+    
     const auctions = await Auction.find(filter)
       .populate("category", "name") // Populate the category with its name
       .populate("location", "name") // Populate the location with its name
       .populate("winner") // Populate the winner (Bid)
       .sort({ createdAt: -1 }); // Sort auctions by creation date (newest first)
 
-    if (auctions.length === 0) {
-      return res.status(404).json(new ApiResponse(404, "No auctions found"));
-    }
+    
 
     return res.json(
       new ApiResponse(200, "Auctions retrieved successfully", auctions)

@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-
-// Example list of random users with names and image URLs
-const users = [
-  { name: "John Doe", img: "https://randomuser.me/api/portraits/men/1.jpg" },
-  { name: "Jane Smith", img: "https://randomuser.me/api/portraits/women/1.jpg" },
-  { name: "Michael Brown", img: "https://randomuser.me/api/portraits/men/2.jpg" },
-  { name: "Emily Clark", img: "https://randomuser.me/api/portraits/women/2.jpg" },
-  { name: "David Lee", img: "https://randomuser.me/api/portraits/men/3.jpg" },
-  { name: "Sophia Martinez", img: "https://randomuser.me/api/portraits/women/3.jpg" },
-];
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllVouchers } from "../../store/voucher/voucherSlice";
+import axios from "axios";
 
 const Giveaway = () => {
+  const { vouchers } = useSelector((state) => state.voucher);
+  const dispatch = useDispatch();
+
+  console.log(vouchers);
+
+  useEffect(() => {
+    dispatch(getAllVouchers());
+  }, [dispatch]);
+
   const [winner, setWinner] = useState(null);
   const [isRolling, setIsRolling] = useState(false);
 
@@ -20,8 +22,8 @@ const Giveaway = () => {
 
     // Start the animation for the users to roll across
     setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * users.length);
-      setWinner(users[randomIndex]);
+      const randomIndex = Math.floor(Math.random() * vouchers.data.length);
+      setWinner(vouchers.data[randomIndex]);
       setIsRolling(false);
     }, 30000); // Stop the rolling after 30 seconds
   };
@@ -39,31 +41,31 @@ const Giveaway = () => {
               isRolling ? "animate-roll" : ""
             }`}
           >
-            {users.map((user, index) => (
+            {vouchers.data.map((voucher, index) => (
               <div
                 key={index}
                 className="flex-shrink-0 mx-2 p-4 border-2 border-border-info-color rounded-lg"
               >
                 <img
-                  src={user.img}
-                  alt={user.name}
+                  src={voucher.userPhoto}
+                  alt={voucher.userName}
                   className="w-32 h-32 object-cover rounded-full mb-2"
                 />
-                <p className="text-center">{user.name}</p>
+                <p className="text-center">{voucher.userName}</p>
               </div>
             ))}
             {/* Duplicate users to make the scroll loop */}
-            {users.map((user, index) => (
+            {vouchers.data.map((voucher, index) => (
               <div
-                key={index + users.length}
+                key={index + vouchers.data.length}
                 className="flex-shrink-0 mx-2 p-4 border-2 border-border-info-color rounded-lg"
               >
                 <img
-                  src={user.img}
-                  alt={user.name}
+                  src={voucher.userPhoto}
+                  alt={voucher.userName}
                   className="w-32 h-32 object-cover rounded-full mb-2"
                 />
-                <p className="text-center">{user.name}</p>
+                <p className="text-center">{voucher.userName}</p>
               </div>
             ))}
           </div>
@@ -83,10 +85,10 @@ const Giveaway = () => {
         {/* Display Winner */}
         {winner && (
           <div className="mt-5 text-center text-white font-bold text-xl">
-            <p>Winner: {winner.name}</p>
+            <p>Winner: {winner.userName}</p>
             <img
-              src={winner.img}
-              alt={winner.name}
+              src={winner.userPhoto}
+              alt={winner.userName}
               className="w-32 h-32 object-cover rounded-full mx-auto mt-3"
             />
           </div>

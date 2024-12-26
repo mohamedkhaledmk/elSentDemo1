@@ -5,7 +5,6 @@ import { useEffect } from "react";
 
 const MetalPrices = () => {
   const { metals } = useSelector((state) => state.metal);
-  console.log("s", metals);
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -17,7 +17,7 @@ export const socketIoConnectioin = () => {
       } else {
         user.socketId = socket.id;
       }
-      console.log(users);
+
     });
 
     socket.on("newBid", (data) => {

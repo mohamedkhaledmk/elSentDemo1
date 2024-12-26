@@ -1,8 +1,6 @@
 import {createSlice , createAsyncThunk} from "@reduxjs/toolkit";
 import cityService from "./cityService";
 
-
-
 export const getAllCities=createAsyncThunk("city/getAllCities",async(_,thunkAPI)=>{
     try {
         return await cityService.getAllCities();
