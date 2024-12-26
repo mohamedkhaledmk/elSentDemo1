@@ -130,7 +130,7 @@ const ManageItems = () => {
                     >
                       <FaEye size={16} className="inline mt-[-2px]" />
                     </Link>
-                    {auction?.status === "upcoming" && (
+                    {
                       <>
                         <Link
                           className="text-theme-color hover:text-white hover:bg-theme-color rounded-lg border-2 border-theme-color  px-2 py-[5px] transition-all"
@@ -139,7 +139,7 @@ const ManageItems = () => {
                           <FaRegEdit size={16} className="inline mt-[-3px]" />
                         </Link>
                       </>
-                    )}
+                    }
 
                     <button
                       className="text-color-danger hover:text-white hover:bg-color-danger rounded-lg border-2 border-color-danger  px-[6px] py-[3px] transition-all"

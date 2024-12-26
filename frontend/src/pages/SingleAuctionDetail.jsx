@@ -61,7 +61,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
   };
   const confirmBid = () => {
     const { fullName, email, phone, address } = user;
-  
+
     if (!fullName || !email || !phone || !address) {
       toast.error("Please fill all your profile fields first!");
       return false;
@@ -71,7 +71,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
         id: params.id,
         amount: Math.floor(newBidAmount),
       };
-  
+
       if (Math.floor(newBidAmount) <= singleAuctionData?.startingPrice) {
         toast.info("Bid amount should be greater than the current bid");
       } else {
@@ -84,7 +84,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
           bidTime: new Date().getTime(),
           auctionId: params.id,
         });
-  
+
         toast.success("Bid placed successfully!");
         setActiveTab("bids");
       }
@@ -231,22 +231,22 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 Product Specifications
               </h3>
               <ul className="text-body-text-color">
-                {singleAuction.workManShipFee && (
-                  <li>Workmanship Fee: {singleAuction.workManShipFee} %</li>
-                )}
-                {singleAuction.length && (
-                  <li>Length: {singleAuction.length} cm</li>
-                )}
-                {singleAuction.width && (
-                  <li>Width: {singleAuction.width} cm</li>
-                )}
-                {singleAuction.height && (
+                {!isNaN(singleAuction.height) ? (
                   <li>Height: {singleAuction.height} cm</li>
+                ) : null}
+                {!isNaN(singleAuction.length) ? (
+                  <li>Length: {singleAuction.length} cm</li>
+                ) : null}
+                {!isNaN(singleAuction.width) ? (
+                  <li>Width: {singleAuction.width} cm</li>
+                ) : null}
+                {!isNaN(singleAuction.weight) ? (
+                  <li>Weight: {singleAuction.weight} cm</li>
+                ) : null}
+                <br />
+                {singleAuction.workmanshipFee && (
+                  <li>Workmanship Fee: {singleAuction.workmanshipFee} %</li>
                 )}
-                {singleAuction.weight && (
-                  <li>Weight: {singleAuction.weight} kg</li>
-                )}
-                {singleAuction.color && <li>Color: {singleAuction.color}</li>}
               </ul>
             </div>
             <div className="pt-4 border-t border-border-info-color">
