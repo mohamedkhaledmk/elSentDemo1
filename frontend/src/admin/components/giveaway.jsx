@@ -29,7 +29,7 @@ const Giveaway = () => {
       const randomIndex = Math.floor(Math.random() * vouchers.data.length);
       setWinner(vouchers.data[randomIndex]);
       setIsRolling(false);
-    }, 30000); // Stop the rolling after 30 seconds
+    }, 15000); // Stop the rolling after 15 seconds
   };
 
   return (

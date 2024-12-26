@@ -77,7 +77,7 @@ const BidsItem = () => {
                   <td className="rounded-l-lg">
                     <div className="flex items-center gap-2">
                       <img
-                        src={bid?.auction?.image}
+                        src={bid?.auction?.images[0]}
                         alt="auction image"
                         className="w-[50px] h-[50px] rounded-full"
                       />

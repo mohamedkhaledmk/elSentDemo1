@@ -198,12 +198,6 @@ const Header = () => {
                 >
                   Profile
                 </Link>
-                <Link
-                  to="/user-profile/settings"
-                  className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
-                >
-                  Settings
-                </Link>
                 <button
                   onClick={logoutHandle}
                   className="block w-full text-left px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
