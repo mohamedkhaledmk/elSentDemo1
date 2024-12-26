@@ -62,7 +62,7 @@ const createAuction = asyncHandler(async (req, res) => {
       !width ||
       !length ||
       !materialUsed ||
-      !weight || 
+      !weight ||
       !workmanshipFee ||
       !incrementPrice
     ) {
@@ -157,15 +157,29 @@ const getAllAuctions = asyncHandler(async (req, res) => {
 
     if (category) filter.category = category;
     if (itemName) filter.name = { $regex: itemName, $options: "i" };
-    
+
     const auctions = await Auction.find(filter)
       .populate("category", "name") // Populate the category with its name
       .populate("location", "name") // Populate the location with its name
       .populate("winner") // Populate the winner (Bid)
+      .populate("bids")
+      .populate({
+        path: "bids",
+        populate: {
+          path: "bidder",
+          select: "fullName email profilePicture",
+        },
+      })
+      .populate({
+        path: "winner",
+
+        populate: {
+          path: "bidder",
+          select: "fullName  profilePicture",
+        },
+      })
       .sort({ createdAt: -1 }); // Sort auctions by creation date (newest first)
-
-    
-
+    console.log("bidder", auctions[0]?.bids[0]?.bidder);
     return res.json(
       new ApiResponse(200, "Auctions retrieved successfully", auctions)
     );
@@ -186,29 +200,24 @@ const getSingleAuctionById = asyncHandler(async (req, res) => {
     console.log("single auction getting...");
 
     const auction = await Auction.findById(req.params.id)
-      .populate("category", "name")
-      .populate("location", "name")
-      .populate("seller", "fullName email phone location profilePicture")
-      .populate("bids")
-      .populate("winner", "amount")
-      .populate("bids", "bidder bidAmount bidTime")
+      .populate("category", "name") // Populating category
+      .populate("location", "name") // Populating location
+      .populate("seller", "fullName email phone location profilePicture") // Populating seller
       .populate({
         path: "bids",
         populate: {
-          path: "bidder",
-          select: "fullName email profilePicture",
+          path: "bidder", // Populate bidder inside bids
+          select: "fullName email profilePicture", // Select specific fields from bidder
         },
-      }) //populate the winner's information as well bidamount and time
-
+      })
       .populate({
         path: "winner",
-
         populate: {
-          path: "bidder",
-          select: "fullName  profilePicture",
+          path: "bidder", // Populate bidder for the winner
+          select: "fullName profilePicture",
         },
       });
-
+    console.log("bidder", auction.bidder);
     if (!auction) {
       return res.status(404).json(new ApiResponse(404, "Auction not found"));
     }
@@ -438,8 +447,12 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
     auction.width = width ? width : auction.width;
     auction.materialUsed = materialUsed ? materialUsed : auction.materialUsed;
     auction.weight = weight ? weight : auction.weight;
-    auction.workmanshipFee = workmanshipFee ? workmanshipFee : auction.workmanshipFee;
-    auction.incrementPrice = incrementPrice ? incrementPrice : auction.incrementPrice;
+    auction.workmanshipFee = workmanshipFee
+      ? workmanshipFee
+      : auction.workmanshipFee;
+    auction.incrementPrice = incrementPrice
+      ? incrementPrice
+      : auction.incrementPrice;
 
     auction.image = imgUrlCloudinary?.url
       ? imgUrlCloudinary.url

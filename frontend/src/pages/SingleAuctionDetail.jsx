@@ -188,6 +188,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
         className={`flex place-content-between py-10 px-5 lg:py-20 lg:px-10 items-start gap-7 flex-wrap md:flex-nowrap ${noPadding ? "lg:py-0 px-0" : "p-4"}`}
         id="item01"
       >
+        {console.log("auction", singleAuction)}
         <div className="relative rounded-xl md:max-w-[45%] w-full">
           <img
             className="rounded-xl w-full"
@@ -291,8 +292,11 @@ const SingleAuctionDetail = ({ noPadding }) => {
                   activeTab === "bids" ? "block" : "hidden"
                 } no-scrollbar`}
               >
+                {console.log("bids", singleAuction.bids)}
                 {singleAuction?.bids?.length > 0 || bidsData.length > 0 ? (
-                  bidsData?.map((bid) => <BidCard key={bid._id} bid={bid} />)
+                  singleAuction.bids?.map((bid) => (
+                    <BidCard key={bid._id} bid={bid} />
+                  ))
                 ) : (
                   <h1 className="text-white">No bids yet</h1>
                 )}
