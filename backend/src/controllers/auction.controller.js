@@ -217,7 +217,7 @@ const getSingleAuctionById = asyncHandler(async (req, res) => {
           select: "fullName profilePicture",
         },
       });
-    console.log("bidder", auction.bidder);
+    
     if (!auction) {
       return res.status(404).json(new ApiResponse(404, "Auction not found"));
     }

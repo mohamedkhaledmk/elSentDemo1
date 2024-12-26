@@ -42,10 +42,6 @@ const addBidOnItem = asyncHandler(async (req, res) => {
 
     await item.save();
 
-    console.log(req.user)
-
-    await VoucherController.createVoucher({ body:  req.user  }, res);
-
     return res
       .status(201)
       .json(new ApiResponse(201, "Bid placed successfully", newBid));
