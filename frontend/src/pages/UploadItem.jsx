@@ -258,7 +258,7 @@ const UploadItem = () => {
                 required
                 id="height"
                 type="number"
-                min="0"
+                min="1"
                 onChange={(e) =>
                   setFormData({ ...formData, height: e.target.value })
                 }
@@ -271,7 +271,7 @@ const UploadItem = () => {
                 required
                 id="weight"
                 type="number"
-                min="0"
+                min="1"
                 onChange={(e) =>
                   setFormData({ ...formData, weight: e.target.value })
                 }
@@ -286,7 +286,7 @@ const UploadItem = () => {
                 required
                 id="length"
                 type="number"
-                min="0"
+                min="1"
                 onChange={(e) =>
                   setFormData({ ...formData, length: e.target.value })
                 }
@@ -299,7 +299,7 @@ const UploadItem = () => {
                 required
                 id="width"
                 type="number"
-                min="0"
+                min="1"
                 onChange={(e) =>
                   setFormData({ ...formData, width: e.target.value })
                 }
