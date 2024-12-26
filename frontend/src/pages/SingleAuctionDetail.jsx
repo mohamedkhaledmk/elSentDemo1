@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getSingleAuctionById, reset } from "../store/auction/auctionSlice";
+import { getAllAuctions, reset } from "../store/auction/auctionSlice";
 import CountDownTimer from "../components/CountDownTimer";
 import BidCard from "../components/BidCard";
 import { placeABid } from "../store/bid/bidSlice";
@@ -9,29 +9,44 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { sendNewBidNotification } from "../store/notification/notificationSlice";
 import socket from "../socket";
-import { getAllBidsForAuction } from "../store/bid/bidSlice";
 import Loading from "../components/Loading";
-import LiveHome from "../components/home/LiveHome";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Example using react-icons
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const SingleAuctionDetail = ({ noPadding }) => {
   const [newBidAmount, setNewBidAmount] = useState("");
-  const logInUser = JSON.parse(localStorage.getItem("user"));
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
   const { user } = useSelector((state) => state.auth);
+  const logInUser = JSON.parse(localStorage.getItem("user"));
+
   const [activeTab, setActiveTab] = useState("description");
   const params = useParams();
   const dispatch = useDispatch();
-  const { auction } = useSelector((state) => state.auction);
+  const { auction, isLoading, error } = useSelector((state) => state.auction);
   const { bids } = useSelector((state) => state.bid);
   const [auctionStarted, setAuctionStarted] = useState(false);
   const [singleAuctionData, setSingleAuctionData] = useState();
   const [auctionWinnerDetailData, setAuctionWinnerDetailData] = useState();
   const [bidsData, setBidsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [singleAuction, setSingleAuction] = useState(
-    auction ? auction.find((item) => item._id === params?.id) : auction[0]
-  );
+  const [singleAuction, setSingleAuction] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    dispatch(getAllAuctions());
+
+    return () => {
+      dispatch(reset());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (auction) {
+      const foundAuction = auction.find(
+        (oneAuction) => oneAuction._id === params.id
+      );
+      setSingleAuction(foundAuction);
+      setSingleAuctionData(foundAuction);
+    }
+  }, [auction, params.id]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -59,6 +74,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
   const handleWinner = () => {
     socket.emit("selectWinner", params?.id);
   };
+
   const confirmBid = () => {
     const { fullName, email, phone, address } = user;
 
@@ -66,7 +82,6 @@ const SingleAuctionDetail = ({ noPadding }) => {
       toast.error("Please fill all your profile fields first!");
       return false;
     } else {
-      // Proceed to place the bid
       const bidData = {
         id: params.id,
         amount: Math.floor(newBidAmount),
@@ -78,8 +93,8 @@ const SingleAuctionDetail = ({ noPadding }) => {
         dispatch(placeABid(bidData));
         setNewBidAmount("");
         socket.emit("newBid", {
-          profilePicture: logInUser?.profilePicture,
-          fullName: logInUser?.fullName,
+          profilePicture: loggedInUser?.profilePicture,
+          fullName: loggedInUser?.fullName,
           bidAmount: Math.floor(newBidAmount),
           bidTime: new Date().getTime(),
           auctionId: params.id,
@@ -90,6 +105,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
       }
     }
   };
+
   socket.on("newBidData", async (data) => {
     setBidsData([
       {
@@ -105,25 +121,24 @@ const SingleAuctionDetail = ({ noPadding }) => {
       ...bidsData,
     ]);
 
-    setSingleAuctionData((prevState) => ({
-      ...prevState,
+    setSingleAuctionData((previousState) => ({
+      ...previousState,
       startingPrice: data.bidAmount,
     }));
   });
 
   useEffect(() => {
     setBidsData(bids);
-    setSingleAuctionData(singleAuction);
-  }, [bids, singleAuction]);
+  }, [bids]);
 
   useEffect(() => {
     socket.on("connect", () => {});
-    socket.emit("joinAuction", logInUser?._id);
+    socket.emit("joinAuction", loggedInUser?._id);
     socket.on("newUserJoined", (data) => {});
   }, []);
 
-  const placeBidHandle = async (e) => {
-    e.preventDefault();
+  const placeBidHandle = async (event) => {
+    event.preventDefault();
     if (user?.paymentVerified === false) {
       toast.info(
         "Please verify your payment method to place a bid. Go to settings..."
@@ -141,8 +156,8 @@ const SingleAuctionDetail = ({ noPadding }) => {
       dispatch(placeABid(bidData));
       setNewBidAmount("");
       socket.emit("newBid", {
-        profilePicture: logInUser?.profilePicture,
-        fullName: logInUser?.fullName,
+        profilePicture: loggedInUser?.profilePicture,
+        fullName: loggedInUser?.fullName,
         bidAmount: Math.floor(newBidAmount),
         bidTime: new Date().getTime(),
         auctionId: params.id,
@@ -152,8 +167,8 @@ const SingleAuctionDetail = ({ noPadding }) => {
         auctionId: params.id,
         type: "BID_PLACED",
         newBidAmount: newBidAmount,
-        fullName: logInUser?.fullName,
-        id: logInUser?._id,
+        fullName: loggedInUser?.fullName,
+        id: loggedInUser?._id,
       });
       setActiveTab("bids");
       dispatch(
@@ -167,14 +182,16 @@ const SingleAuctionDetail = ({ noPadding }) => {
   };
 
   const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex + 1 < singleAuction?.images?.length ? prevIndex + 1 : 0
+    setCurrentImageIndex((previousIndex) =>
+      previousIndex + 1 < singleAuction?.images?.length ? previousIndex + 1 : 0
     );
   };
 
   const handlePreviousImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex - 1 >= 0 ? prevIndex - 1 : singleAuction?.images?.length - 1
+    setCurrentImageIndex((previousIndex) =>
+      previousIndex - 1 >= 0
+        ? previousIndex - 1
+        : singleAuction?.images?.length - 1
     );
   };
 
@@ -182,6 +199,15 @@ const SingleAuctionDetail = ({ noPadding }) => {
     return <Loading />;
   }
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!singleAuction) {
+    return <div>Auction not found.</div>;
+  }
+
+  // ... (JSX from previous responses will be here)
   return (
     <>
       <div
