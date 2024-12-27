@@ -13,31 +13,29 @@ const Calc = () => {
   // State variables
   const [selectedPrice, setSelectedPrice] = useState("");
   const [currentInput, setCurrentInput] = useState("");
-  const [grams, setGrams] = useState(""); // State for grams input
-  const [workmanship, setWorkmanship] = useState(""); // State for workmanship input
-  const [activeTab, setActiveTab] = useState(""); // State for active tab (Metal or Diamond)
-  const [caratWeight, setCaratWeight] = useState(""); // Carat Weight input
-  const [cutShape, setCutShape] = useState(""); // Selected cut/shape
-  const [clarity, setClarity] = useState(""); // Selected clarity
-  const [color, setColor] = useState(""); // Selected color
-  const [diamondPrice, setDiamondPrice] = useState(""); // Output price for diamonds
+  const [grams, setGrams] = useState("");
+  const [workmanship, setWorkmanship] = useState("");
+  const [activeTab, setActiveTab] = useState("");
+  const [caratWeight, setCaratWeight] = useState("");
+  const [cutShape, setCutShape] = useState("");
+  const [clarity, setClarity] = useState("");
+  const [color, setColor] = useState("");
+  const [diamondPrice, setDiamondPrice] = useState("");
+  const [goldBasePrice, setGoldBasePrice] = useState(""); // Base price for diamond calculations
 
-  // Purity multipliers for gold
   const goldPurities = [
     { label: "24k", multiplier: 1 },
     { label: "21k", multiplier: 0.857 },
     { label: "18k", multiplier: 0.75 },
   ];
 
-  // Handle dropdown selection for metals
   const handleMetalChange = (event) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
     const price = selectedOption.getAttribute("data-price");
-    setSelectedPrice(price || ""); // Set selected price
-    setCurrentInput(price || ""); // Set as initial input in calculator
+    setSelectedPrice(price || "");
+    setCurrentInput(price || "");
   };
 
-  // Handle button clicks for metal calculator
   const handleButtonClick = (value) => {
     if (value === "Erase") {
       clearInput();
@@ -46,7 +44,6 @@ const Calc = () => {
     }
   };
 
-  // Clear inputs
   const clearInput = () => {
     setCurrentInput("");
     setGrams("");
@@ -56,78 +53,78 @@ const Calc = () => {
     setClarity("");
     setColor("");
     setDiamondPrice("");
+    setGoldBasePrice("");
   };
 
-  // Calculate total price for metals
   const calculateTotalPrice = (updatedGrams = grams, updatedWorkmanship = workmanship) => {
     if (selectedPrice && updatedGrams) {
       const basePrice = parseFloat(selectedPrice) * parseFloat(updatedGrams);
-      const workmanshipFee = parseFloat(updatedWorkmanship) || 0; // Default to 0 if empty
+      const workmanshipFee = parseFloat(updatedWorkmanship) || 0;
       const total = (basePrice + workmanshipFee).toFixed(2);
-      setCurrentInput(total); // Update the output field with the total price
+      setCurrentInput(total);
     } else {
       setCurrentInput("");
     }
   };
 
-  // Handle grams input change
   const handleGramsChange = (event) => {
     const value = event.target.value;
     setGrams(value);
     calculateTotalPrice(value, workmanship);
   };
 
-  // Handle workmanship input change
   const handleWorkmanshipChange = (event) => {
     const value = event.target.value;
     setWorkmanship(value);
     calculateTotalPrice(grams, value);
   };
 
-  // Calculate Diamond Price
   const calculateDiamondPrice = () => {
     if (caratWeight && cutShape && clarity && color) {
-      // Dummy price calculation logic (replace with actual pricing formula as needed)
-      const price = (caratWeight * 1000).toFixed(2); // Example price
+      const price = ((parseFloat(goldBasePrice) || 0) + caratWeight * 1000).toFixed(2);
       setDiamondPrice(price);
+      setGoldBasePrice(price); // Overwrite the migrated gold price with the calculated diamond value
     } else {
       setDiamondPrice("Incomplete input");
     }
   };
 
+  const migrateToDiamondCalculator = () => {
+    if (currentInput) {
+      setGoldBasePrice(currentInput); // Pass the gold calculator output as base
+      setActiveTab("diamond"); // Switch to the diamond tab
+    }
+  };
+
+  const clearDiamondInput = () => {
+    setCaratWeight("");
+    setCutShape("");
+    setClarity("");
+    setColor("");
+    setDiamondPrice("");
+  };
+
   return (
     <div className="fixed bottom-20 right-10 bg-[#15141788] w-1/4 h-auto z-50 rounded-lg p-4">
-      {/* Tabs for Metal and Diamond */}
       <div className="tab-buttons flex justify-between mb-4">
         <button
-          className={`p-2 w-1/2 ${
-            activeTab === "metal" ? "bg-theme-bg-light text-white" : "bg-color-primary"
-          } hover:bg-color-dark `}
+          className={`p-2 w-1/2 ${activeTab === "metal" ? "bg-theme-bg-light text-white" : "bg-color-primary"} hover:bg-color-dark`}
           onClick={() => setActiveTab("metal")}
         >
           Metal
         </button>
         <button
-          className={`p-2 w-1/2 ${
-            activeTab === "diamond" ? "bg-theme-bg-light text-white" : "bg-color-primary"
-          } hover:bg-color-dark `}
+          className={`p-2 w-1/2 ${activeTab === "diamond" ? "bg-theme-bg-light text-white" : "bg-color-primary"} hover:bg-color-dark`}
           onClick={() => setActiveTab("diamond")}
         >
           Diamond
         </button>
       </div>
 
-      {/* Metal Calculator */}
       {activeTab === "metal" && (
         <div>
-          {/* Dropdown Menu */}
           <div className="metal-selection mb-4">
-            <select
-              id="category"
-              onChange={handleMetalChange}
-              aria-label="Choose Metal Type"
-              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
-            >
+            <select id="category" onChange={handleMetalChange} aria-label="Choose Metal Type" style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}>
               <option value="" disabled selected>
                 Select Metal
               </option>
@@ -152,7 +149,6 @@ const Calc = () => {
             </select>
           </div>
 
-          {/* Input Field for Grams */}
           <div className="grams-input mb-4">
             <input
               type="number"
@@ -164,7 +160,6 @@ const Calc = () => {
             />
           </div>
 
-          {/* Input Field for Workmanship */}
           <div className="workmanship-input mb-4">
             <input
               type="number"
@@ -176,27 +171,23 @@ const Calc = () => {
             />
           </div>
 
-          {/* Display Screen */}
           <div id="display" className="calculator-display mb-4 text-white font-bold">
             {currentInput || "0"}
           </div>
 
-          {/* Calculator Buttons */}
           <div id="buttons" className="calculator-buttons grid grid-cols-4 gap-2">
-            <button
-              className="col-span-4 bg-red-500 text-white p-2 rounded-lg"
-              onClick={() => handleButtonClick("Erase")}
-            >
+            <button className="col-span-4 bg-red-500 text-white p-2 rounded-lg" onClick={() => handleButtonClick("Erase")}>
               Erase
+            </button>
+            <button className="col-span-4 bg-blue-500 text-white p-2 rounded-lg" onClick={migrateToDiamondCalculator}>
+              Proceed to Diamond
             </button>
           </div>
         </div>
       )}
 
-      {/* Diamond Calculator */}
       {activeTab === "diamond" && (
         <div>
-          {/* Input Field for Carat Weight */}
           <div className="carat-weight-input mb-4">
             <input
               type="number"
@@ -210,7 +201,6 @@ const Calc = () => {
             />
           </div>
 
-          {/* Dropdown for Cut/Shape */}
           <div className="cut-shape-dropdown mb-4">
             <select
               onChange={(e) => setCutShape(e.target.value)}
@@ -226,7 +216,6 @@ const Calc = () => {
             </select>
           </div>
 
-          {/* Dropdown for Clarity */}
           <div className="clarity-dropdown mb-4">
             <select
               onChange={(e) => setClarity(e.target.value)}
@@ -247,7 +236,6 @@ const Calc = () => {
             </select>
           </div>
 
-          {/* Dropdown for Color */}
           <div className="color-dropdown mb-4">
             <select
               onChange={(e) => setColor(e.target.value)}
@@ -268,18 +256,16 @@ const Calc = () => {
             </select>
           </div>
 
-          {/* Display for Diamond Price */}
-          <div className="diamond-price-display mb-4 text-white font-bold">
-            {diamondPrice || "Enter details to calculate"}
+          <div id="display" className="calculator-display mb-4 text-white font-bold">
+            {goldBasePrice || "0"}
           </div>
 
-          {/* Calculate Button */}
-          <div className="calculate-button text-center">
-            <button
-              className="bg-blue-500 text-white p-2 rounded-lg"
-              onClick={calculateDiamondPrice}
-            >
-              Calculate Price
+          <div id="buttons" className="calculator-buttons grid grid-cols-4 gap-2">
+            <button className="col-span-4 bg-red-500 text-white p-2 rounded-lg" onClick={() => handleButtonClick("Erase")}>
+              Erase
+            </button>
+            <button className="col-span-4 bg-blue-500 text-white p-2 rounded-lg"  onClick={calculateDiamondPrice}>
+              Calculate
             </button>
           </div>
         </div>
