@@ -10,7 +10,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 // import socket from "../socket";
 import { FaBars, FaTimes } from "react-icons/fa";
 import NavSidebar from "./NavSidebar";
-
+import logo from "../../assets/logo.png";
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -63,10 +63,7 @@ const Header = () => {
     <div className="flex justify-between items-center px-2  sm:px-14 bg-body-bg py-4 border-b border-border-info-color">
       <div className="flex items-center px-1 z-[1]">
         <Link to="/admin/users" className=" no-underline ">
-          <h1 className="text-3xl font-bold text-white font-Roboto">
-          <span className="uppercase text-theme-color">M</span>z
-          <span className="uppercase text-theme-color">B</span>id
-          </h1>
+          <img src={logo} alt="ElSent Logo" className="w-28 h-28 mx-auto" />
         </Link>
       </div>
       {/* <div className="hidden sm:block">
