@@ -81,7 +81,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col gap-4 items-start mb-5">
       <div className="flex items-center">
-        <span className="flex absolute animate-ping flex rounded-full h-3 w-3 bg-color-warning"></span>
+        <span className="flex absolute animate-ping rounded-full h-3 w-3 bg-color-warning"></span>
         <span className="relative flex rounded-full h-3 w-3 bg-color-warning"></span>
         <span>&nbsp;&nbsp;&nbsp;</span> {/* Adds 3 spaces */}
         <h2 className="flex text-2xl font-bold text-white">Live Auctions</h2>
