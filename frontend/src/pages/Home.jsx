@@ -6,7 +6,7 @@ import MetalPrices from "../components/home/MetalPrices";
 import YoutubeLive from "../components/home/YoutubeLive";
 import { register } from "swiper/element/bundle";
 import Dashboard from "./Dashboard";
-
+import DailyGifts from "../components/home/DailyGifts";
 register();
 
 const Home = () => {
@@ -15,6 +15,7 @@ const Home = () => {
       <HeroHome />
       <div className="px-5 lg:px-15 flex flex-col gap-20">
       <MetalPrices />
+      <DailyGifts />
       <Dashboard />
       <YoutubeLive /> 
       <ProcessHome />
