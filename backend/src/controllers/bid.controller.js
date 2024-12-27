@@ -25,16 +25,24 @@ const addBidOnItem = asyncHandler(async (req, res) => {
     }
     console.log(item, "item....");
 
+    if(item.status === "over") {
+      return res.status(406).json(new ApiResponse(406, "Auction is over"));
+    }
+
+    if(amount <= item.startingPrice) {
+      return res.status(406).json(new ApiResponse(406, "Bid amount should be greater than starting price"));
+    }
+
     const newBid = new Bid({
       bidder: req.user._id,
       auction: req.params.id,
       bidAmount: req.body.amount,
     });
 
-    console.log(newBid, "newBid....");
-    console.log(req.user, "req.user");
-    await VoucherController.createVoucher({ body: req.user }, res);
-    
+    for(let i = 0; i < (amount-  item.startingPrice)/item.incrementPrice; i++) {
+      await VoucherController.createVoucher({ body: req.user }, res);
+    }
+
     await newBid.save();
     
     item.bids.push(newBid._id);

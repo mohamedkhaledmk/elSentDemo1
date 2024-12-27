@@ -6,6 +6,7 @@ const voucherSchema = new mongoose.Schema({
     userEmail: { type: String, required: true },
     userPhoto: { type: String, required: true },
     code: { type: String, required: true },
+    isUsed: { type: Boolean, default: false },
   },
   {
     timestamps: true,
