@@ -72,7 +72,7 @@ const Cart = () => {
                 />
                 <div className="flex flex-col gap-1">
                   <h3 className="text-2xl font-bold ">{product.name}</h3>
-                  <p>{product.startingPrice}$</p>
+                  <p>{product.startingPrice}SAR</p>
                 </div>
               </div>
               <div className="flex gap-4">

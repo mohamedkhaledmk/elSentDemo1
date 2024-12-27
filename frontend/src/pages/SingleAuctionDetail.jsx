@@ -339,7 +339,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                     : "Starting Price"}
                 </h3>
                 <p className="text-body-text-color">
-                  ${singleAuctionData?.startingPrice}
+                 SAR {singleAuctionData?.startingPrice}
                 </p>
               </div>
               <div className="flex flex-col gap-2">
@@ -388,7 +388,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                         </div>
                       </div>
                       <div className="text-white">
-                        Bid Amount : $
+                        Bid Amount : SAR
                         {auctionWinnerDetailData?.bidAmount ||
                           singleAuction?.winner?.bidAmount}
                       </div>

@@ -59,7 +59,7 @@ const SingleAuction = ({
             </div>
             <div className="flex flex-col">
               <p className="text-[12px]">Current Bid</p>
-              <p className="mt-2">$ {startingPrice}</p>
+              <p className="mt-2">SAR {startingPrice}</p>
             </div>
             <Link
               to={`/single-auction-detail/${id}`}
