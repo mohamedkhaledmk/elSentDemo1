@@ -8,7 +8,7 @@ const generateVoucherCode = () => {
 
 const createVoucher = asyncHandler(async (req, res) => {
     try {
-        const { user } = req.body;
+        const user  = req.body;
         const voucher = await Voucher.create({
             code: generateVoucherCode(),
             user: user._id,

@@ -65,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
     userId: createdUser._id,
   });
 
-  await VoucherController.createVoucher({ body: { user } }, res);
+  await VoucherController.createVoucher({ body: user  }, res);
 
   return res
     .status(201)
