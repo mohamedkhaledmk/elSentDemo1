@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllVouchers } from "../../store/voucher/voucherSlice";
+import { getAllVouchers, disableAllVouchers } from "../../store/voucher/voucherSlice";
 
 const Giveaway = () => {
   console.log('Trying...');
@@ -31,6 +31,11 @@ const Giveaway = () => {
       setIsRolling(false);
     }, 15000); // Stop the rolling after 15 seconds
   };
+
+  const handleDisableAllVouchers = async () => {
+      //console.log("button click , , ...........");
+      await dispatch(disableAllVouchers());
+    };
 
   return (
     <div className="px-7 py-4 w-full bg-theme-bg text-slate-300 rounded-2xl">
@@ -69,6 +74,16 @@ const Giveaway = () => {
             disabled={isRolling}
           >
             {isRolling ? "Rolling..." : "Choose Winner"}
+          </button>
+        </div>
+
+        {/* Disable All Vouchers Button */}
+        <div className="mt-5 flex justify-center">
+          <button
+            className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-600/80 transition-all"
+            onClick={handleDisableAllVouchers}
+          >
+            Disable All Vouchers
           </button>
         </div>
 

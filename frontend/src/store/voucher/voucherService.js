@@ -7,8 +7,14 @@ export const getAllVouchers = async () => {
         return response.data;
 }
 
+export const disableAllVouchers = async () => {
+    const response = await axios.put(`${API_URL}/vouchers/disable`);
+        return response.data;
+}
+
 const voucherService= {
     getAllVouchers,
+    disableAllVouchers,
 }
 
 
