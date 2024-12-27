@@ -10,7 +10,7 @@ import { getAllCities } from "../store/city/citySlice.js";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { IoCloudUploadOutline } from "react-icons/io5";
 const EditAuction = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -18,9 +18,11 @@ const EditAuction = () => {
   const { singleAuction, isLoading, message, isError, isSuccess } = useSelector(
     (state) => state.auction
   );
+
   const [singleAuctionData, setSingleAuctionData] = useState(singleAuction);
-  const [imgUrl, setImgUrl] = useState(singleAuction?.image || "");
+  const [imgUrls, setImgUrls] = useState(singleAuction?.images || []);
   const imgRef = useRef(null);
+
   const { categories } = useSelector((state) => state.category);
   const { cities } = useSelector((state) => state.city);
 
@@ -41,81 +43,81 @@ const EditAuction = () => {
 
   useEffect(() => {
     if (isSuccess && isError) {
-      toast.error(message, {
-        autoClose: 500,
-      });
+      toast.error(message, { autoClose: 500 });
       dispatch(reset());
     } else if (isSuccess && isError === undefined) {
-      toast.success(message, {
-        autoClose: 500,
-      });
+      toast.success(message, { autoClose: 500 });
       dispatch(reset());
-
       setFormData({
         name: "",
         category: "",
-        startTime: "",
-        endTime: "",
         location: "",
         startingPrice: "",
         description: "",
         materialUsed: "",
+        length: "",
+        width: "",
+        height: "",
+        weight: "",
+        workmanshipFee: "",
+        incrementPrice: "",
       });
-      setImgUrl("");
+      setImgUrls([]);
     }
-    dispatch(reset());
   }, [isSuccess, isError, isLoading]);
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    startTime: "",
-    endTime: "",
     category: "",
     location: "",
     startingPrice: 0,
-    imgUrl: "",
     materialUsed: "",
+    length: "",
+    width: "",
+    height: "",
+    weight: "",
+    workmanshipFee: "",
+    incrementPrice: "",
   });
 
   useEffect(() => {
     setFormData({
       name: singleAuctionData?.name,
       description: singleAuctionData?.description || "",
-      startTime: singleAuctionData?.startTime
-        ? new Date(singleAuctionData?.startTime).toISOString().slice(0, 16)
-        : "",
-      endTime: singleAuctionData?.endTime
-        ? new Date(singleAuctionData?.endTime).toISOString().slice(0, 16)
-        : "",
       category: singleAuctionData?.category?._id || "",
       location: singleAuctionData?.location?._id || "",
       startingPrice: parseFloat(singleAuctionData?.startingPrice) || 0,
       materialUsed: singleAuctionData?.materialUsed || "",
+      length: singleAuctionData?.length || "",
+      width: singleAuctionData?.width || "",
+      height: singleAuctionData?.height || "",
+      weight: singleAuctionData?.weight || "",
+      workmanshipFee: singleAuctionData?.workmanshipFee || "",
+      incrementPrice: singleAuctionData?.incrementPrice || "",
     });
-    setImgUrl(singleAuctionData?.image || "");
+    setImgUrls(singleAuctionData?.images || []);
   }, [singleAuctionData]);
 
   const handleProductUpload = (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append("name", formData.name);
-    data.append("startingPrice", formData.startingPrice);
-    data.append("category", formData.category);
-    data.append("startTime", formData.startTime);
-    data.append("endTime", formData.endTime);
-    data.append("location", formData.location);
-    data.append("description", formData.description);
-    data.append("materialUsed", formData.materialUsed);
+    Object.entries(formData).forEach(([key, value]) => {
+      data.append(key, value);
+    });
 
-    if (imgRef.current.files[0]) {
-      data.append("image", imgRef.current.files[0]);
-    } else {
-      data.append("image", imgUrl);
-    }
+    imgUrls.forEach((img) => {
+      data.append("images", img);
+    });
 
     dispatch(updateSingleAuction({ data: data, id: id }));
     dispatch(reset());
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const updatedImgUrls = files.map((file) => URL.createObjectURL(file));
+    setImgUrls(updatedImgUrls);
   };
 
   return (
@@ -125,47 +127,56 @@ const EditAuction = () => {
         onSubmit={handleProductUpload}
       >
         <div className="text-white lg:w-[22%] lg:min-w-[350px] ">
-          <h1 className="text-white text-2xl font-bold mb-4">Upload Item</h1>
+          <h1 className="text-white text-2xl font-bold mb-4">Edit Item</h1>
 
-          {imgUrl ? (
-            <img
-              src={imgUrl}
-              alt="upload img"
-              onClick={() => imgRef.current.click()}
-              className="w-full h-80 
-                    rounded-lg border-2 border-border-info-color p-2 object-contain cursor-pointer"
-            />
-          ) : (
-            <div
-              onClick={() => imgRef.current.click()}
-              className="w-full h-80
-              rounded-xl border-2 border-dashed border-border-info-color 
-                    flex items-center justify-center
-                    cursor-pointer
-                    "
-            >
-              <p className="text-white">Click to upload</p>
-            </div>
-          )}
+          <div className="grid gap-4">
+            {imgUrls.length > 0 ? (
+              imgUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Uploaded Image ${index}`}
+                  className="w-full h-40 rounded-lg border-2 border-solid p-2 object-contain"
+                />
+              ))
+            ) : (
+              <div
+                onClick={() => imgRef.current.click()}
+                className="w-full h-80 rounded-xl border-2 border-dashed border-border-info-color flex items-center justify-center cursor-pointer"
+              >
+                <div className="text-center flex flex-col items-center gap-2">
+                  <IoCloudUploadOutline
+                    size={68}
+                    className="text-theme-color"
+                  />
+                  <p>Click to Upload</p>
+                  <span className="text-body-text-color">
+                    PNG, JPG, JPEG | Max Size 1MB
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
 
           <input
             type="file"
             className="hidden"
-            onChange={(e) => setImgUrl(URL.createObjectURL(e.target.files[0]))}
+            onChange={handleImageChange}
             ref={imgRef}
+            accept=".png, .jpg, .jpeg"
+            multiple
           />
         </div>
 
+        {/* INPUTS */}
         <div className="flex flex-col gap-4 lg:w-[50%] inputs:outline-none p-8 inputs:px-4 inputs:py-3 inputs:rounded-xl select:px-4 select:py-3 select:rounded-xl select:cursor-pointer border border-border-info-color inputs:bg-theme-bg inputs:border inputs:border-border-info-color focus:inputs:border-theme-color select:border select:border-border-info-color inputs:placeholder-body-text-color text-slate-300 rounded-2xl [&_label]:mb-2 [&_label]:text-body-text-color [&_*]:transition-all">
           <div className="grid">
-            <label htmlFor="product_name" className="text-white  mb-1">
-              Product Name
-            </label>
+            <label htmlFor="product_name">Product Name</label>
             <input
               required
               id="product_name"
+              placeholder="e.g (Modern Abstract Painting)"
               type="text"
-              className="w-full py-3 mt-2 outline-none border-none rounded-lg"
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
               }
@@ -174,18 +185,17 @@ const EditAuction = () => {
           </div>
 
           <div className="grid">
-            <label htmlFor="category" className="text-white">
-              Category
-            </label>
+            <label htmlFor="category">Category</label>
             <select
+              className="outline-none h-[50px] bg-theme-bg cursor-pointer focus:border-theme-color"
               required
               id="category"
-              className="outline-none h-[50px] bg-theme-bg rounded-xl px-3 py-4 cursor-pointer focus:border-theme-color"
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
               }
               value={formData.category}
             >
+              <option value="">Select Category</option>
               {categories.data &&
                 categories.data.map((category) => (
                   <option key={category._id} value={category._id}>
@@ -197,44 +207,13 @@ const EditAuction = () => {
 
           <div className="grid lg:grid-cols-2 gap-4 mlg:grid-cols-1">
             <div className="grid">
-              <label htmlFor="start_time" className="text-white">
-                Start Time
-              </label>
-              <input
-                required
-                id="startTime"
-                type="datetime-local"
-                onChange={(e) =>
-                  setFormData({ ...formData, startTime: e.target.value })
-                }
-                value={formData.startTime}
-              />
-            </div>
-            <div className="grid">
-              <label htmlFor="end_time" className="text-white">
-                End Time
-              </label>
-              <input
-                required
-                id="endTime"
-                type="datetime-local"
-                onChange={(e) =>
-                  setFormData({ ...formData, endTime: e.target.value })
-                }
-                value={formData.endTime}
-              />
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-4 mlg:grid-cols-1">
-            <div className="grid">
-              <label htmlFor="starting_price" className="text-white">
-                Starting Price
-              </label>
+              <label htmlFor="starting_price">Starting Price</label>
               <input
                 required
                 id="starting_price"
                 type="number"
+                placeholder="e.g (1000)"
+                min="1"
                 onChange={(e) =>
                   setFormData({ ...formData, startingPrice: e.target.value })
                 }
@@ -243,18 +222,17 @@ const EditAuction = () => {
               />
             </div>
             <div className="grid">
-              <label htmlFor="location" className="text-white">
-                Area
-              </label>
+              <label htmlFor="location">Area</label>
               <select
+                className="outline-none h-[50px] bg-theme-bg cursor-pointer focus:border-theme-color"
                 required
                 id="location"
-                className="outline-none h-[50px] bg-theme-bg cursor-pointer focus:border-theme-color"
                 onChange={(e) =>
                   setFormData({ ...formData, location: e.target.value })
                 }
                 value={formData.location}
               >
+                <option value="">Select Area</option>
                 {cities.data &&
                   cities.data.map((location) => (
                     <option key={location._id} value={location._id}>
@@ -265,9 +243,110 @@ const EditAuction = () => {
             </div>
           </div>
 
+          <div className="grid lg:grid-cols-2 gap-4 mlg:grid-cols-1">
+            <div className="grid">
+              <label htmlFor="height">Height (cm)</label>
+              <input
+                required
+                id="height"
+                type="number"
+                min="1"
+                onChange={(e) =>
+                  setFormData({ ...formData, height: e.target.value })
+                }
+                value={formData.height}
+              />
+            </div>
+            <div className="grid">
+              <label htmlFor="weight">Weight (gm)</label>
+              <input
+                required
+                id="weight"
+                type="number"
+                min="1"
+                onChange={(e) =>
+                  setFormData({ ...formData, weight: e.target.value })
+                }
+                value={formData.weight}
+              />
+            </div>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-4 mlg:grid-cols-1">
+            <div className="grid">
+              <label htmlFor="length">Length (cm)</label>
+              <input
+                required
+                id="length"
+                type="number"
+                min="1"
+                onChange={(e) =>
+                  setFormData({ ...formData, length: e.target.value })
+                }
+                value={formData.length}
+              />
+            </div>
+            <div className="grid">
+              <label htmlFor="width">Width (cm)</label>
+              <input
+                required
+                id="width"
+                type="number"
+                min="1"
+                onChange={(e) =>
+                  setFormData({ ...formData, width: e.target.value })
+                }
+                value={formData.width}
+              />
+            </div>
+          </div>
+
+          <div className="grid">
+            <label htmlFor="material_used">Material Used</label>
+            <input
+              required
+              id="material_used"
+              placeholder="e.g. Wood, Steel, Canvas"
+              type="text"
+              onChange={(e) =>
+                setFormData({ ...formData, materialUsed: e.target.value })
+              }
+              value={formData.materialUsed}
+            />
+          </div>
+
+          <div className="grid">
+            <label htmlFor="workmanship_fee">Workmanship Fee</label>
+            <input
+              required
+              id="workmanship_fee"
+              placeholder="e.g. 50"
+              type="number"
+              onChange={(e) =>
+                setFormData({ ...formData, workmanshipFee: e.target.value })
+              }
+              value={formData.workmanshipFee}
+            />
+          </div>
+
+          <div className="grid">
+            <label htmlFor="increment_price">Increment Price</label>
+            <input
+              required
+              id="increment_price"
+              type="number"
+              min="1"
+              onChange={(e) =>
+                setFormData({ ...formData, incrementPrice: e.target.value })
+              }
+              value={formData.incrementPrice || ""}
+            />
+          </div>
+
           <div className="grid">
             <label htmlFor="description">Description</label>
             <textarea
+              placeholder="Describe your product, art, etc."
               required
               id="description"
               rows="7"
@@ -276,21 +355,6 @@ const EditAuction = () => {
                 setFormData({ ...formData, description: e.target.value })
               }
               value={formData.description}
-            />
-          </div>
-          <div className="grid">
-            <label htmlFor="material_used" className="text-white">
-              Material Used
-            </label>
-            <input
-              required
-              id="material_used"
-              type="text"
-              className="w-full py-3 mt-2 outline-none border-none rounded-lg"
-              onChange={(e) =>
-                setFormData({ ...formData, materialUsed: e.target.value })
-              }
-              value={formData.materialUsed}
             />
           </div>
 

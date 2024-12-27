@@ -245,6 +245,7 @@ const auctionSlice = createSlice({
       state.isError = false;
       state.isSuccess = true;
       state.message = action.payload.message;
+      console.log("singleauction", action.payload);
       state.singleAuction = action.payload.data;
     });
     builder.addCase(getSingleAuctionById.rejected, (state, action) => {
@@ -336,6 +337,7 @@ const auctionSlice = createSlice({
     builder.addCase(updateSingleAuction.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = action.payload.isError;
+      state.singleAuction = action.payload.data;
       state.isSuccess = action.payload.isSuccess || true;
       state.message = action.payload.message;
     });

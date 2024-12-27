@@ -202,7 +202,7 @@ const getSingleAuctionById = asyncHandler(async (req, res) => {
     const auction = await Auction.findById(req.params.id)
       .populate("category", "name") // Populating category
       .populate("location", "name") // Populating location
-      .populate("seller", "fullName email phone location profilePicture") // Populating seller
+      // .populate("seller", "fullName email phone location profilePicture") // Populating seller
       .populate({
         path: "bids",
         populate: {
@@ -217,7 +217,8 @@ const getSingleAuctionById = asyncHandler(async (req, res) => {
           select: "fullName profilePicture",
         },
       });
-    
+    // console.log("resp", auction);
+
     if (!auction) {
       return res.status(404).json(new ApiResponse(404, "Auction not found"));
     }
@@ -373,19 +374,22 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
       startingPrice,
       location,
       height,
+      length,
       width,
       materialUsed,
       weight,
       workmanshipFee,
       incrementPrice,
     } = req.body;
-    const image = req.file?.path;
+    console.log("images", req.body.images);
+    const images = req.files?.map((file) => file.path); // Assuming you're using multer for handling multiple files
 
     console.log(req.body, "req.body........");
     const auction = await Auction.findById(req.params.id);
     if (!auction) {
       return res.status(404).json(new ApiResponse(404, "Auction not found"));
     }
+
     // Check if startingPrice is a positive number
     if (startingPrice <= 0) {
       return res
@@ -393,21 +397,7 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
         .json(new ApiResponse(400, "Starting price must be a positive number"));
     }
 
-    //check start and now time and update status accordingly
     let currentDate = new Date();
-
-    if (startTime !== auction.startTime || endTime !== auction.endTime) {
-      if (currentDate.getTime() > auction.startTime.getTime()) {
-        return res
-          .status(400)
-          .json(
-            new ApiResponse(
-              400,
-              "Auction has already started, you can't update start time or end time"
-            )
-          );
-      }
-    }
 
     if (startTime > endTime) {
       return res
@@ -425,11 +415,15 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
         .json(new ApiResponse(400, "Auction is over, you can't update"));
     }
 
-    if (image) {
-      var imgUrlCloudinary = await uploadOnCloudinary(image);
-      console.log(imgUrlCloudinary);
-      if (!imgUrlCloudinary?.url) {
-        return res.status(400).json(new ApiResponse(400, "Invalid image"));
+    let imgUrlsCloudinary = [];
+    if (images && images.length > 0) {
+      for (const image of images) {
+        const imgUrlCloudinary = await uploadOnCloudinary(image);
+        console.log(imgUrlCloudinary);
+        if (!imgUrlCloudinary?.url) {
+          return res.status(400).json(new ApiResponse(400, "Invalid image"));
+        }
+        imgUrlsCloudinary.push(imgUrlCloudinary.url);
       }
     }
 
@@ -454,9 +448,9 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
       ? incrementPrice
       : auction.incrementPrice;
 
-    auction.image = imgUrlCloudinary?.url
-      ? imgUrlCloudinary.url
-      : auction.image;
+    // Update the auction's images array
+    auction.images =
+      imgUrlsCloudinary.length > 0 ? imgUrlsCloudinary : auction.images;
 
     await auction.save();
     return res
