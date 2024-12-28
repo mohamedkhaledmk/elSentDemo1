@@ -1,11 +1,11 @@
-import { Schema,mongoose } from "mongoose";
+import mongoose from "mongoose";
 
-const cartSchema = new Schema({
+const cartSchema = new mongoose.Schema({
     user: { type: 
-        Schema.Types.ObjectId, ref: "User" , required: true },
+        mongoose.Schema.Types.ObjectId, ref: "User" , required: true },
     products: [
         {
-            type: Schema.Types.ObjectId, ref: "Auction", required: true
+            type: mongoose.Schema.Types.ObjectId, ref: "Auction", required: true
         }
         
        

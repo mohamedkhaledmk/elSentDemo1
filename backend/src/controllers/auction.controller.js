@@ -29,7 +29,7 @@ const createAuction = asyncHandler(async (req, res) => {
       incrementPrice,
     } = req.body;
 
-    const files = req.files; // Assuming `req.files` contains the array of uploaded images
+    const files = req?.files; // Assuming `req.files` contains the array of uploaded images
     console.log("dehk", files);
     // Check if images are provided
     if (!files || files.length === 0) {
