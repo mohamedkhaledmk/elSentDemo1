@@ -1,5 +1,4 @@
 const BidCard = (bid) => {
-  console.log("bid", bid);
   return (
     <div className="flex sm:gap-10 items-center border mt-2 justify-between md:w-[80%] py-1 px-2 md:px-5 border-theme-bg-light rounded-full">
       <div className="flex gap-4 items-center text-white">

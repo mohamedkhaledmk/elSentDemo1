@@ -52,7 +52,6 @@ const BidsItem = () => {
             </tr>
           </thead>
           <tbody className="table-row-group">
-            {console.log("bids", bids[0])}
             {isLoading ? (
               <tr>
                 <td colSpan="7" className="text-center">

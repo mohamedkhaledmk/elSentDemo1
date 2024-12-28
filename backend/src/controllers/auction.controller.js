@@ -179,7 +179,6 @@ const getAllAuctions = asyncHandler(async (req, res) => {
         },
       })
       .sort({ createdAt: -1 }); // Sort auctions by creation date (newest first)
-    console.log("bidder", auctions[0]?.bids[0]?.bidder);
     return res.json(
       new ApiResponse(200, "Auctions retrieved successfully", auctions)
     );
