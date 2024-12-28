@@ -40,12 +40,11 @@ const sendNotification = asyncHandler(async (req, res) => {
   try {
     // Find all bids for the auction
     const bids = await Bid.find({ auction: auctionId });
-
     // Get all unique user IDs from the bids
     const userIds = new Set(bids.map((bid) => bid.bidder.toString()));
 
     // Add the owner of the item to the user IDs
-    userIds.add(auction.seller.toString());
+    // userIds.add(auction.seller.toString());
 
     // Create a notification for each user ID
     userIds.forEach(async (id) => {
@@ -78,16 +77,15 @@ const getUserNotifications = asyncHandler(async (req, res) => {
     const notifications = await Notification.find({
       user: req?.user?._id,
     })
-    .sort({ createdAt: -1 })
-    .populate("auction", "name image")
-    .populate({
-      path: "auction",
-      populate: {
-        path: "bids",
-        model: "Bid",
-      },
-    
-    })
+      .sort({ createdAt: -1 })
+      .populate("auction", "name image")
+      .populate({
+        path: "auction",
+        populate: {
+          path: "bids",
+          model: "Bid",
+        },
+      });
 
     if (!notifications) {
       return res
@@ -105,7 +103,6 @@ const getUserNotifications = asyncHandler(async (req, res) => {
       .json(new ApiResponse(500, error?.message || "Internal server error"));
   }
 });
-
 
 // @desc mark notification as read
 // @route PUT /api/v1/notifications/mark-as-read/:id
@@ -126,7 +123,6 @@ const markNotificationAsRead = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Notification marked as read"));
 });
 
-
 // @desc mark all notification as read
 // @route PUT /api/v1/notifications/mark-all-as-read
 // @access Private
@@ -142,10 +138,7 @@ const markAllNotificationsAsRead = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "All notifications marked as read"));
 });
 
-
-
-
-export { 
+export {
   sendNotification,
   getUserNotifications,
   markNotificationAsRead,

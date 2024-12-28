@@ -99,7 +99,13 @@ const SingleAuctionDetail = ({ noPadding }) => {
           bidTime: new Date().getTime(),
           auctionId: params.id,
         });
-
+        dispatch(
+          sendNewBidNotification({
+            auctionId: params.id,
+            type: "BID_PLACED",
+            newBidAmount: singleAuction.startingPrice,
+          })
+        );
         toast.success("Bid placed successfully!");
         setActiveTab("bids");
       }
@@ -339,7 +345,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                     : "Starting Price"}
                 </h3>
                 <p className="text-body-text-color">
-                 SAR {singleAuctionData?.startingPrice}
+                  SAR {singleAuctionData?.startingPrice}
                 </p>
               </div>
               <div className="flex flex-col gap-2">
