@@ -63,12 +63,16 @@
         }
 
         initialize() {
-          this.buttons = document.querySelectorAll("#buttons button");
-          if (this.buttons.length > 0) {
-          this.bindEvents();
-          } else {
-            console.error("No buttons found with the selector '#buttons button'");
-          }
+          document.addEventListener("DOMContentLoaded", () => {
+            this.buttons = document.querySelectorAll("#buttons button");
+            if (this.buttons.length > 0) {
+              this.bindEvents();
+            } else {
+              console.error(
+                "No buttons found with the selector '#buttons button'"
+              );
+            }
+          });
         }
 
         bindEvents() {

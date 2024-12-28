@@ -18,7 +18,7 @@ const Main = () => {
           toggleCalculator();
         }}
       >
-        <i class="fas fa-calculator"></i>
+        <i className="fas fa-calculator"></i>
       </button>
       {isCalculatorVisible && <Calc />}
       <App />

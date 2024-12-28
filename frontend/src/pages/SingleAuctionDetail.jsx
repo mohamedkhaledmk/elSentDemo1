@@ -348,14 +348,14 @@ const SingleAuctionDetail = ({ noPadding }) => {
               </div>
               <div className="flex flex-col gap-2">
                 <h3 className="text-heading-color font-medium">Time</h3>
-                <p className="text-body-text-color">
+                <div className="text-body-text-color">
                   <CountDownTimer
                     startTime={singleAuction?.startTime}
                     endTime={singleAuction?.endTime}
                     id={singleAuction?._id}
                     Winner={handleWinner}
                   />
-                </p>
+                </div>
               </div>
             </div>
             <div className="flex flex-col gap-4 pt-4 border-t border-border-info-color">
@@ -409,10 +409,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                   >
                     <div className="flex flex-col gap-4 pt-4 border-t border-border-info-color">
                       {auctionStarted && (
-                        <form
-                          className="flex justify-between items-center gap-4"
-                          onSubmit={(e) => e.preventDefault()}
-                        >
+                        <div className="flex justify-between items-center gap-4">
                           <div className="flex items-center space-x-2">
                             <input
                               type="text"
@@ -487,7 +484,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
                               Place Bid
                             </Link>
                           )}
-                        </form>
+                        </div>
                       )}
                     </div>
                   </form>
