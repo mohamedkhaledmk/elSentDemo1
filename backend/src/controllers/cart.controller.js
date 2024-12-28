@@ -51,11 +51,28 @@ const deleteCartItem=asyncHandler(async(req, res)=>{
 
 })
 
+const createCart=asyncHandler(async(req,res)=>{
+    try {
+  
+        const doc = await Cart.create(req.body);
+        res.status(201).json({
+            status:true,
+            messasge:"Cart created Successfully",
+            data:doc
+        })
+        
+        
+    } catch (error) {
+        return res.status(500).json(new ApiResponse(500, error?.message || "Internal server error"))
+        
+    }
 
+})
 
 
 
 export {
     getCartItems,
     deleteCartItem,
+    createCart
 }

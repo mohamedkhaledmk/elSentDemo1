@@ -28,9 +28,10 @@ const createAuction = asyncHandler(async (req, res) => {
       workmanshipFee,
       incrementPrice,
     } = req.body;
-
-    const files = req?.files; // Assuming `req.files` contains the array of uploaded images
+/*
+    const files = req.files; // Assuming `req.files` contains the array of uploaded images
     console.log("dehk", files);
+  
     // Check if images are provided
     if (!files || files.length === 0) {
       return res
@@ -48,7 +49,7 @@ const createAuction = asyncHandler(async (req, res) => {
         return imgUrlCloudinary.url; // Assuming Cloudinary returns an object with the URL
       })
     );
-
+*/
     // Check if fields are empty
     if (
       !name ||
@@ -103,7 +104,7 @@ const createAuction = asyncHandler(async (req, res) => {
       startTime,
       endTime,
       location,
-      images: uploadedImages, // Save the array of image URLs
+    //  images: uploadedImages, // Save the array of image URLs
       startingPrice,
       status,
       height,
