@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { io } from 'socket.io-client';
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Register from "./pages/auth/Register";
@@ -7,7 +8,7 @@ import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetNewPassword from "./pages/auth/ResetNewPassword";
 import UploadItem from "./pages/UploadItem";
@@ -34,10 +35,17 @@ import YoutubeLive from "./pages/LinkDashboard";
 import PaymentPage from "./pages/Payment";
 import EmailVerificationPage from "./pages/VerifyEmail";
 
+const socket = io("127.0.0.1:8000")
 const App = () => {
   const { user } = useSelector((state) => state.auth);
 
   console.log(user, "...");
+  // start
+  socket.on('Notification',(data)=>{
+  
+    toast.success(`custmoer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}..~!`);
+  })
+
   return (
     <>
       <BrowserRouter>

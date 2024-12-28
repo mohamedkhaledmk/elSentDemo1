@@ -1,9 +1,10 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Bid from "../models/bid.model.js";
+//import User from "../models/user.model.js."
 import Auction from "../models/auction.model.js";
 import VoucherController from './voucher.controller.js';
-
+import { getIo as io } from '../utils/socket.js';
 
 
 // @desc Add bid on item
@@ -17,13 +18,13 @@ const addBidOnItem = asyncHandler(async (req, res) => {
     if (!amount) {
       return res.status(400).json(new ApiResponse(400, "Amount is required"));
     }
-    console.log(amount, "amount");
+   // console.log(amount, "amount");
 
     let item = await Auction.findById(req.params.id); 
     if (!item) {
       return res.status(404).json(new ApiResponse(404, "Item not found"));
     }
-    console.log(item, "item....");
+    //console.log(item, "item....");
 
     if(item.status === "over") {
       return res.status(406).json(new ApiResponse(406, "Auction is over"));
@@ -37,22 +38,39 @@ const addBidOnItem = asyncHandler(async (req, res) => {
       bidder: req.user._id,
       auction: req.params.id,
       bidAmount: req.body.amount,
-    });
-
+    })
+/*
     for(let i = 0; i < (amount-  item.startingPrice)/item.incrementPrice; i++) {
       await VoucherController.createVoucher({ body: req.user }, res);
     }
-
+*/
     await newBid.save();
+
     
     item.bids.push(newBid._id);
     item.startingPrice = amount;
 
     await item.save();
-
+    //Notefiction code
+   const respo = await Bid.findById(newBid._id).populate({
+    path:'auction',
+    select:'startingPrice'
+   }).populate({
+    path:'bidder',
+    select:'fullName'
+   });
+    io().emit('Notification', { action: 'created',bid:respo});
+    /*
     return res
       .status(201)
       .json(new ApiResponse(201, "Bid placed successfully", newBid));
+      */
+     res.status(201).json({
+      status:true,
+      message:"Bid placed successfully",
+    //  data:respo,
+   
+     })
   } catch (error) {
     return res
       .status(500)

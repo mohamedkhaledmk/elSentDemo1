@@ -21,7 +21,12 @@ const createVoucher = asyncHandler(async (req, res) => {
             return res.status(500).json(new ApiResponse(500, "Error creating Voucher"));
             }
     
-            return res.status(201).json(new ApiResponse(201, "Voucher created successfully", voucher));
+           // return res.status(201).json(new ApiResponse(201, "Voucher created successfully", voucher));
+           res.status(201).json({
+            status:true,
+            message:"Voucher created successfully",
+            data:voucher
+           })
         } catch (error) {
             // Handle the error
             return res.status(500).json(new ApiResponse(500, error?.message || "Internal server error"));
