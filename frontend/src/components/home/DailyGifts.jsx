@@ -9,7 +9,7 @@ const DailyGifts = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/upload");
+        const response = await axios.get("http://localhost:8000/api/v1/images");
         // Ensure the response contains valid data
         if (Array.isArray(response.data)) {
           setImages(response.data);
@@ -55,8 +55,8 @@ const DailyGifts = () => {
       style={{ position: "relative", width: "800px", margin: "0 auto" }}
     >
       <h2 className="text-2xl font-bold text-white text-center mb-5">
-  Daily Gifts
-</h2>
+        Daily Gifts
+      </h2>
       {images.length > 0 ? (
         <div
           style={{

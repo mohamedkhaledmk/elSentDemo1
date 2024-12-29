@@ -37,7 +37,7 @@ app.use(
   })
 );
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/upload", imageRouter);
+app.use("/api/v1/images", imageRouter);
 app.use("/api/v1/product-categories", productCategoryRouter);
 app.use("/api/v1/auctions", auctionRouter);
 app.use("/api/v1/cities", cityRouter);

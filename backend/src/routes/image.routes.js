@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { uploadImages } from "../controllers/image.controller.js"; // Import the new controller
+import {
+  deleteImage,
+  getImages,
+  uploadImages,
+} from "../controllers/image.controller.js"; // Import the new controller
 import { uploadMultiple } from "../middlewares/multer.middleware.js"; // Middleware for handling multiple file uploads
 import Image from "../models/image.model.js";
 const router = Router();
@@ -10,13 +14,7 @@ router.route("/").post(
   uploadImages
 );
 
-router.route("/").get(async (req, res) => {
-  try {
-    const images = await Image.find();
-    res.json(images);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.route("/").get(getImages);
+router.route(`/:id`).delete(deleteImage);
 
 export default router;

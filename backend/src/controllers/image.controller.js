@@ -39,5 +39,23 @@ const uploadImages = asyncHandler(async (req, res) => {
     res.status(500).json(new ApiResponse(500, error.message || "Server error"));
   }
 });
+const getImages = asyncHandler(async (req, res) => {
+  try {
+    const images = await Image.find();
+    res.json(images);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-export { uploadImages };
+const deleteImage = asyncHandler(async (req, res) => {
+  console.log("first", req.params);
+  const { id } = req.params;
+  try {
+    const deletedImage = await Image.findByIdAndDelete(id);
+    res.status(200).json({ message: "success", data: deletedImage });
+  } catch (error) {
+    res.status(500).json({ message: "fail", error });
+  }
+});
+export { uploadImages, getImages, deleteImage };
