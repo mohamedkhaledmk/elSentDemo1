@@ -42,19 +42,17 @@ const addBidOnItem = asyncHandler(async (req, res) => {
       bidAmount: req.body.amount,
     })
    
-    
-   
-
-
+  
         for(let i = 0; i < (amount-  item.startingPrice)/item.incrementPrice; i++) {
        
-          await Voucher.create({
+         let voucher= await Voucher.create({
             code: generateVoucherCode(),
             user: req.user._id,
             userName: req.user.fullName,
             userEmail: req.user.email,
-            userPhoto: req.user.profilePicture
+            userPhoto: req.user.profilePicture 
         });
+        //io().emit('voucher-notes', { action: 'created-vouchers',voucher:voucher.code});
         }
         
       
