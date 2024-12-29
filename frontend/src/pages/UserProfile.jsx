@@ -10,8 +10,7 @@ import {SellerRoutes} from '../auth/Protected'
 import PaymentMethod from "../components/PaymentMethod";
 import Cart from "../components/Cart";
 import ErrorPage from "./ErrorPage";
-
-
+import DailyGiftDashboard from "./DailyGiftDashboard";
 
 
 const UserProfile = () => {
@@ -37,7 +36,7 @@ const UserProfile = () => {
 
           <Route element={<SellerRoutes />}>
             <Route path="/manage-items" element={<ManageItems />} />
-
+            <Route path="/gifts" element={<DailyGiftDashboard />} />
           </Route>
           <Route path="/bids-items" element={<BidsItem />} />
           <Route path="/notifications" element={<Notifications />} />

@@ -43,25 +43,36 @@ const DailyGiftDashboard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-5 bg-theme-bg2 p-5 rounded-xl shadow-lg min-h-screen pt-20">
-      <h2 className="text-3xl font-extrabold text-white">Upload Images</h2>
-      <input
-        type="file"
-        multiple
-        onChange={handleFileChange}
-        className="text-white bg-black bg-opacity-50 p-3 rounded-lg cursor-pointer focus:outline-none"
-      />
-      <button
-        onClick={handleUpload}
-        className="px-6 py-2 bg-color-primary text-white rounded-lg hover:bg-color-secondary transition-all"
-      >
-        Upload
-      </button>
-      <p
-        className={`text-body-text-color mt-2 ${uploadStatus ? "text-green-500" : "text-red-500"}`}
-      >
-        {uploadStatus}
-      </p>
+    <div className="px-7 py-4 w-full bg-theme-bg text-slate-300 rounded-2xl">
+      <h2 className="text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5">
+        Upload Images
+      </h2>
+
+      <div className="flex flex-col items-center gap-5">
+        <input
+          type="file"
+          multiple
+          onChange={handleFileChange}
+          className="text-white bg-black bg-opacity-50 p-3 rounded-lg cursor-pointer focus:outline-none"
+        />
+        <button
+          onClick={handleUpload}
+          className="px-6 py-2 bg-color-primary text-white rounded-lg hover:bg-color-secondary transition-all"
+        >
+          Upload
+        </button>
+        <p
+          className={`mt-2 text-body-text-color ${
+            uploadStatus === "Uploading..."
+              ? "text-yellow-500"
+              : uploadStatus === "Upload successful!"
+              ? "text-green-500"
+              : "text-red-500"
+          }`}
+        >
+          {uploadStatus}
+        </p>
+      </div>
     </div>
   );
 };

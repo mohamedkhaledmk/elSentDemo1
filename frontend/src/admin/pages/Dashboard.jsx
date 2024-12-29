@@ -5,6 +5,7 @@ import AllUsers from "../components/AllUsers";
 import EditUser from "../components/EditUser";
 import AllAuctions from "../components/AllAuctions";
 import EditAuction from "../components/EditAuction";
+
 // import ChangePassword from "./auth/ChangePassword";
 // import ProfileComponent from "../components/ProfileComponent";
 // import ManageItems from "../components/ManageItems";
@@ -20,6 +21,7 @@ import EditCategory from "../components/EditCategory";
 import CreateCategory from "../components/CreateCategory";
 import SingleAuctionDetail from "../../pages/SingleAuctionDetail";
 import Giveaway from "../components/giveaway";
+import DailyGiftDashboard from "../../pages/DailyGiftDashboard";
 const Dashboard = () => {
   return (
     <div className=" ">
