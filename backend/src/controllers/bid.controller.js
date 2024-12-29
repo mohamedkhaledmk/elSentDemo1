@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Bid from "../models/bid.model.js";
+import Cart from "../models/cart.model.js";
 //import User from "../models/user.model.js."
 import Auction from "../models/auction.model.js";
 import VoucherController from './voucher.controller.js';
@@ -126,6 +127,14 @@ const getWinnerOfAuction = asyncHandler(async (req, res) => {
 
   await auction.save();
 
+  const userCart=await Cart.findOne({user:winnerUser.bidder._id});
+  if(!userCart){
+      await Cart.create({products:[auction._id],user:winnerUser.bidder._id});
+  }else{
+      userCart.products.push(auction._id);
+      await userCart.save();
+  }
+  console.log(userCart);
   return res
     .status(200)
     .json(new ApiResponse(200, "Winner of the auction", winnerUser));

@@ -49,7 +49,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create({
     fullName: fullName.toLowerCase(),
-    email,
+    email: email.toLowerCase(),
     password,
   });
 
@@ -145,12 +145,28 @@ const forgetPasswordSendEmail = asyncHandler(async (req, res) => {
       },
     });
 
+    const year = new Date().getFullYear();
+
     const mailOptions = {
       from: process.env.USER_EMAIL,
       to: user.email,
-      subject: "Password Reset",
-      text: `Dear ${user.fullName},\n\nPlease click on the following link ${resetUrl} to reset your password.\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
-    };
+       subject: "Password Reset Request",
+    text: `Dear ${user.fullName},
+
+We received a request to reset your password for your MzBid account. To reset your password, please click the link below:
+
+${resetUrl}
+
+If you did not request this change, you can safely ignore this email, and your password will remain unchanged.
+
+Thank you for using MzBid.  
+If you have any questions or concerns, feel free to contact our support team.
+
+Best regards,  
+The MzBid Team  
+
+---
+© ${year} MzBid. All rights reserved.`};
 
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {

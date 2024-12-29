@@ -35,11 +35,26 @@ const sendVerificationCode = asyncHandler(async (req, res) => {
       },
     });
 
+    const year = new Date().getFullYear();
+
     const mailOptions = {
       from: process.env.USER_EMAIL,
       to: user.email,
       subject: "Your Verification Code",
-      text: `Your verification code is ${verificationCode}. It is valid for 10 minutes.`,
+    text: `Dear ${user.fullName},
+
+Your verification code is ${verificationCode}. It is valid for 10 minutes.
+
+If you did not request this code, please disregard this email.
+
+Thank you for using MzBid.  
+If you have any questions or concerns, feel free to contact our support team.
+
+Best regards,  
+The MzBid Team  
+
+---
+© ${year} MzBid. All rights reserved.`
     };
 
     await transporter.sendMail(mailOptions);
