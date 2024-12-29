@@ -48,7 +48,12 @@ const App = () => {
       `custmoer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}..~!`
     );
   });
-
+ 
+  socket.on("voucher-notes", (data) => {
+    toast.success(
+      `${data.action},${data.message}`
+    );
+  });
   return (
     <>
       <BrowserRouter>
