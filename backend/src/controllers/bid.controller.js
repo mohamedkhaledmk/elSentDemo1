@@ -1,10 +1,11 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Bid from "../models/bid.model.js";
+import Voucher from "../models/voucher.model.js";
 import Cart from "../models/cart.model.js";
 //import User from "../models/user.model.js."
 import Auction from "../models/auction.model.js";
-import VoucherController from './voucher.controller.js';
+
 import { getIo as io } from '../utils/socket.js';
 
 
@@ -40,11 +41,25 @@ const addBidOnItem = asyncHandler(async (req, res) => {
       auction: req.params.id,
       bidAmount: req.body.amount,
     })
-/*
-    for(let i = 0; i < (amount-  item.startingPrice)/item.incrementPrice; i++) {
-      await VoucherController.createVoucher({ body: req.user }, res);
-    }
-*/
+   
+    
+   
+
+
+        for(let i = 0; i < (amount-  item.startingPrice)/item.incrementPrice; i++) {
+       
+          await Voucher.create({
+            code: generateVoucherCode(),
+            user: req.user._id,
+            userName: req.user.fullName,
+            userEmail: req.user.email,
+            userPhoto: req.user.profilePicture
+        });
+        }
+        
+      
+
+    
     await newBid.save();
 
     
@@ -61,15 +76,11 @@ const addBidOnItem = asyncHandler(async (req, res) => {
     select:'fullName'
    });
     io().emit('Notification', { action: 'created',bid:respo});
-    /*
-    return res
-      .status(201)
-      .json(new ApiResponse(201, "Bid placed successfully", newBid));
-      */
+
      res.status(201).json({
       status:true,
       message:"Bid placed successfully",
-    //  data:respo,
+
    
      })
   } catch (error) {
@@ -78,6 +89,9 @@ const addBidOnItem = asyncHandler(async (req, res) => {
       .json(new ApiResponse(500, error?.message || "Internal server error"));
   }
 });
+
+
+
 
 //@desc Get all a winner of an auction
 //@route GET /api/auctions/:id/winner
@@ -206,6 +220,28 @@ const getAllBidsByAuctionId = asyncHandler(async (req, res) => {
 });
 
 
+const generateVoucherCode = () => {
+  return 'VOUCHER-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+};
+
+const AddVouchers =async()=>{
+    console.log("dataaaaaaaaaaaaaaaaaaaaaaaa",userData)
+    try {
+        const user  = req.user;
+        await Voucher.create({
+            code: generateVoucherCode(),
+            user: user._id,
+            userName: user.fullName,
+            userEmail: user.email,
+            userPhoto: user.profilePicture
+        });
+        console.log("voucher created Successfully");
+        } catch (error) {
+            // Handle the error
+           console.log("bid create voucher error",error);
+        }
+  
+}
 
 
 export { 

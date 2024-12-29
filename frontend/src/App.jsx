@@ -41,7 +41,8 @@ const App = () => {
   const { user } = useSelector((state) => state.auth);
 
   console.log(user, "...");
-  // start
+  
+ 
   socket.on("Notification", (data) => {
     toast.success(
       `custmoer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}..~!`
