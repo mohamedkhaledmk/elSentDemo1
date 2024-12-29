@@ -56,7 +56,7 @@ const App = () => {
         <Routes>
           <Route path="/admin/login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/gifts" element={<DailyGiftDashboard />} />
+          
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -85,9 +85,12 @@ const App = () => {
             <Route path="/user-profile/*" element={<UserProfile />} />
             <Route path="/edit-auction/:id" element={<EditAuction />} />
             <Route path="/success/:id" element={<PaymentSuccess />} />
+            
             <Route element={<SellerRoutes />}>
               <Route path="/create-auction" element={<UploadItem />} />
               <Route path="/youtube-live" element={<YoutubeLive />} />
+              <Route path="/gifts" element={<DailyGiftDashboard />} />
+             
               {/* <Route path="/user-profile/manage-items" element={<ManageItems />} /> */}
             </Route>
           </Route>
