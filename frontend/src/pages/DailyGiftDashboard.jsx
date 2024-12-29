@@ -12,7 +12,7 @@ const DailyGiftDashboard = () => {
 
   const handleUpload = async () => {
     if (!selectedFiles) {
-      alert("Please select files to upload");
+      toast.error("No files selected");
       return;
     }
 
