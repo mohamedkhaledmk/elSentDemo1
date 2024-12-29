@@ -34,6 +34,7 @@ import ManageItems from "./components/ManageItems";
 import YoutubeLive from "./pages/LinkDashboard";
 import PaymentPage from "./pages/Payment";
 import EmailVerificationPage from "./pages/VerifyEmail";
+import DailyGiftDashboard from "./pages/DailyGiftDashboard";
 
 const socket = io("127.0.0.1:8000");
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
         <Routes>
           <Route path="/admin/login" element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path="/gifts" element={<DailyGiftDashboard />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

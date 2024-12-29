@@ -25,9 +25,18 @@ import liveRouter from "./routes/live.routes.js";
 import paymobRouter from "./routes/paymob.routes.js";
 import verifyRouter from "./routes/emailverification.routes.js";
 import voucherRouter from "./routes/voucher.routes.js";
-
+import imageRouter from "./routes/image.routes.js";
 // routes declaration
+import fileUpload from "express-fileupload";
+
+app.use(
+  fileUpload({
+    useTempFiles: true, // Enables temporary file storage
+    tempFileDir: "/tmp/", // Temporary file directory
+  })
+);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/upload", imageRouter);
 app.use("/api/v1/product-categories", productCategoryRouter);
 app.use("/api/v1/auctions", auctionRouter);
 app.use("/api/v1/cities", cityRouter);
