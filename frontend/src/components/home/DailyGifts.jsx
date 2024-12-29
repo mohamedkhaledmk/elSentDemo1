@@ -54,7 +54,9 @@ const DailyGifts = () => {
       className="slider-container"
       style={{ position: "relative", width: "800px", margin: "0 auto" }}
     >
-      <h2>Daily Gifts</h2>
+      <h2 className="text-2xl font-bold text-white text-center mb-5">
+  Daily Gifts
+</h2>
       {images.length > 0 ? (
         <div
           style={{
