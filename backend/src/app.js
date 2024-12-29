@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
-import "./cronJobs.js"
+import "./cronJobs.js";
 
 import helmet from "helmet";
 const app = express();
@@ -27,9 +27,9 @@ import paymobRouter from "./routes/paymob.routes.js";
 import verifyRouter from "./routes/emailverification.routes.js";
 import voucherRouter from "./routes/voucher.routes.js";
 import imageRouter from "./routes/image.routes.js";
+import contactRouter from "./routes/contact.routes.js";
 // routes declaration
 import fileUpload from "express-fileupload";
-
 app.use(
   fileUpload({
     useTempFiles: true, // Enables temporary file storage
@@ -52,6 +52,7 @@ app.use("/api/v1/metals", metalsRouter);
 app.use("/api/v1/metals/fetch", metalsRouter);
 app.use(`/api/v1/live`, liveRouter);
 app.use(`/api/v1/paymob`, paymobRouter);
+app.use(`/api/v1/contact`, contactRouter);
 /*
 import { fetchAndStoreMetalPricesCron } from "./controllers/metalPrice.controller.js";
 cron.schedule("0 6 * * *", async () => {
