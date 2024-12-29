@@ -33,7 +33,7 @@ const ProfileComponent = () => {
                   <FaRegEdit size={16} /> <span>Edit</span>
                 </Link>
                 <Link
-                  to="/user-profile/account-settings"
+                  to="/verify-email"
                   className=" flex items-center gap-1 px-4 py-2 bg-theme-color hover:bg-color-danger rounded-xl"
                 >
                   <FaRegEdit size={16} /> <span>Verify Email</span>
@@ -56,7 +56,9 @@ const ProfileComponent = () => {
                 <span className="float-right font-normal">
                   {user?.email ? user.email : "-"}
                 </span>
-                <span className="text-sm text-green-500">
+                <span
+                  className={`text-sm  ${user?.emailVerified ? "text-green-600" : "text-red-600"}`}
+                >
                   {user?.emailVerified ? "(Verified)" : "(Not Verified)"}
                 </span>
               </li>
