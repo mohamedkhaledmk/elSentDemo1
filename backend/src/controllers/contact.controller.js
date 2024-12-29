@@ -32,7 +32,10 @@ const contactUs = asyncHandler(async (req, res) => {
     // Email details
     const mailOptions = {
       from: email, // Sender's email
-      to: process.env.SUPPORT_EMAIL || "xmidos25256@gmail.com", // Support email address
+      to:
+        process.env.SUPPORT_EMAIL ||
+        process.env.USER_EMAIL ||
+        "xmidos25256@gmail.com", // Support email address
       subject: `Contact Us Inquiry from ${name}`,
       text: `You have received a new message from the Contact Us form on MzBid.  
 
