@@ -5,10 +5,11 @@ import {
   refund,
   voidPreAuthorization,
   webHookController,
+  webHookFinalController,
 } from "../controllers/paymob.controller.js";
 import { Router } from "express";
 import { verifyUser } from "../middlewares/auth.middleware.js";
-import { holdAmount } from "../controllers/paymob.controller2.js";
+import { finalPayment, holdAmount } from "../controllers/paymob.controller2.js";
 
 const router = Router();
 
@@ -19,11 +20,10 @@ router.route("/capture").post(capture);
 router.route("/preauthorize").post(preAuthorize);
 router.route("/void").post(voidPreAuthorization);
 router.route("/refund").post(refund);
-router.route("/hold").post(verifyUser, holdAmount);
-const PAYMOB_API_BASE = "https://flashapi.paymob.com/v1";
-const PAYMOB_SECRET_KEY =
-  "egy_sk_test_b0f13684c445ed2b03c82733004d4f1100c3accb2f590e3fd216f4c17a0dc40c";
+router.route("/hold").post(holdAmount);
+router.route("/final").post(finalPayment);
 
 router.route("/webhook").post(webHookController);
+router.route("/webhook-final").post(webHookFinalController);
 
 export default router;

@@ -13,6 +13,7 @@ const auctionSchema = new mongoose.Schema(
     endTime: { type: Date, required: true },
     bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],
     winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    paid: { type: Boolean, default: false },
     users: [
       {
         user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

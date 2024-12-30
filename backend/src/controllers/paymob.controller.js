@@ -235,3 +235,45 @@ export const webHookController = async (req, res) => {
     res.status(400).send("Payment not approved");
   }
 };
+
+export const webHookFinalController = async (req, res) => {
+  const payload = req.body.obj;
+  const transactionId = payload.id; // Transaction ID
+  const userId = payload.payment_key_claims.extra.user_id; // User ID
+  const auctionId = payload.payment_key_claims.extra.auction_id; // Auction ID
+
+  console.log("Received Webhook Payload", transactionId, userId, auctionId);
+
+  // Check if required data exists
+  if (!transactionId || !userId || !auctionId) {
+    return res.status(400).json({ message: "Missing required data" });
+  }
+
+  console.log("Payment Success:", payload.success);
+
+  if (payload.success === true) {
+    try {
+      // Update the auction document to set the `paid` attribute to true
+      const auction = await Auction.findByIdAndUpdate(
+        auctionId, // Find auction by ID
+        { paid: true }, // Set the `paid` field to true
+        { new: true } // Return the updated auction document
+      );
+
+      // Check if the auction was found and updated
+      if (!auction) {
+        return res.status(404).json({ message: "Auction not found" });
+      }
+
+      console.log("Auction payment updated:", auction);
+      res
+        .status(200)
+        .send("Payment successfully processed and auction marked as paid");
+    } catch (error) {
+      console.error("Error updating auction payment status:", error);
+      res.status(500).send("Error updating auction payment status");
+    }
+  } else {
+    res.status(400).send("Payment not approved");
+  }
+};
