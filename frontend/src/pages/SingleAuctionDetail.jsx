@@ -276,9 +276,8 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 {!isNaN(singleAuction.weight) ? (
                   <li>Weight: {singleAuction.weight} cm</li>
                 ) : null}
-                <br />
                 {singleAuction.workmanshipFee && (
-                  <li>Workmanship Fee: {singleAuction.workmanshipFee} %</li>
+                  <li>Workmanship Fee: {singleAuction.workmanshipFee} </li>
                 )}
               </ul>
             </div>

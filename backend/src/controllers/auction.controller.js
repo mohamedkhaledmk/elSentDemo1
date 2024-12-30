@@ -141,7 +141,7 @@ const getAllAuctions = asyncHandler(async (req, res) => {
   try {
     const { location, category, itemName } = req.body;
 
-    let filter = { status: { $ne: "over" } };
+    let filter = {  };
 
     if (location) {
       if (!mongoose.Types.ObjectId.isValid(location)) {

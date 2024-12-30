@@ -82,6 +82,27 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link
+                  className={`flex items-center gap-2 py-2 px-4 rounded-lg cursor-pointer hover:pl-[20px] hover:text-theme-color hover:bg-theme transition-all duration-500 ${
+                    activeLink === "/user-profile/manage-past-items"
+                      ? "bg-theme-color hover:text-white"
+                      : ""
+                  }`}
+                  to="/user-profile/manage-items"
+                  onClick={() => handleLinkClick("/user-profile/manage-past-items")}
+                >
+                  <FaEdit
+                    size={16}
+                    className={`text-theme-color transition-all duration-500 ${
+                      activeLink === "/user-profile/manage-past-items"
+                        ? " text-white"
+                        : ""
+                    }`}
+                  />
+                  Manage Past Items
+                </Link>
+              </li>
+              <li>
+                <Link
                   className="flex items-center gap-2  py-2 px-4 rounded-lg cursor-pointer hover:pl-[20px] hover:text-theme-color hover:bg-theme transition-all duration-500"
                   to="/create-auction"
                 >

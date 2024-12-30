@@ -43,7 +43,7 @@ const App = () => {
  
   socket.on("Notification", (data) => {
     toast.success(
-      `custmoer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}..~!`
+      `customer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}!`
     );
   });
  

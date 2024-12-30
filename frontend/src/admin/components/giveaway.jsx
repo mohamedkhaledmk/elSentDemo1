@@ -90,7 +90,7 @@ const Giveaway = () => {
         {/* Display Winner */}
         {winner && (
           <div className="mt-5 text-center text-white font-bold text-xl">
-            <p>Winner: {winner.userName}</p>
+            <p>Winner: {winner.userName} - {winner.userEmail}</p>
             <img
               src={winner.userPhoto}
               alt={winner.userName}
