@@ -102,16 +102,17 @@ const Calc = () => {
 
   const calculateDiamondPrice = () => {
     if (caratWeight && cutShape && clarity && color) {
-      const matchingRow = data.find(
-        (row) =>
-          row.Carat ===caratWeight &&
-          row.Shape === cutShape &&
-          row.Clarity === clarity &&
-          row.Color === color
-      );
-
+        const matchingRow = data.find(
+          (row) =>
+            row.Carat.trim().toLowerCase() === caratWeight.trim().toLowerCase() &&
+            row.Shape.trim().toLowerCase() === cutShape.trim().toLowerCase() &&
+            row.Clarity.trim().toLowerCase() === clarity.trim().toLowerCase() &&
+            row.Color.trim().toLowerCase() === color.trim().toLowerCase()
+        );
+      console.log("Matching Row:", matchingRow);
       if (matchingRow) {
         const excelPrice = parseFloat(matchingRow["sar"]) || 0;
+        console.log("Excel Price:", excelPrice);
         const price = ((excelPrice + parseFloat(goldBasePrice)) || 0).toFixed(2);
         setDiamondPrice(price);
         setGoldBasePrice(price); // Overwrite the migrated gold price with the calculated diamond value
