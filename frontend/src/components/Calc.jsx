@@ -128,7 +128,7 @@ const Calc = () => {
         const excelPrice = parseFloat(matchingRow["sar"]) || 0;
         const fluorescenceReduction =fluorescencePercentages[flourescence] || 0.0;
         console.log("Excel Price:", excelPrice);
-        const price = ((((excelPrice + (designCosts[design] || 0) + parseFloat(goldBasePrice)) || 0) * (1 - fluorescenceReduction))*(1.02+1.15)).toFixed(2);
+        const price = ((((excelPrice + (designCosts[design] || 0) + parseFloat(goldBasePrice)) || 0) * (1 - fluorescenceReduction))*(1.2+1.15)).toFixed(2);
         setDiamondPrice(price);
         setGoldBasePrice(price); // Overwrite the migrated gold price with the calculated diamond value
       } else {
