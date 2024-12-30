@@ -1,10 +1,12 @@
 import axios from "axios";
 import crypto from "crypto";
+import Auction from "../models/auction.model.js";
 const wallet_integration_id = process.env.PAYMOB_INTEGRATION_ID_Mobile_Wallet;
 let card_integration_id = process.env.PAYMOB_INTEGRATION_ID_Online_Card;
 //convert card id into number
 card_integration_id = Number(card_integration_id);
 const public_key = process.env.PAYMOB_PUBLIC_KEY;
+const ngrok_url = process.env.PAYMOB_NGROK_WEBHOOK;
 // Controller function
 export const holdAmount = async (req, res) => {
   try {
@@ -87,8 +89,8 @@ export const holdAmount = async (req, res) => {
         alo3: 33,
       },
       special_reference: specialReference,
-      notification_url:
-        "https://a2d3-41-234-201-253.ngrok-free.app/api/v1/paymob/webhook", // Replace with your actual webhook URL
+      notification_url: `${ngrok_url}/api/v1/paymob/webhook`,
+      // "https://a2d3-41-234-201-253.ngrok-free.app/api/v1/paymob/webhook", // Replace with your actual webhook URL
       redirection_url: `http://localhost:5173/single-auction-detail/${auction._id}`, // Replace with your actual redirection URL
     };
 
@@ -157,10 +159,11 @@ export const finalPayment = async (req, res) => {
     ) {
       return res.status(400).json({ error: "Missing required fields" });
     }
-
+    console.log("usets", auction.users[0]);
+    console.log("usets", auction.users[1]);
     // Check if the user._id exists in the auction users array
     const userExistsInAuction = auction.users.some(
-      (auctionUser) => auctionUser._id.toString() === user._id.toString()
+      (auctionUser) => auctionUser.user_id?.toString() === user._id.toString()
     );
 
     if (!userExistsInAuction) {
@@ -196,8 +199,8 @@ export const finalPayment = async (req, res) => {
         auction_id: auction._id, // Assuming auction ID is in the request body
       },
       special_reference: specialReference,
-      notification_url:
-        "https://a2d3-41-234-201-253.ngrok-free.app/api/v1/paymob/webhook-final", // Replace with your actual webhook URL
+      notification_url: `${ngrok_url}/api/v1/paymob/webhook-final`,
+      // "https://a2d3-41-234-201-253.ngrok-free.app/api/v1/paymob/webhook-final", // Replace with your actual webhook URL
       redirection_url: `http://localhost:5173/single-auction-detail/${auction._id}`, // Replace with your actual redirection URL
     };
 
@@ -221,5 +224,58 @@ export const finalPayment = async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while processing the payment" });
+  }
+};
+
+export const refundTransactions = async (req, res) => {
+  try {
+    const auction = req.body.auction || req.body; // Auction details from the request body
+    console.log("auction", auction);
+    if (!auction || !auction.users || !Array.isArray(auction.users)) {
+      return res.status(400).json({ error: "Invalid auction data" });
+    }
+
+    const refundPromises = auction.users.map(async (user) => {
+      if (user.transaction_id) {
+        console.log("user", user);
+        const payload = {
+          transaction_id: user.transaction_id,
+          amount_cents: 10, // Amount to refund in cents
+        };
+        const response = await axios.post(
+          "https://accept.paymob.com/api/acceptance/void_refund/refund",
+          payload,
+          {
+            headers: {
+              Authorization: `Token ${process.env.PAYMOB_SECRET_KEY}`,
+            },
+          }
+        );
+        return response.data; // Extract only the data from the response
+      }
+    });
+
+    // Wait for all refund requests to complete
+    const results = await Promise.all(refundPromises);
+
+    // Empty the array of users after the promise is finished
+    try {
+      await Auction.findByIdAndUpdate(
+        auction._id, // Assuming `auction.id` contains the auction ID
+        { $set: { users: [] } }, // Update the `users` field to an empty array
+        { new: true } // Return the updated document
+      );
+    } catch (error) {
+      console.error("Error updating auction users:", error);
+      res.status(500).json({ error: "Failed to update auction users" });
+    }
+    res
+      .status(200)
+      .json({ message: "Refunds processed successfully", results });
+  } catch (error) {
+    console.error("the error", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while processing the refunds" });
   }
 };

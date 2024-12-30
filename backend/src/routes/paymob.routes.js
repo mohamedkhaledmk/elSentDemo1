@@ -9,7 +9,11 @@ import {
 } from "../controllers/paymob.controller.js";
 import { Router } from "express";
 import { verifyUser } from "../middlewares/auth.middleware.js";
-import { finalPayment, holdAmount } from "../controllers/paymob.controller2.js";
+import {
+  finalPayment,
+  holdAmount,
+  refundTransactions,
+} from "../controllers/paymob.controller2.js";
 
 const router = Router();
 
@@ -19,9 +23,10 @@ router.route("/").post(verifyUser, createPaymentOrder);
 router.route("/capture").post(capture);
 router.route("/preauthorize").post(preAuthorize);
 router.route("/void").post(voidPreAuthorization);
-router.route("/refund").post(refund);
+// router.route("/refund").post(refund);
 router.route("/hold").post(holdAmount);
 router.route("/final").post(finalPayment);
+router.route("/refund").post(refundTransactions);
 
 router.route("/webhook").post(webHookController);
 router.route("/webhook-final").post(webHookFinalController);
