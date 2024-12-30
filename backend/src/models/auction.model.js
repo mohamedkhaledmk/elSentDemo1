@@ -12,7 +12,13 @@ const auctionSchema = new mongoose.Schema(
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true },
     bids: [{ type: mongoose.Schema.Types.ObjectId, ref: "Bid" }],
-    winner: { type: mongoose.Schema.Types.ObjectId, ref: "Bid" },
+    winner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    users: [
+      {
+        user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        transaction_id: { type: String },
+      },
+    ],
     status: {
       type: String,
     },
@@ -29,7 +35,10 @@ const auctionSchema = new mongoose.Schema(
     length: { type: Number, required: [true, "Length is required"] },
     weight: { type: Number, required: [true, "Weight is required"] },
     incrementPrice: { type: Number, required: [true, "Increment is required"] },
-    workmanshipFee: { type: Number, required: [true, "Workmanship Fee is required"] },
+    workmanshipFee: {
+      type: Number,
+      required: [true, "Workmanship Fee is required"],
+    },
     materialUsed: { type: String },
   },
   {

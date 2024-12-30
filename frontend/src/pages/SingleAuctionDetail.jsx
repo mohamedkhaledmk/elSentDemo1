@@ -220,6 +220,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
         className={`flex place-content-between py-10 px-5 lg:py-20 lg:px-10 items-start gap-7 flex-wrap md:flex-nowrap ${noPadding ? "lg:py-0 px-0" : "p-4"}`}
         id="item01"
       >
+        {console.log("singleauction", singleAuction)}
         <div className="relative rounded-xl md:max-w-[45%] w-full">
           <img
             className="rounded-xl w-full"
