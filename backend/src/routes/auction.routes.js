@@ -39,8 +39,8 @@ router
   .route("/delete/:id")
   .delete(verifyUser, verifySeller, deleteSingleAuctionById);
 router.route("/update/:id").put(
-  verifyUser,
-  verifySeller,
+  // verifyUser,
+  // verifySeller,
   uploadSingle, // Use upload.single() for single file upload
   updateSingleAuactionById
 );
@@ -49,7 +49,7 @@ router.route("/user-auctions").get(verifyUser, verifySeller, getAuctionsByUser);
 router.route("/create-auction").post(
   verifyUser,
   verifySeller,
-  uploadMultiple, // Use upload.array() for multiple files upload
+  // uploadMultiple, // Use upload.array() for multiple files upload
   createAuction
 );
 

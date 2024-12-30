@@ -29,9 +29,9 @@ const createAuction = asyncHandler(async (req, res) => {
       incrementPrice,
     } = req.body;
 
+    console.log("dehk", req.files.images);
     console.log("req.body", req.body);
-    const files = req?.files; // Assuming `req.files` contains the array of uploaded images
-    console.log("dehk", files);
+    const files = req?.files.images; // Assuming `req.files` contains the array of uploaded images
     // Check if images are provided
     if (!files || files.length === 0) {
       return res
@@ -42,7 +42,7 @@ const createAuction = asyncHandler(async (req, res) => {
     // Upload images to Cloudinary or your storage service
     const uploadedImages = await Promise.all(
       files.map(async (file) => {
-        const imgUrlCloudinary = await uploadOnCloudinary(file.path);
+        const imgUrlCloudinary = await uploadOnCloudinary(file.tempFilePath);
         if (!imgUrlCloudinary) {
           throw new Error("Error uploading images");
         }
