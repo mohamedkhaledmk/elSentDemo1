@@ -49,6 +49,14 @@ const MetalPrices = () => {
                         <td className="pl-2 pr-5 border-b border-border-info-color pb-2">SAR {metal.price}</td>
                       </tr>
                       <tr className="border">
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">{metal.metal}</td>
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">22k</td>
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">{formattedDate}</td>
+          <td className="pl-2 pr-5 border-b border-border-info-color pb-2">
+            SAR {(metal.price * 0.9167).toFixed(2)}
+          </td>
+        </tr>
+                      <tr className="border">
                         <td className="pl-2 pr-5 border-b border-border-info-color pb-2">{metal.metal}</td>
                         <td className="pl-2 pr-5 border-b border-border-info-color pb-2">21k</td>
                         <td className="pl-2 pr-5 border-b border-border-info-color pb-2">{formattedDate}</td>

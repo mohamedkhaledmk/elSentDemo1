@@ -25,6 +25,7 @@ const Calc = () => {
 
   const goldPurities = [
     { label: "24k", multiplier: 1 },
+    { label: "22k", multiplier: 0.9167 },
     { label: "21k", multiplier: 0.857 },
     { label: "18k", multiplier: 0.75 },
   ];
@@ -57,10 +58,11 @@ const Calc = () => {
   };
 
   const calculateTotalPrice = (updatedGrams = grams, updatedWorkmanship = workmanship) => {
-    if (selectedPrice && updatedGrams) {
-      const basePrice = parseFloat(selectedPrice) * parseFloat(updatedGrams);
-      const workmanshipFee = parseFloat(updatedWorkmanship) || 0;
-      const total = (basePrice + workmanshipFee).toFixed(2);
+    if (selectedPrice && updatedGrams && updatedWorkmanship) {
+      const adjustedGrams = parseFloat(updatedGrams); // Add 2.5 to the grams
+      const basePrice = (parseFloat(selectedPrice) + 2.5) * adjustedGrams;
+      const totalWorkmanshipFee = parseFloat(updatedWorkmanship) * adjustedGrams;
+      const total = (basePrice + totalWorkmanshipFee).toFixed(2);
       setCurrentInput(total);
     } else {
       setCurrentInput("");
@@ -124,7 +126,7 @@ const Calc = () => {
       {activeTab === "metal" && (
         <div>
           <div className="metal-selection mb-4">
-            <select id="category" onChange={handleMetalChange} aria-label="Choose Metal Type" style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}>
+            <select id="category" onChange={handleMetalChange} aria-label="Choose Metal Type" style={{ backgroundColor: "rgba(224, 224, 224, 0.33) "}}>
               <option value="" disabled selected>
                 Select Metal
               </option>
@@ -149,7 +151,7 @@ const Calc = () => {
             </select>
           </div>
 
-          <div className="grams-input mb-4">
+          <div className="grams-input mb-4 text-white">
             <input
               type="number"
               placeholder="Enter grams"
@@ -160,7 +162,7 @@ const Calc = () => {
             />
           </div>
 
-          <div className="workmanship-input mb-4">
+          <div className="workmanship-input mb-4 text-white">
             <input
               type="number"
               placeholder="Enter workmanship fee (SAR)"
@@ -197,7 +199,7 @@ const Calc = () => {
               min={1}
               max={15}
               className="w-full p-2 rounded-lg"
-              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)",color: "white" }}
             />
           </div>
 
@@ -206,13 +208,13 @@ const Calc = () => {
               onChange={(e) => setCutShape(e.target.value)}
               value={cutShape}
               className="w-full p-2 rounded-lg"
-              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)",color: "white" }}
             >
               <option value="" disabled>
                 Select Cut/Shape
               </option>
-              <option value="round">Round</option>
-              <option value="pear">Pear</option>
+              <option value="round" style={{ color: "black" }}>Round</option>
+              <option value="pear" style={{ color: "black" }}>Pear</option>
             </select>
           </div>
 
@@ -221,18 +223,19 @@ const Calc = () => {
               onChange={(e) => setClarity(e.target.value)}
               value={clarity}
               className="w-full p-2 rounded-lg"
-              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)",color: "white" }}
             >
               <option value="" disabled>
                 Select Clarity
               </option>
-              <option value="IF">IF</option>
-              <option value="VVS1">VVS1</option>
-              <option value="VVS2">VVS2</option>
-              <option value="VS1">VS1</option>
-              <option value="VS2">VS2</option>
-              <option value="SI1">SI1</option>
-              <option value="SI2">SI2</option>
+              <option value="F" style={{ color: "black" }}>F</option>
+              <option value="IF" style={{ color: "black" }}>IF</option>
+              <option value="VVS1" style={{ color: "black" }}>VVS1</option>
+              <option value="VVS2" style={{ color: "black" }}>VVS2</option>
+              <option value="VS1" style={{ color: "black" }}>VS1</option>
+              <option value="VS2" style={{ color: "black" }}>VS2</option>
+              <option value="SI1" style={{ color: "black" }}>SI1</option>
+              <option value="SI2" style={{ color: "black" }}>SI2</option>
             </select>
           </div>
 
@@ -241,18 +244,18 @@ const Calc = () => {
               onChange={(e) => setColor(e.target.value)}
               value={color}
               className="w-full p-2 rounded-lg"
-              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" ,color: "white"}}
             >
               <option value="" disabled>
                 Select Color
               </option>
-              <option value="D">D</option>
-              <option value="E">E</option>
-              <option value="F">F</option>
-              <option value="G">G</option>
-              <option value="H">H</option>
-              <option value="I">I</option>
-              <option value="J">J</option>
+              <option value="D" style={{ color: "black" }}>D</option>
+              <option value="E" style={{ color: "black" }}>E</option>
+              <option value="F" style={{ color: "black" }}>F</option>
+              <option value="G" style={{ color: "black" }}>G</option>
+              <option value="H" style={{ color: "black" }}>H</option>
+              <option value="I" style={{ color: "black" }}>I</option>
+              <option value="J" style={{ color: "black" }}>J</option>
             </select>
           </div>
 
