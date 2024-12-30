@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 import "./cronJobs.js";
+import cron from "node-cron";
 
 import helmet from "helmet";
 const app = express();
@@ -53,12 +54,12 @@ app.use("/api/v1/metals/fetch", metalsRouter);
 app.use(`/api/v1/live`, liveRouter);
 app.use(`/api/v1/paymob`, paymobRouter);
 app.use(`/api/v1/contact`, contactRouter);
-/*
+
 import { fetchAndStoreMetalPricesCron } from "./controllers/metalPrice.controller.js";
 cron.schedule("0 6 * * *", async () => {
   console.log("Cron job started: Fetching metal prices...");
   await fetchAndStoreMetalPricesCron();
   console.log("Cron job completed: Metal prices fetched and stored.");
 });
-*/
+
 export { app };

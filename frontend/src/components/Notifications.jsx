@@ -93,7 +93,7 @@ const Notifications = () => {
           >
             <div className="flex gap-3 flex-wrap object-cover">
               <img
-                src={notification?.auction?.image}
+                src={notification?.auction?.images[0]}
                 alt={notification?.auction?.name}
                 className="w-[100px] h-[100px] rounded-md"
               />
