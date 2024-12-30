@@ -39,8 +39,8 @@ router
   .route("/delete/:id")
   .delete(verifyUser, verifySeller, deleteSingleAuctionById);
 router.route("/update/:id").put(
-  // verifyUser,
-  // verifySeller,
+  verifyUser,
+  verifySeller,
   uploadSingle, // Use upload.single() for single file upload
   updateSingleAuactionById
 );
