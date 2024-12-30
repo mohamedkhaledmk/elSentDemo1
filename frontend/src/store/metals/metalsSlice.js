@@ -4,11 +4,11 @@ import metalsService from "./metalsService";
 export const getAllMetals = createAsyncThunk("metals/getAllMetals", async (_, thunkAPI) => {
     try {
         const response = await metalsService.getAllMetals();
-        console.log('API Response:', response);
+        //console.log('API Response:', response);
         return response;
     } catch (error) {
         const message = (error.response && error.response.data.message) || error.message;
-        console.error('Error in thunk:', message);
+        //console.error('Error in thunk:', message);
         return thunkAPI.rejectWithValue({ message, isError: true });
     }
 });

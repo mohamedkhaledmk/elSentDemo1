@@ -62,7 +62,7 @@ const PaymentPage = () => {
       }
     } catch (error) {
       setLoading(false);
-      console.error("Error during payment creation:", error);
+      //console.error("Error during payment creation:", error);
       toast.error("An error occurred while processing the payment.");
     }
   };

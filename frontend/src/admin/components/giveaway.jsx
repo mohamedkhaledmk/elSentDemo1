@@ -3,19 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllVouchers, disableAllVouchers } from "../../store/voucher/voucherSlice";
 
 const Giveaway = () => {
-  console.log('Trying...');
+  //console.log('Trying...');
   const { vouchers } = useSelector((state) => state.voucher);
   const dispatch = useDispatch();
 
-  console.log('Dispatch function:', dispatch);
-  console.log('Vouchers state:', vouchers);
+  //console.log('Dispatch function:', dispatch);
+  //console.log('Vouchers state:', vouchers);
 
   useEffect(() => {
-    console.log("useEffect triggered");
+    //console.log("useEffect triggered");
     dispatch(getAllVouchers());
   }, [dispatch]);
 
-  console.log('Vouchers after useEffect:', vouchers);
+  //console.log('Vouchers after useEffect:', vouchers);
 
   const [winner, setWinner] = useState(null);
   const [isRolling, setIsRolling] = useState(false);

@@ -39,8 +39,6 @@ import DailyGiftDashboard from "./pages/DailyGiftDashboard";
 const socket = io("127.0.0.1:8000");
 const App = () => {
   const { user } = useSelector((state) => state.auth);
-
-  console.log(user, "...");
   
  
   socket.on("Notification", (data) => {
