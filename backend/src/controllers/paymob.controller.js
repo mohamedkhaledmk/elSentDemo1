@@ -9,7 +9,7 @@ const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY;
 const PAYMOB_INTEGRATION_ID_Online_Card =
   process.env.PAYMOB_INTEGRATION_ID_Online_Card;
 const PAYMOB_API_URL = process.env.PAYMOB_API_URL;
-
+import Auction from "../models/auction.model.js";
 // Payment Controller function for creating the payment order
 export const createPaymentOrder = async (req, res) => {
   console.log("usersssss", req.user);
@@ -202,5 +202,78 @@ export const refund = async (req, res) => {
     res.json({ refundResponse });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const webHookController = async (req, res) => {
+  const payload = req.body.obj;
+  const transactionId = payload.id; // Transaction ID
+  const userId = payload.payment_key_claims.extra.user_id; // User ID
+  const auctionId = payload.payment_key_claims.extra.auction_id; // Auction ID
+  console.log("obj", transactionId, userId, auctionId);
+  if (!transactionId || !userId || !auctionId) {
+    return res.status(400).json({ message: "Missing required data" });
+  }
+  const userObject = {
+    transaction_id: transactionId,
+    user_id: userId,
+  };
+  console.log("success", payload.success);
+  if (payload.success == true) {
+    try {
+      const auction = await Auction.findByIdAndUpdate(
+        auctionId, // Find by auction ID
+        { $push: { users: userObject } }, // Push the user object into the users array
+        { new: true } // Options: `new` returns the updated document, `upsert` creates a new auction if not found
+      );
+      res.status(200).send("Payment successful");
+    } catch (error) {
+      console.error("Error verifying transaction with Paymob:", error);
+      res.status(500).send("Error verifying payment");
+    }
+  } else {
+    res.status(400).send("Payment not approved");
+  }
+};
+
+export const webHookFinalController = async (req, res) => {
+  const payload = req.body.obj;
+  const transactionId = payload.id; // Transaction ID
+  const userId = payload.payment_key_claims.extra.user_id; // User ID
+  const auctionId = payload.payment_key_claims.extra.auction_id; // Auction ID
+
+  console.log("Received Webhook Payload", transactionId, userId, auctionId);
+
+  // Check if required data exists
+  if (!transactionId || !userId || !auctionId) {
+    return res.status(400).json({ message: "Missing required data" });
+  }
+
+  console.log("Payment Success:", payload.success);
+
+  if (payload.success === true) {
+    try {
+      // Update the auction document to set the `paid` attribute to true
+      const auction = await Auction.findByIdAndUpdate(
+        auctionId, // Find auction by ID
+        { paid: true }, // Set the `paid` field to true
+        { new: true } // Return the updated auction document
+      );
+
+      // Check if the auction was found and updated
+      if (!auction) {
+        return res.status(404).json({ message: "Auction not found" });
+      }
+
+      console.log("Auction payment updated:", auction);
+      res
+        .status(200)
+        .send("Payment successfully processed and auction marked as paid");
+    } catch (error) {
+      console.error("Error updating auction payment status:", error);
+      res.status(500).send("Error updating auction payment status");
+    }
+  } else {
+    res.status(400).send("Payment not approved");
   }
 };
