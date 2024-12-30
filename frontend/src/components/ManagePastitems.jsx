@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   deleteSingleAuctionById,
-  getSellerAuction,
-  reset,
   getAllAuctions,
 } from "../store/auction/auctionSlice";
-import { FaEye } from "react-icons/fa";
-import { FaRegEdit } from "react-icons/fa";
+import { FaEye, FaRegEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { toast } from "react-toastify";
 import Loading from "./Loading";
@@ -16,38 +13,41 @@ import Pagination from "./Pagination";
 
 const ManagePastItems = () => {
   const dispatch = useDispatch();
-  const { sellerAuction, isLoading, isError, message, auction } = useSelector(
+  const { auction, isLoading, isError, message } = useSelector(
     (state) => state.auction
   );
-  //console.log("elements", sellerAuction, isLoading, isError, message, auction);
 
-  // Fetch auctions when the component mounts
+  const [filteredAuctions, setFilteredAuctions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
   useEffect(() => {
     dispatch(getAllAuctions());
   }, [dispatch]);
 
-  // Handle delete action
+  useEffect(() => {
+    if (auction) {
+      // Filter auctions where status is "over"
+      const overAuctions = auction.filter((item) => item.status === "over");
+      setFilteredAuctions(overAuctions);
+    }
+  }, [auction]);
+
   const handleDeleteAuction = async (id) => {
     await dispatch(deleteSingleAuctionById(id)).then(() => {
-      toast.success("Item deleted.", {
-        autoClose: 500,
-      });
+      toast.success("Item deleted.", { autoClose: 500 });
     });
     dispatch(getAllAuctions());
   };
 
-  // Pagination part
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setitemsPerPage] = useState(6);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = auction?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredAuctions.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const prevPage = () => setCurrentPage(currentPage - 1);
   const nextPage = () => setCurrentPage(currentPage + 1);
 
-  // Render the loading, error or auction data
   if (isLoading) {
     return (
       <div className="text-center">
@@ -61,8 +61,8 @@ const ManagePastItems = () => {
   }
 
   return (
-    <div className="overflow-auto px-7 py-4 w-full bg-theme-bg text-white rounded-2xl ">
-      <h2 className="text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5 ">
+    <div className="overflow-auto px-7 py-4 w-full bg-theme-bg text-white rounded-2xl">
+      <h2 className="text-white font-bold text-xl border-b border-border-info-color pb-3 mb-5">
         Manage Past Items
       </h2>
       {/*console.log("alooo", auction)*/}
@@ -70,7 +70,7 @@ const ManagePastItems = () => {
         <table className="text-left whitespace-nowrap w-full border-separate border-spacing-x-0 border-spacing-y-4">
           <thead className="table-header-group">
             <tr className="table-row bg-theme-color [&_th]:table-cell [&_th]:pl-5 [&_th]:pr-3 [&_th]:py-3">
-              <th className="rounded-l-lg ">Product</th>
+              <th className="rounded-l-lg">Product</th>
               <th>Category</th>
               <th>Bids</th>
               <th>Status</th>
@@ -79,9 +79,8 @@ const ManagePastItems = () => {
               <th className="rounded-r-lg">Action</th>
             </tr>
           </thead>
-
           <tbody className="table-row-group">
-            {auction?.length === 0 ? (
+            {filteredAuctions.length === 0 ? (
               <tr className="table-row bg-theme-bg">
                 <td
                   colSpan="7"
@@ -91,7 +90,7 @@ const ManagePastItems = () => {
                 </td>
               </tr>
             ) : (
-              currentItems?.map((auction) => (
+              currentItems.map((auction) => (
                 <tr
                   key={auction?._id}
                   className="table-row bg-theme-bg [&_td]:table-cell [&_td]:pl-5 [&_td]:pr-3 [&_td]:py-3"
@@ -130,17 +129,12 @@ const ManagePastItems = () => {
                     >
                       <FaEye size={16} className="inline mt-[-2px]" />
                     </Link>
-                    {
-                      <>
-                        <Link
-                          className="text-theme-color hover:text-white hover:bg-theme-color rounded-lg border-2 border-theme-color  px-2 py-[5px] transition-all"
-                          to={`/edit-auction/${auction?._id}`}
-                        >
-                          <FaRegEdit size={16} className="inline mt-[-3px]" />
-                        </Link>
-                      </>
-                    }
-
+                    <Link
+                      className="text-theme-color hover:text-white hover:bg-theme-color rounded-lg border-2 border-theme-color  px-2 py-[5px] transition-all"
+                      to={`/edit-auction/${auction?._id}`}
+                    >
+                      <FaRegEdit size={16} className="inline mt-[-3px]" />
+                    </Link>
                     <button
                       className="text-color-danger hover:text-white hover:bg-color-danger rounded-lg border-2 border-color-danger  px-[6px] py-[3px] transition-all"
                       onClick={() => handleDeleteAuction(auction?._id)}
@@ -157,9 +151,9 @@ const ManagePastItems = () => {
           </tbody>
         </table>
       </div>
-      {auction?.length > 0 && (
+      {filteredAuctions.length > 0 && (
         <Pagination
-          totalPosts={auction?.length}
+          totalPosts={filteredAuctions.length}
           postsPerPage={itemsPerPage}
           paginate={paginate}
           currentPage={currentPage}

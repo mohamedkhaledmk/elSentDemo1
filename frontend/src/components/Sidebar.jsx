@@ -87,7 +87,7 @@ const Sidebar = () => {
                       ? "bg-theme-color hover:text-white"
                       : ""
                   }`}
-                  to="/user-profile/manage-items"
+                  to="/user-profile/manage-past-items"
                   onClick={() => handleLinkClick("/user-profile/manage-past-items")}
                 >
                   <FaEdit
