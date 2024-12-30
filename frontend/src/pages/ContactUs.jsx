@@ -36,7 +36,7 @@ const ContactUs = () => {
         toast.error("Failed to send the message.");
       }
     } catch (error) {
-      console.error("Error sending message:", error);
+      //console.error("Error sending message:", error);
       toast.error("Error sending the message. Please try again.");
     }
   };

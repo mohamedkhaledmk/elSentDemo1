@@ -56,7 +56,7 @@ const Calc = () => {
       const sheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(sheet);
       setData(jsonData);
-      console.log(jsonData);
+      //console.log(jsonData);
     };
     
     fetchExcelData();
@@ -122,12 +122,12 @@ const Calc = () => {
             row.Clarity.trim().toLowerCase() === clarity.trim().toLowerCase() &&
             row.Color.trim().toLowerCase() === color.trim().toLowerCase()
         );
-      console.log("Matching Row:", matchingRow);
+      //console.log("Matching Row:", matchingRow);
       if (matchingRow) 
       {
         const excelPrice = parseFloat(matchingRow["sar"]) || 0;
         const fluorescenceReduction =fluorescencePercentages[flourescence] || 0.0;
-        console.log("Excel Price:", excelPrice);
+        //console.log("Excel Price:", excelPrice);
         const price = ((((excelPrice + (designCosts[design] || 0) + parseFloat(goldBasePrice)) || 0) * (1 - fluorescenceReduction))*(1.2+1.15)).toFixed(2);
         setDiamondPrice(price);
         setGoldBasePrice(price); // Overwrite the migrated gold price with the calculated diamond value

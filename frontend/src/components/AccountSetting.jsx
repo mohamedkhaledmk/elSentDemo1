@@ -38,7 +38,7 @@ const AccountSetting = () => {
     //image data so use new formdata
     const data = new FormData();
     //console.log(formData);
-    console.log("gender", formData.gender);
+    //console.log("gender", formData.gender);
     data.append("fullName", formData.fullName);
     data.append("email", formData.email);
     data.append("gender", formData.gender);
