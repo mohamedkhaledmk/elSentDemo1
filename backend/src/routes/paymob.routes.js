@@ -8,7 +8,7 @@ import {
   webHookFinalController,
 } from "../controllers/paymob.controller.js";
 import { Router } from "express";
-import { verifyUser } from "../middlewares/auth.middleware.js";
+import { verifySeller, verifyUser } from "../middlewares/auth.middleware.js";
 import {
   finalPayment,
   holdAmount,
@@ -19,14 +19,14 @@ const router = Router();
 
 // POST route to create the payment order
 // router.post("/", createPaymentOrder); /api/v1/paymob
-router.route("/").post(verifyUser, createPaymentOrder);
-router.route("/capture").post(capture);
-router.route("/preauthorize").post(preAuthorize);
-router.route("/void").post(voidPreAuthorization);
+// router.route("/").post(verifyUser, createPaymentOrder);
+// router.route("/capture").post(capture);
+// router.route("/preauthorize").post(preAuthorize);
+// router.route("/void").post(voidPreAuthorization);
 // router.route("/refund").post(refund);
-router.route("/hold").post(holdAmount);
-router.route("/final").post(finalPayment);
-router.route("/refund").post(refundTransactions);
+router.route("/hold").post(verifyUser, holdAmount);
+router.route("/final").post(verifyUser, finalPayment);
+router.route("/refund").post(verifyUser, verifySeller, refundTransactions);
 
 router.route("/webhook").post(webHookController);
 router.route("/webhook-final").post(webHookFinalController);
