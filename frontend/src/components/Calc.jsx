@@ -151,7 +151,6 @@ const Calc = () => {
             row.Clarity.trim().toLowerCase() === clarity.trim().toLowerCase() &&
             row.Color.trim().toLowerCase() === color.trim().toLowerCase()
         );
-      //console.log("Matching Row:", matchingRow);
       if (matchingRow) 
       {
         const excelPrice = (parseFloat(matchingRow["sar"]) || 0);
