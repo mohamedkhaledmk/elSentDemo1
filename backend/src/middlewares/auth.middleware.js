@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
-
+//Error handling
 export const verifyUser = asyncHandler(async (req, res, next) => {
 
   try {
@@ -26,7 +26,7 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
     //console.log(user, "user")
 
     req.user = user;
-    console.log("dehko");
+    
     next();
   } catch (error) {
     return res

@@ -4,10 +4,22 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path";
 import "./cronJobs.js";
-import cron from "node-cron";
+import cron from "node-cron"
+import { fetchAndStoreMetalPricesCron } from "./controllers/metalPrice.controller.js";
+import xss from "xss-clean"; // secuirty
+import helmet from "helmet"; // secuirty
+import mongoSanitize from "express-mongo-sanitize";// secuirty
+import rateLimit  from "express-rate-limit" // security
+
 
 const app = express();
-
+app.use(helmet());
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'too many requests please try again later',
+});
+app.use(mongoSanitize());
 // Middleware configuration
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json({ limit: "50mb" }));
@@ -33,8 +45,13 @@ app.use((req, res, next) => {
   req.upload = upload;
   next();
 });
+app.use('/api', limiter); // (/api)=> all routes start with /api
+
+//Data sanitization against cross site scripting attacks (XSS)
+app.use(xss());
 
 // Routes import
+
 import userRouter from "./routes/user.routes.js";
 import productCategoryRouter from "./routes/productCategory.routes.js";
 import auctionRouter from "./routes/auction.routes.js";
@@ -68,12 +85,12 @@ app.use("/api/v1/metals/fetch", metalsRouter);
 app.use(`/api/v1/live`, liveRouter);
 app.use(`/api/v1/paymob`, paymobRouter);
 app.use(`/api/v1/contact`, contactRouter);
-/*
-import { fetchAndStoreMetalPricesCron } from "./controllers/metalPrice.controller.js";
+
+
 cron.schedule("0 6 * * *", async () => {
   console.log("Cron job started: Fetching metal prices...");
   await fetchAndStoreMetalPricesCron();
   console.log("Cron job completed: Metal prices fetched and stored.");
 });
-*/
+
 export { app };

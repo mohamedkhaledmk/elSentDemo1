@@ -435,7 +435,7 @@ const updateSingleAuactionById = asyncHandler(async (req, res) => {
       }
     }
 
-    auction.name = name ? name : auction.name;
+    auction.name = name ? name : auction.name; 
     auction.description = description ? description : auction.description;
     auction.category = category ? category : auction.category;
     auction.startTime = startTime ? startTime : auction.startTime;
@@ -517,9 +517,7 @@ const getAuctionWinner = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc Get LIVE 10 auctions
-// @route GET /api/v1/auctions/live
-// @access Public
+
 
 const getLiveAuctions = asyncHandler(async (req, res) => {
   try {
