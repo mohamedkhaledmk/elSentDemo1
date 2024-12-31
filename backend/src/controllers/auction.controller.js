@@ -362,7 +362,7 @@ const deleteSingleAuctionById = asyncHandler(async (req, res) => {
 // @desc update a single auction by id
 // @route PUT /api/v1/auctions/update/:id
 // @access Private
-
+//FIXME:
 const updateSingleAuactionById = asyncHandler(async (req, res) => {
   try {
     const {

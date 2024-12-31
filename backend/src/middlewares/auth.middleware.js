@@ -5,7 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
 
 export const verifyUser = asyncHandler(async (req, res, next) => {
-  console.log("dehko");
+
   try {
     const token =
       req.cookies?.JwtToken || req.headers.authorization?.split(" ")[1];
@@ -26,7 +26,7 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
     //console.log(user, "user")
 
     req.user = user;
-
+    console.log("dehko");
     next();
   } catch (error) {
     return res

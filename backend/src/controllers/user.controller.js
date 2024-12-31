@@ -249,70 +249,30 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @access Private
 
 const updateUserProfile = asyncHandler(async (req, res) => {
-  //get user id from token
-  //get user details from frontend
-  //update user profile
-  //return respons
+  try{
 
-  try {
-    const {
-      fullName,
-      email,
-      location,
-      userType,
-      phone,
-      address,
-      city,
-      gender,
-      description,
-    } = req.body;
-    const profilePath = req.file?.path;
-    const userId = req.user?._id;
-    console.log(req.body, "req.body");
-    console.log(profilePath, "req.file");
-
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(400).json(new ApiResponse(400, "User not found"));
-    }
-    if (profilePath) {
-      var imgUrlCloudinary = await uploadOnCloudinary(profilePath);
-      //console.log(imgUrlCloudinary);
-      if (!imgUrlCloudinary?.url) {
-        return res.status(400).json(new ApiResponse(400, "Invalid image"));
-      }
-    }
-
-    user.fullName = fullName ? fullName : user.fullName;
-    user.email = email ? email : user.email;
-    user.location = location ? location : user.location;
-    user.userType = userType ? userType : user.userType;
-    user.profilePicture = imgUrlCloudinary?.url
-      ? imgUrlCloudinary.url
-      : user.profilePicture ||
-        "https://res.cloudinary.com/dnsxaor2k/image/upload/v1709735601/vsauyvodor9ykjca5zvj.jpg";
-    user.phone = phone ? phone : user.phone;
-    user.address = address ? address : user.address;
-    user.city = city ? city : user.city;
-    user.gender = gender ? gender : user.gender;
-    user.description = description ? description : user.description;
-
-    await user.save();
-
-    res.json(
-      new ApiResponse(200, "User profile updated successfully", { user: user })
-    );
-  } catch (error) {
-    console.error(error);
-    res
-      .status(error.statusCode || 500)
-      .json(
-        new ApiResponse(
-          error.statusCode || 500,
-          error.message || "Internal Server Error"
-        )
-      );
+  
+  const updatedUser = await User.findByIdAndUpdate(req.user.id,req.body,{new:true,runValidators:true});
+  if(!updatedUser){
+    return res
+    .status(404)
+    .json(new ApiResponse(404, "user not found"));
   }
+  res.status(200).json({
+    status:true,
+    message:"Profile Updated Successfully",
+    data:updatedUser
+  })
+}catch(err){
+  res
+  .status(error.statusCode || 500)
+  .json(
+    new ApiResponse(
+      error.statusCode || 500,
+      error.message || "Internal Server Error"
+    )
+  );
+}
 });
 
 // @desc change current password
