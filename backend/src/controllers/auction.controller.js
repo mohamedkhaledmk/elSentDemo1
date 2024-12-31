@@ -32,23 +32,30 @@ const createAuction = asyncHandler(async (req, res) => {
     console.log("dehk", req.files.images);
     console.log("req.body", req.body);
     const files = req?.files.images; // Assuming `req.files` contains the array of uploaded images
+    let uploadedImages;
     // Check if images are provided
     if (!files || files.length === 0) {
       return res
         .status(400)
         .json(new ApiResponse(400, "At least one image is required"));
     }
-
-    // Upload images to Cloudinary or your storage service
-    const uploadedImages = await Promise.all(
-      files.map(async (file) => {
-        const imgUrlCloudinary = await uploadOnCloudinary(file.tempFilePath);
-        if (!imgUrlCloudinary) {
-          throw new Error("Error uploading images");
-        }
-        return imgUrlCloudinary.url; // Assuming Cloudinary returns an object with the URL
-      })
-    );
+    if (files) {
+      // Upload images to Cloudinary or your storage service
+       uploadedImages = await Promise.all(
+        files.map(async (file) => {
+          const imgUrlCloudinary = await uploadOnCloudinary(file.tempFilePath);
+          if (!imgUrlCloudinary) {
+            throw new Error("Error uploading images");
+          }
+          return imgUrlCloudinary.url; // Assuming Cloudinary returns an object with the URL
+        })
+      );
+    }
+   if(req?.file?.images){
+    const file=req?.file?.images;
+     const image = await uploadOnCloudinary(file.tempFilePath);
+     uploadedImages=image.url;
+   }
 
     // Check if fields are empty
     if (
