@@ -27,6 +27,17 @@ const Calc = () => {
   const [design, setDesign] = useState("");
   const [flourescence, setFlourescence] = useState("");
   const [setting, setSetting] = useState("");
+  const [alloyPrice, setAlloyPrice] = useState("");
+  const [carats, setCarats] = useState("");
+  const [factoryProfits, setFactoryProfits] = useState(false);
+  const [distearn, setDistearn] = useState(false);
+  const [marketing, setMarketing] = useState(false);
+  const [taxes, setTaxes] = useState(false);
+
+  const handleFactoryProfitsClick = () => setFactoryProfits(!factoryProfits);
+  const handleDistearnClick = () => setDistearn(!distearn);
+  const handleMarketingClick = () => setMarketing(!marketing);
+  const handleTaxesClick = () => setTaxes(!taxes);
   const goldPurities = [
     { label: "24k", multiplier: 1 },
     { label: "22k", multiplier: 0.9167 },
@@ -87,34 +98,52 @@ const Calc = () => {
     setColor("");
     setDiamondPrice("");
     setGoldBasePrice("");
+    setAlloyPrice("");
   };
 
-  const calculateTotalPrice = (updatedGrams = grams, updatedWorkmanship = workmanship) => {
+  const calculateTotalPrice = (
+    updatedGrams = grams,
+    updatedWorkmanship = workmanship,
+    updatedAlloy = alloyPrice
+  ) => {
     if (selectedPrice && updatedGrams && updatedWorkmanship) {
-      const adjustedGrams = parseFloat(updatedGrams); // Add 2.5 to the grams
-      const basePrice = (parseFloat(selectedPrice) + 2.5) * adjustedGrams;
+      const adjustedGrams = parseFloat(updatedGrams) || 0;
+      const basePrice = parseFloat(selectedPrice) * adjustedGrams;
       const totalWorkmanshipFee = parseFloat(updatedWorkmanship) * adjustedGrams;
-      const total = (basePrice + totalWorkmanshipFee).toFixed(2);
+      const totalAlloyPrice = (parseFloat(updatedAlloy) || 0) * adjustedGrams;
+      const total = (basePrice + totalWorkmanshipFee + totalAlloyPrice).toFixed(2);
       setCurrentInput(total);
     } else {
       setCurrentInput("");
     }
   };
-
+  
   const handleGramsChange = (event) => {
     const value = event.target.value;
     setGrams(value);
-    calculateTotalPrice(value, workmanship);
+    calculateTotalPrice(value, workmanship, alloyPrice);
+  };
+
+  const handleAlloyChange = (event) => {
+    const value = event.target.value;
+    setAlloyPrice(value);
+    calculateTotalPrice(grams, workmanship, value);
   };
 
   const handleWorkmanshipChange = (event) => {
     const value = event.target.value;
     setWorkmanship(value);
-    calculateTotalPrice(grams, value);
+    calculateTotalPrice(grams, value, alloyPrice);
+  };
+
+  const handleCaratsChange = (event) => {
+    const value = event.target.value;
+    setCarats(value);
+    calculateDiamondPrice(value);
   };
 
   const calculateDiamondPrice = () => {
-    if (caratWeight && cutShape && clarity && color && flourescence && design) {
+    if (caratWeight && cutShape && clarity && color && flourescence) {
         const matchingRow = data.find(
           (row) =>
             row.Carat.trim().toLowerCase() === caratWeight.trim().toLowerCase() &&
@@ -125,17 +154,35 @@ const Calc = () => {
       console.log("Matching Row:", matchingRow);
       if (matchingRow) 
       {
-        const excelPrice = parseFloat(matchingRow["sar"]) || 0;
+        const excelPrice = (parseFloat(matchingRow["sar"]) || 0);
+        const piecePrice = excelPrice * parseFloat(carats);
+        const designCost = designCosts[design] || 0;
+        const designAddition = designCost * (parseFloat(carats)/5);
         const fluorescenceReduction =fluorescencePercentages[flourescence] || 0.0;
         console.log("Excel Price:", excelPrice);
-        const price = ((((excelPrice + (designCosts[design] || 0) + parseFloat(goldBasePrice)) || 0) * (1 - fluorescenceReduction))*(1.2+1.15)).toFixed(2);
-        setDiamondPrice(price);
-        setGoldBasePrice(price); // Overwrite the migrated gold price with the calculated diamond value
+        let price = (piecePrice - (piecePrice * fluorescenceReduction) + designAddition)+(goldBasePrice||0);
+        let finalPrice = 0;
+
+            if (factoryProfits) {
+                finalPrice += price * 0.2; // Add 20% for factory profits
+            }
+            if (distearn) {
+                finalPrice += price * 0.15; // Add 15% for Distearn
+            }
+            if (marketing) {
+                finalPrice += price * 1.0; // Add 100% for Marketing
+            }
+            if (taxes) {
+                finalPrice += price * 0.22; // Add 22% for taxes
+            }
+        const totaloutput = (price + (finalPrice||0));
+        setDiamondPrice(totaloutput);
+        setGoldBasePrice(totaloutput); // Overwrite the migrated gold price with the calculated diamond value
       } else {
-        setDiamondPrice("No matching data found");
+        console.log("No matching data found");
       }
     } else {
-      setDiamondPrice("Incomplete input");
+      console.log("Incomplete input");
     }
   };
 
@@ -226,8 +273,18 @@ const Calc = () => {
               />
             </div>
           </div>
-
-          <div id="display" className="calculator-display mb-4 text-white font-bold">
+          <div className="alloy-input">
+              <input
+                type="number"
+                placeholder="Enter alloy fee (SAR)"
+                value={alloyPrice}
+                onChange={handleAlloyChange}
+                className="w-full p-2 rounded-lg"
+                style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+              />
+            </div>
+            <br />
+          <div id="display" className="calculator-display mb-2 text-white font-bold">
             {currentInput || "0"}
           </div>
 
@@ -244,8 +301,8 @@ const Calc = () => {
 
       {activeTab === "diamond" && (
         <div>
-          <div className="input-grid grid grid-cols-2 gap-4 mb-4">
-          <div className="carat-weight-dropdown mb-4">
+          <div className="input-grid grid grid-cols-2 gap-4 mb-2">
+          <div className="carat-weight-dropdown mb-2">
   <select
     value={caratWeight}
     onChange={(e) => setCaratWeight(e.target.value)}
@@ -272,7 +329,7 @@ const Calc = () => {
   </select>
 </div>
 
-<div className="cut-shape-dropdown mb-4">
+<div className="cut-shape-dropdown mb-2">
             <select
               onChange={(e) => setCutShape(e.target.value)}
               value={cutShape}
@@ -288,8 +345,8 @@ const Calc = () => {
           </div>
           </div>
 
-          <div className="input-grid grid grid-cols-2 gap-4 mb-4">
-          <div className="clarity-dropdown mb-4">
+          <div className="input-grid grid grid-cols-2 gap-4 mb-2">
+          <div className="clarity-dropdown mb-2">
             <select
               onChange={(e) => setClarity(e.target.value)}
               value={clarity}
@@ -316,7 +373,7 @@ const Calc = () => {
 
 
 
-          <div className="color-dropdown mb-4">
+          <div className="color-dropdown mb-2">
             <select
               onChange={(e) => setColor(e.target.value)}
               value={color}
@@ -340,44 +397,45 @@ const Calc = () => {
             </select>
           </div>
           </div>
-          <div className="input-grid grid grid-cols-1 gap-4 mb-4">
-          <div className="flourescence-dropdown mb-4">
-  <select
-    onChange={(e) => setFlourescence(e.target.value)}
-    value={flourescence}
-    className="w-full p-2 rounded-lg"
-    style={{ backgroundColor: "rgba(224, 224, 224, 0.33)", color: "white" }}
-  >
-    <option value="" disabled>
-      Select Fluorescence
-    </option>
-    <option value="None" style={{ color: "black" }}>None</option>
-    <option value="Faint" style={{ color: "black" }}>Faint</option>
-    <option value="Medium" style={{ color: "black" }}>Medium</option>
-    <option value="Strong" style={{ color: "black" }}>Strong</option>
-    <option value="Very Strong" style={{ color: "black" }}>Very Strong</option>
-  </select>
-</div>
+          <div className="input-grid grid grid-cols-2 gap-4 mb-4">
+  <div className="flourescence-dropdown mb-2">
+    <select
+      onChange={(e) => setFlourescence(e.target.value)}
+      value={flourescence}
+      className="w-full p-2 rounded-lg"
+      style={{ backgroundColor: "rgba(224, 224, 224, 0.33)", color: "white" }}
+    >
+      <option value="" disabled>
+        Select Fluorescence
+      </option>
+      <option value="None" style={{ color: "black" }}>None</option>
+      <option value="Faint" style={{ color: "black" }}>Faint</option>
+      <option value="Medium" style={{ color: "black" }}>Medium</option>
+      <option value="Strong" style={{ color: "black" }}>Strong</option>
+      <option value="Very Strong" style={{ color: "black" }}>Very Strong</option>
+    </select>
+  </div>
+
+  <div className="design-dropdown mb-2">
+    <select
+      onChange={(e) => setDesign(e.target.value)}
+      value={design}
+      className="w-full p-2 rounded-lg"
+      style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" ,color: "white"}}
+    >
+      <option value="" disabled>
+        Select Design
+      </option>
+      <option value="Cad design" style={{ color: "black" }}>Cad design</option>
+      <option value="Master piece" style={{ color: "black" }}>Master piece</option>
+      <option value="Casting" style={{ color: "black" }}>Casting </option>
+      <option value="Mechanic" style={{ color: "black" }}>Mechanic </option>
+      <option value="Stamp" style={{ color: "black" }}>Stamp</option>
+    </select>
+  </div>
 </div>
 
 <div className="input-grid grid grid-cols-1 gap-4 mb-4">
-<div className="design-dropdown mb-4">
-            <select
-              onChange={(e) => setDesign(e.target.value)}
-              value={design}
-              className="w-full p-2 rounded-lg"
-              style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" ,color: "white"}}
-            >
-              <option value="" disabled>
-                Select Design
-              </option>
-              <option value="Cad design" style={{ color: "black" }}>Cad design</option>
-              <option value="Master piece" style={{ color: "black" }}>Master piece</option>
-              <option value="Casting" style={{ color: "black" }}>Casting </option>
-              <option value="Mechanic" style={{ color: "black" }}>Mechanic </option>
-              <option value="Stamp" style={{ color: "black" }}>Stamp</option>
-            </select>
-          </div>
 
           {/*<div className="setting-dropdown mb-4">
             <select
@@ -398,8 +456,47 @@ const Calc = () => {
               <option value="invisibale" style={{ color: "black" }}>invisibale</option>
             </select>
           </div>*/}
+          <div className="carats-input">
+              <input
+                type="number"
+                placeholder="Enter carats"
+                value={carats}
+                onChange={handleCaratsChange}
+                className="w-full p-2 rounded-lg"
+                style={{ backgroundColor: "rgba(224, 224, 224, 0.33)" }}
+              />
+            </div>
 </div>
 
+<div>
+      <div className="grid grid-cols-2 gap-2 col-span-4">
+        <button
+          className={`factoryProfits ${factoryProfits ? 'bg-active' : 'bg-color-secondary'} no-underline font-Roboto text-sm hover:bg-hover transition-all duration-150 text-white py-1 px-2 rounded-md font-semibold`}
+          onClick={handleFactoryProfitsClick}
+        >
+          Factory Profits
+        </button>
+        <button
+          className={`Distearn ${distearn ? 'bg-active' : 'bg-color-secondary'} no-underline font-Roboto text-sm hover:bg-hover transition-all duration-150 text-white py-1 px-2 rounded-md font-semibold`}
+          onClick={handleDistearnClick}
+        >
+          Distributor Earnings
+        </button>
+        <button
+          className={`Marketing ${marketing ? 'bg-active' : 'bg-color-secondary'} no-underline font-Roboto text-sm hover:bg-hover transition-all duration-150 text-white py-1 px-2 rounded-md font-semibold`}
+          onClick={handleMarketingClick}
+        >
+          Marketing Expenses
+        </button>
+        <button
+          className={`taxes ${taxes ? 'bg-active' : 'bg-color-secondary'} no-underline font-Roboto text-sm hover:bg-hover transition-all duration-150 text-white py-1 px-2 rounded-md font-semibold`}
+          onClick={handleTaxesClick}
+        >
+          Taxes and Customs
+        </button>
+      </div>
+    </div>
+<br/>
           <div id="display" className="calculator-display mb-4 text-white font-bold">
             {goldBasePrice || "0"}
           </div>
