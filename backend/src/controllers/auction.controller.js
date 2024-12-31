@@ -28,10 +28,10 @@ const createAuction = asyncHandler(async (req, res) => {
       workmanshipFee,
       incrementPrice,
     } = req.body;
-/*
-    const files = req.files; // Assuming `req.files` contains the array of uploaded images
-    console.log("dehk", files);
-  
+
+    console.log("dehk", req.files.images);
+    console.log("req.body", req.body);
+    const files = req?.files.images; // Assuming `req.files` contains the array of uploaded images
     // Check if images are provided
     if (!files || files.length === 0) {
       return res
@@ -42,14 +42,14 @@ const createAuction = asyncHandler(async (req, res) => {
     // Upload images to Cloudinary or your storage service
     const uploadedImages = await Promise.all(
       files.map(async (file) => {
-        const imgUrlCloudinary = await uploadOnCloudinary(file.path);
+        const imgUrlCloudinary = await uploadOnCloudinary(file.tempFilePath);
         if (!imgUrlCloudinary) {
           throw new Error("Error uploading images");
         }
         return imgUrlCloudinary.url; // Assuming Cloudinary returns an object with the URL
       })
     );
-*/
+
     // Check if fields are empty
     if (
       !name ||
@@ -104,7 +104,7 @@ const createAuction = asyncHandler(async (req, res) => {
       startTime,
       endTime,
       location,
-    //  images: uploadedImages, // Save the array of image URLs
+      images: uploadedImages, // Save the array of image URLs
       startingPrice,
       status,
       height,
@@ -141,7 +141,7 @@ const getAllAuctions = asyncHandler(async (req, res) => {
   try {
     const { location, category, itemName } = req.body;
 
-    let filter = { status: { $ne: "over" } };
+    let filter = {  };
 
     if (location) {
       if (!mongoose.Types.ObjectId.isValid(location)) {

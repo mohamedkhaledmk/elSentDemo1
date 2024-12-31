@@ -44,7 +44,7 @@ const Cart = () => {
         toast.error("Failed to get the payment link.");
       }
     } catch (error) {
-      console.error("Payment error:", error);
+      //console.error("Payment error:", error);
       toast.error("An error occurred while processing the payment.");
     }
   };
@@ -67,7 +67,7 @@ const Cart = () => {
               <div className="flex gap-4">
                 <img
                   className="w-[85px] h-[85px] rounded-md"
-                  src={product.image}
+                  src={product.images[0]}
                   alt={product.name}
                 />
                 <div className="flex flex-col gap-1">

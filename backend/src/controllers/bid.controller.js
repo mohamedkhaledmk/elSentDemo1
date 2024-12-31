@@ -56,7 +56,7 @@ const addBidOnItem = asyncHandler(async (req, res) => {
        
         }
         
-        io().emit('voucher-notes', { action: 'Congratulations',message:`Added for you ${itreator} vouchers`});
+        io().emit('voucher-notes', { action: 'Congratulations', message:` Added for you ${itreator} vouchers!`});
 
     
     await newBid.save();

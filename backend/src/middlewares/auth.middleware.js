@@ -18,7 +18,7 @@ export const verifyUser = asyncHandler(async (req, res, next) => {
     //console.log(decodedToken, "decodedToken")
 
     const user = await User.findById(decodedToken?._id).select("-password");
-
+    console.log("id of user", user?._id);
     if (!user) {
       return res.status(401).json(new ApiResponse(401, "Unauthorized request"));
     }

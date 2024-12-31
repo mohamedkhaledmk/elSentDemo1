@@ -220,6 +220,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
         className={`flex place-content-between py-10 px-5 lg:py-20 lg:px-10 items-start gap-7 flex-wrap md:flex-nowrap ${noPadding ? "lg:py-0 px-0" : "p-4"}`}
         id="item01"
       >
+        {/*console.log("singleauction", singleAuction)*/}
         <div className="relative rounded-xl md:max-w-[45%] w-full">
           <img
             className="rounded-xl w-full"
@@ -275,9 +276,8 @@ const SingleAuctionDetail = ({ noPadding }) => {
                 {!isNaN(singleAuction.weight) ? (
                   <li>Weight: {singleAuction.weight} cm</li>
                 ) : null}
-                <br />
                 {singleAuction.workmanshipFee && (
-                  <li>Workmanship Fee: {singleAuction.workmanshipFee} %</li>
+                  <li>Workmanship Fee: {singleAuction.workmanshipFee} </li>
                 )}
               </ul>
             </div>

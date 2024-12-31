@@ -26,7 +26,7 @@ const EmailVerificationPage = () => {
         toast.error("Failed to send verification code.");
       }
     } catch (error) {
-      console.error("Error sending verification code:", error);
+      //console.error("Error sending verification code:", error);
       toast.error("An error occurred while sending the verification code.");
     } finally {
       setLoading(false);
@@ -45,14 +45,14 @@ const EmailVerificationPage = () => {
           withCredentials: true,
         }
       );
-      console.log("response.data", response.data);
+      //console.log("response.data", response.data);
       if (response.data && response.data.success) {
         toast.success("Email verified successfully!");
       } else {
         toast.error("Invalid verification code.");
       }
     } catch (error) {
-      console.error("Error during email verification:", error);
+      //console.error("Error during email verification:", error);
       toast.error("An error occurred while verifying the email.");
     } finally {
       setLoading(false);

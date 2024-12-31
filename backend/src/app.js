@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path";
 import "./cronJobs.js";
+import cron from "node-cron";
 
 const app = express();
 
@@ -64,28 +65,15 @@ app.use("/api/v1/verify-email", verifyRouter);
 app.use("/api/v1/vouchers", voucherRouter);
 app.use("/api/v1/metals", metalsRouter);
 app.use("/api/v1/metals/fetch", metalsRouter);
-app.use("/api/v1/live", liveRouter);
-app.use("/api/v1/paymob", paymobRouter);
-app.use("/api/v1/contact", contactRouter);
-
-// Temporary file handling for express-fileupload (optional)
-import fileUpload from "express-fileupload";
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "/tmp/", // Temporary file directory
-    limits: { fileSize: 10 * 1024 * 1024 }, // Limit file size to 10MB
-  })
-);
-
-// Example endpoint for file uploads
-app.post("/api/v1/upload", (req, res) => {
-  req.upload.single("file")(req, res, (err) => {
-    if (err) {
-      return res.status(400).json({ error: err.message });
-    }
-    res.status(200).json({ message: "File uploaded successfully!", file: req.file });
-  });
+app.use(`/api/v1/live`, liveRouter);
+app.use(`/api/v1/paymob`, paymobRouter);
+app.use(`/api/v1/contact`, contactRouter);
+/*
+import { fetchAndStoreMetalPricesCron } from "./controllers/metalPrice.controller.js";
+cron.schedule("0 6 * * *", async () => {
+  console.log("Cron job started: Fetching metal prices...");
+  await fetchAndStoreMetalPricesCron();
+  console.log("Cron job completed: Metal prices fetched and stored.");
 });
-
+*/
 export { app };
