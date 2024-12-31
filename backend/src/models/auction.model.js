@@ -24,7 +24,7 @@ const auctionSchema = new mongoose.Schema(
       type: String,
     },
     location: { type: mongoose.Schema.Types.ObjectId, ref: "City" },
-    image: { type: String },
+    //image: { type: String },
     images: [{ type: String }],
     startingPrice: { type: Number, required: true },
     paid: {

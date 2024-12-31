@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
   },
 });
 
+
 // File filter to validate file types
 const fileFilter = (req, file, cb) => {
   if (allowedFileTypes.includes(file.mimetype)) {
