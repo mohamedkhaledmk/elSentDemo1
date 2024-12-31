@@ -7,10 +7,25 @@ import {
   markAllNotificationsAsRead,
   markNotificationAsRead,
 } from "../store/notification/notificationSlice";
-import socket from "../socket";
 import Pagination from "./Pagination";
+import { io } from "socket.io-client";
+import { toast } from "react-toastify";
 
+const socket = io("127.0.0.1:8000");
+
+    socket.on("Notification", (data) => {
+      toast.success(
+        `customer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}!`
+      );
+    });
+   
+    socket.on("voucher-notes", (data) => {
+      toast.success(
+        `${data.action},${data.message}`
+      );
+    });
 const Notifications = () => {
+  
   const dispatch = useDispatch();
   const { notifications } = useSelector((state) => state.notification);
   const [notificationData, setNotificationData] = useState();
@@ -52,7 +67,6 @@ const Notifications = () => {
   }, [notifications]); // This useEffect runs whenever notifications changes
 
   const handleMarkAllAsRead = async () => {
-    //console.log("button click , , ...........");
     await dispatch(markAllNotificationsAsRead());
     dispatch(getNotificationForUser());
   };

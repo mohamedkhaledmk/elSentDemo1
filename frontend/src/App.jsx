@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { io } from "socket.io-client";
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Register from "./pages/auth/Register";
@@ -36,22 +36,8 @@ import PaymentPage from "./pages/Payment";
 import EmailVerificationPage from "./pages/VerifyEmail";
 import DailyGiftDashboard from "./pages/DailyGiftDashboard";
 
-const socket = io("127.0.0.1:8000");
 const App = () => {
   const { user } = useSelector((state) => state.auth);
-  
- 
-  socket.on("Notification", (data) => {
-    toast.success(
-      `customer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}!`
-    );
-  });
- 
-  socket.on("voucher-notes", (data) => {
-    toast.success(
-      `${data.action},${data.message}`
-    );
-  });
   return (
     <>
       <BrowserRouter>
