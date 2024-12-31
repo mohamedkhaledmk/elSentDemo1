@@ -67,7 +67,7 @@ const Calc = () => {
       const sheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(sheet);
       setData(jsonData);
-      console.log(jsonData);
+      //console.log(jsonData);
     };
     
     fetchExcelData();
@@ -151,7 +151,7 @@ const Calc = () => {
             row.Clarity.trim().toLowerCase() === clarity.trim().toLowerCase() &&
             row.Color.trim().toLowerCase() === color.trim().toLowerCase()
         );
-      console.log("Matching Row:", matchingRow);
+      //console.log("Matching Row:", matchingRow);
       if (matchingRow) 
       {
         const excelPrice = (parseFloat(matchingRow["sar"]) || 0);

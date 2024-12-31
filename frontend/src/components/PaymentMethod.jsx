@@ -37,7 +37,7 @@ const CheckoutForm = () => {
     event.preventDefault();
 
     if (!stripe || !elements) {
-      console.error("Stripe.js has not yet loaded.");
+      //console.error("Stripe.js has not yet loaded.");
       toast.error("Stripe.js has not yet loaded.");
       return;
     }
@@ -76,7 +76,7 @@ const CheckoutForm = () => {
             cardElement.clear();
           })
           .catch((error) => {
-            console.error("Error updating payment method:", error);
+            //console.error("Error updating payment method:", error);
             toast.error(`Error updating: ${error.response?.data?.message || error.message || "Unknown error occurred"}`);
           });
       } else {

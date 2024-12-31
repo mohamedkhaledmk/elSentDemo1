@@ -9,13 +9,13 @@ const AdminPanel = () => {
   const [link, setLink] = useState("");
 
   const updateLink = async () => {
-    console.log("ss", link);
+    //console.log("ss", link);
     try {
       await axios.put("http://localhost:8000/api/v1/live", { link });
       toast.success("Live stream link updated successfully!");
       setLink(""); // Clear the input field after success
     } catch (error) {
-      console.error("Error updating live link:", error);
+      //console.error("Error updating live link:", error);
       toast.error("Failed to update the live stream link. Please try again.");
     }
   };

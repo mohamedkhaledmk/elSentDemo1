@@ -44,7 +44,7 @@ const Cart = () => {
         toast.error("Failed to get the payment link.");
       }
     } catch (error) {
-      console.error("Payment error:", error);
+      //console.error("Payment error:", error);
       toast.error("An error occurred while processing the payment.");
     }
   };

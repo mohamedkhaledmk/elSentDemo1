@@ -14,10 +14,10 @@ const DailyGifts = () => {
         if (Array.isArray(response.data)) {
           setImages(response.data);
         } else {
-          console.error("Invalid API response:", response.data);
+          //console.error("Invalid API response:", response.data);
         }
       } catch (error) {
-        console.error("Error fetching images:", error);
+        //console.error("Error fetching images:", error);
       }
     };
 

@@ -130,7 +130,7 @@ const deleteAuctionByAdminById = async (id) => {
 };
 
 const updateSingleAuction = async (data) => {
-  console.log(data.data, "data updateSingleAuction");
+  //console.log(data.data, "data updateSingleAuction");
 
   try {
     const response = await axios.put(

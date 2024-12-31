@@ -49,7 +49,7 @@ router.route("/user-auctions").get(verifyUser, verifySeller, getAuctionsByUser);
 router.route("/create-auction").post(
   verifyUser,
   verifySeller,
-  uploadMultiple, // Use upload.array() for multiple files upload
+  // uploadMultiple, // Use upload.array() for multiple files upload
   createAuction
 );
 

@@ -39,13 +39,11 @@ import DailyGiftDashboard from "./pages/DailyGiftDashboard";
 const socket = io("127.0.0.1:8000");
 const App = () => {
   const { user } = useSelector((state) => state.auth);
-
-  console.log(user, "...");
   
  
   socket.on("Notification", (data) => {
     toast.success(
-      `custmoer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}..~!`
+      `customer ${data.bid.bidder.fullName} added new bid with price ${data.bid.auction.startingPrice}!`
     );
   });
  
