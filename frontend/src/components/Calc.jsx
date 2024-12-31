@@ -123,7 +123,7 @@ const Calc = () => {
     setGrams(value);
     calculateTotalPrice(value, workmanship, alloyPrice);
   };
-
+  
   const handleAlloyChange = (event) => {
     const value = event.target.value;
     setAlloyPrice(value);
@@ -160,9 +160,8 @@ const Calc = () => {
         const designAddition = designCost * (parseFloat(carats)/5);
         const fluorescenceReduction =fluorescencePercentages[flourescence] || 0.0;
         console.log("Excel Price:", excelPrice);
-        let price = (piecePrice - (piecePrice * fluorescenceReduction) + designAddition)+(goldBasePrice||0);
+        let price = (piecePrice - (piecePrice * fluorescenceReduction) + designAddition)+(parseFloat(goldBasePrice) || 0);
         let finalPrice = 0;
-
             if (factoryProfits) {
                 finalPrice += price * 0.2; // Add 20% for factory profits
             }
