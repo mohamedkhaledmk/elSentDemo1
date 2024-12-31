@@ -11,6 +11,8 @@ import mongoose from "mongoose";
 // @route POST /api/v1/auctions
 // @access Private/ Seller only
 const createAuction = asyncHandler(async (req, res) => {
+//  console.log("files of images", req.files.images);
+   
   try {
     const {
       name,
@@ -29,9 +31,10 @@ const createAuction = asyncHandler(async (req, res) => {
       incrementPrice,
     } = req.body;
 
-    console.log("dehk", req.files.images);
-    console.log("req.body", req.body);
-    const files = req?.files.images; // Assuming `req.files` contains the array of uploaded images
+   
+
+
+    const files = req?.files; // Assuming `req.files` contains the array of uploaded images
     let uploadedImages;
     // Check if images are provided
     if (!files || files.length === 0) {
@@ -39,11 +42,13 @@ const createAuction = asyncHandler(async (req, res) => {
         .status(400)
         .json(new ApiResponse(400, "At least one image is required"));
     }
+        
     if (files) {
       // Upload images to Cloudinary or your storage service
        uploadedImages = await Promise.all(
         files.map(async (file) => {
-          const imgUrlCloudinary = await uploadOnCloudinary(file.tempFilePath);
+          const imgUrlCloudinary = await uploadOnCloudinary(file.path);
+          
           if (!imgUrlCloudinary) {
             throw new Error("Error uploading images");
           }
@@ -51,11 +56,7 @@ const createAuction = asyncHandler(async (req, res) => {
         })
       );
     }
-   if(req?.file?.images){
-    const file=req?.file?.images;
-     const image = await uploadOnCloudinary(file.tempFilePath);
-     uploadedImages=image.url;
-   }
+
 
     // Check if fields are empty
     if (
