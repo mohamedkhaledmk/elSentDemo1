@@ -15,7 +15,7 @@ const BidCard = (bid) => {
           </span>
         </div>
       </div>
-      <div className="text-white">Bid Amount : SAR{bid?.bid?.bidAmount}</div>
+      <div className="text-white">Bid Amount : {bid?.bid?.bidAmount} SAR</div>
     </div>
   );
 };

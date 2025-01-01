@@ -111,6 +111,11 @@ const SingleAuctionDetail = ({ noPadding }) => {
         setActiveTab("bids");
       }
     }
+    //refresh page
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   socket.on("newBidData", async (data) => {
