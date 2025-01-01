@@ -1,24 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
+
 import { logout, reset } from "../store/auth/authSlice";
+
 import { toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+
 import { IoIosNotificationsOutline } from "react-icons/io";
+
 import { BsCart3 } from "react-icons/bs";
+
 import { FaBars, FaTimes } from "react-icons/fa";
+
 import socket from "../socket";
+
 import { getNotificationForUser } from "../store/notification/notificationSlice";
+
 import logo from "../assets/logo.png";
 
 const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [navbarOpen, setNavbarOpen] = useState(false);
+
   const [scrolling, setScrolling] = useState(false); // To track scroll state
 
+  const sidebarRef = useRef(null); // Ref for the sidebar
+
   const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.auth);
+
   const { notifications } = useSelector((state) => state.notification);
+
   let navigate = useNavigate();
 
   const logInUser = JSON.parse(localStorage.getItem("user"));
@@ -61,13 +79,30 @@ const Header = () => {
     navigate("/login");
   };
 
+  // Handle click outside to close the sidebar
+  const handleClickOutside = (event) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      setSidebarOpen(false); // Close the sidebar when clicking outside
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside); // Listen for clicks
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // Clean up the listener
+    };
+  }, []);
+
   // Dynamically add Google Translate Script using a different approach
   useEffect(() => {
     if (typeof window !== "undefined") {
       const script = document.createElement("script");
+
       script.src =
         "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+
       script.async = true;
+
       script.onload = () => {
         window.googleTranslateElementInit = () => {
           new window.google.translate.TranslateElement(
@@ -76,6 +111,7 @@ const Header = () => {
           );
         };
       };
+
       document.body.appendChild(script);
 
       // Cleanup script on component unmount
@@ -183,6 +219,7 @@ const Header = () => {
             >
               <BsCart3 className="text-white hover:text-theme-color transition-all" />
             </Link>
+
             <img
               src={user?.profilePicture}
               key={user.profilePicture}
@@ -190,8 +227,13 @@ const Header = () => {
               className="w-10 h-10 rounded-full order-2 cursor-pointer active:scale-[0.95] transition-all"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             />
+
+            {/* Sidebar */}
             {sidebarOpen && (
-              <div className="absolute top-24 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
+              <div
+                ref={sidebarRef} // Add ref here
+                className="absolute top-24 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50"
+              >
                 <Link
                   to="/user-profile/profile"
                   className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
@@ -213,7 +255,6 @@ const Header = () => {
                   {unReadNotifications.length}
                 </span>
               ) : null}
-
               <IoIosNotificationsOutline
                 size={37}
                 className="text-white text-xl cursor-pointer bg-theme-bg hover:text-theme-color rounded-full p-2 transition-all"
