@@ -178,7 +178,7 @@ export const finalPayment = async (req, res) => {
 
     // Prepare the request payload for Paymob API
     const payload = {
-      amount: auction.startingPrice-100000 || 5000000, // Amount in cents
+      amount: auction.startingPrice - 100000 || 5000000, // Amount in cents
       currency: "EGP",
       payment_methods: [card_integration_id], // Replace with actual Integration ID
       billing_data: {

@@ -35,6 +35,7 @@ import YoutubeLive from "./pages/LinkDashboard";
 import PaymentPage from "./pages/Payment";
 import EmailVerificationPage from "./pages/VerifyEmail";
 import DailyGiftDashboard from "./pages/DailyGiftDashboard";
+import AuctionUsers from "./pages/Refund";
 
 const App = () => {
   const { user } = useSelector((state) => state.auth);
@@ -46,11 +47,12 @@ const App = () => {
         <Routes>
           <Route path="/admin/login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          
+
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/refund/:id" element={<AuctionUsers />} />
           <Route path="/download-app" element={<Application />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/verify-email" element={<EmailVerificationPage />} />
@@ -75,12 +77,12 @@ const App = () => {
             <Route path="/user-profile/*" element={<UserProfile />} />
             <Route path="/edit-auction/:id" element={<EditAuction />} />
             <Route path="/success/:id" element={<PaymentSuccess />} />
-            
+
             <Route element={<SellerRoutes />}>
               <Route path="/create-auction" element={<UploadItem />} />
               <Route path="/youtube-live" element={<YoutubeLive />} />
               <Route path="/gifts" element={<DailyGiftDashboard />} />
-             
+
               {/* <Route path="/user-profile/manage-items" element={<ManageItems />} /> */}
             </Route>
           </Route>
