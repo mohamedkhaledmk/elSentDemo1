@@ -8,7 +8,7 @@ const YoutubeLive = () => {
   useEffect(() => {
     // Fetch live stream link from backend when the component mounts
     axios
-      .get("http://localhost:8000/api/v1/live")
+      .get("https://el-sent-demo1-backend.vercel.app//api/v1/live")
       .then((response) => {
         const link = response.data.link.link;
         //console.log(link);

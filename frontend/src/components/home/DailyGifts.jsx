@@ -9,7 +9,9 @@ const DailyGifts = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/images");
+        const response = await axios.get(
+          "https://el-sent-demo1-backend.vercel.app//api/v1/images"
+        );
         // Ensure the response contains valid data
         if (Array.isArray(response.data)) {
           setImages(response.data);

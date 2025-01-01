@@ -11,7 +11,9 @@ const AdminPanel = () => {
   const updateLink = async () => {
     //console.log("ss", link);
     try {
-      await axios.put("http://localhost:8000/api/v1/live", { link });
+      await axios.put("https://el-sent-demo1-backend.vercel.app//api/v1/live", {
+        link,
+      });
       toast.success("Live stream link updated successfully!");
       setLink(""); // Clear the input field after success
     } catch (error) {

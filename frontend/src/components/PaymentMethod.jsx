@@ -12,7 +12,9 @@ import { getCurrentUser } from "../store/auth/authSlice";
 import { toast } from "react-toastify";
 
 // Load Stripe
-const stripePromise = loadStripe("pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA");
+const stripePromise = loadStripe(
+  "pk_test_51QWmgRGI6UEWLGcVeJIZTm52JfHmGvWi4mngrQCRIk2enq1kuuY9Ta8LOLEainpfIatEw6YZegKPaKwk0wvz7g0A00S8xc1cJA"
+);
 
 const CheckoutForm = () => {
   const { user } = useSelector((state) => state.auth);
@@ -24,14 +26,11 @@ const CheckoutForm = () => {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
-  useEffect(()=>{
+  useEffect(() => {}, [user]);
 
-  },[user])
-
-  useEffect(()=>{
-    dispatch(getCurrentUser())
-    
-  },[])
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -64,7 +63,7 @@ const CheckoutForm = () => {
       if (user?.paymentVerified) {
         axios
           .post(
-            "http://localhost:8000/api/v1/payments/update-payment-method",
+            "https://el-sent-demo1-backend.vercel.app//api/v1/payments/update-payment-method",
             { paymentMethodId: paymentMethod.id },
             { withCredentials: true }
           )
@@ -77,12 +76,14 @@ const CheckoutForm = () => {
           })
           .catch((error) => {
             //console.error("Error updating payment method:", error);
-            toast.error(`Error updating: ${error.response?.data?.message || error.message || "Unknown error occurred"}`);
+            toast.error(
+              `Error updating: ${error.response?.data?.message || error.message || "Unknown error occurred"}`
+            );
           });
       } else {
         axios
           .post(
-            "http://localhost:8000/api/v1/payments/add-payment-method",
+            "https://el-sent-demo1-backend.vercel.app//api/v1/payments/add-payment-method",
             { paymentMethodId: paymentMethod.id },
             { withCredentials: true }
           )
@@ -98,7 +99,9 @@ const CheckoutForm = () => {
             }
           })
           .catch((error) => {
-            toast.error(`Error adding: ${error.response?.data?.message || error.message || "Unknown error occurred"}`);
+            toast.error(
+              `Error adding: ${error.response?.data?.message || error.message || "Unknown error occurred"}`
+            );
           });
       }
     }

@@ -45,7 +45,7 @@ const PaymentPage = () => {
 
       // Send request to the backend to create the payment order
       const response = await axios.post(
-        "http://localhost:8000/api/v1/paymob", // Update the endpoint as needed
+        "https://el-sent-demo1-backend.vercel.app//api/v1/paymob", // Update the endpoint as needed
         requestData,
         {
           withCredentials: true,

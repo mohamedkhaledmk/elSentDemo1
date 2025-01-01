@@ -12,7 +12,9 @@ const DailyGiftDashboard = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/images");
+        const response = await axios.get(
+          "https://el-sent-demo1-backend.vercel.app//api/v1/images"
+        );
         //console.log("respones", response);
         setImages(response.data);
       } catch (error) {
@@ -42,7 +44,7 @@ const DailyGiftDashboard = () => {
     try {
       setUploadStatus("Uploading...");
       const response = await axios.post(
-        "http://localhost:8000/api/v1/images",
+        "https://el-sent-demo1-backend.vercel.app//api/v1/images",
         formData,
         {
           headers: {
@@ -62,7 +64,9 @@ const DailyGiftDashboard = () => {
 
   const handleDelete = async (imageId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/v1/images/${imageId}`);
+      await axios.delete(
+        `https://el-sent-demo1-backend.vercel.app//api/v1/images/${imageId}`
+      );
       setImages((prev) => prev.filter((img) => img._id !== imageId));
       toast.success("Image deleted successfully");
     } catch (error) {

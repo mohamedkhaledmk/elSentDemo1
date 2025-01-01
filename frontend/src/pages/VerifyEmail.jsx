@@ -13,7 +13,7 @@ const EmailVerificationPage = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/verify-email",
+        "https://el-sent-demo1-backend.vercel.app//api/v1/verify-email",
         { email: user.email },
         {
           withCredentials: true,
@@ -39,7 +39,7 @@ const EmailVerificationPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/verify-email/code",
+        "https://el-sent-demo1-backend.vercel.app//api/v1/verify-email/code",
         { email: user.email, verificationCode },
         {
           withCredentials: true,

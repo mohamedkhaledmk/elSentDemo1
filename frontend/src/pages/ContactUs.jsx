@@ -23,7 +23,7 @@ const ContactUs = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/contact",
+        "https://el-sent-demo1-backend.vercel.app//api/v1/contact",
         formData
       );
       if (response.status === 200) {

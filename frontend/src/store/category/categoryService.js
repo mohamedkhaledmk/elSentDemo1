@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/v1";
+const API_URL = "https://el-sent-demo1-backend.vercel.app//api/v1";
 
 export const getAllCategories = async () => {
   const response = await axios.get(`${API_URL}/product-categories`);
@@ -48,16 +48,14 @@ export const deleteCategory = async (id) => {
   return response.data;
 };
 
-
 //get more detail about category
- export const getCategoriesMoreDetail = async () => {
-
+export const getCategoriesMoreDetail = async () => {
   const response = await axios.get(`${API_URL}/product-categories/detail`, {
     withCredentials: true,
   });
   //console.log("response categories", response.data);
   return response.data.data;
-}
+};
 
 //top 5 categoriess
 export const getTopCategories = async () => {
@@ -73,9 +71,9 @@ const categoryService = {
   createCategory,
   getSingleCategory,
   updateCategory,
-    deleteCategory,
-    getCategoriesMoreDetail,
-    getTopCategories,
+  deleteCategory,
+  getCategoriesMoreDetail,
+  getTopCategories,
 };
 
 export default categoryService;

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/v1";
+const API_URL = "https://el-sent-demo1-backend.vercel.app//api/v1";
 
 const getAllUsers = async () => {
   const response = await axios.get(`${API_URL}/users`, {
