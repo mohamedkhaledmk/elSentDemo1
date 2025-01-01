@@ -29,7 +29,7 @@ const registerUser = asyncHandler(async (req, res) => {
       .json(new ApiResponse(400, "All fields are required"));
   }
   const existedUser = await User.findOne({
-    $or: [{ fullName }, { email }],
+    $or: [{ email }],
   });
 
   if (existedUser) {

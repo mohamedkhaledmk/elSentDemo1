@@ -188,7 +188,7 @@ const AccountSetting = () => {
           <input
             className="text-white cursor-pointer font-bold tracking-wide"
             type="submit"
-            value={`${isLoading ? "Loaign" : "Update"}`}
+            value={`${isLoading ? "Login" : "Update"}`}
           />
         </div>
       </form>
