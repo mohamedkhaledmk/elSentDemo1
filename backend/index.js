@@ -15,11 +15,15 @@ process;
 dotenv.config({
   path: "./env",
 });
+app.listen(process.env.PORT || 8000, () => {
+  console.log(`server is running at port ${process.env.PORT}`);
+});
+connectDB();
 
-connectDB().then(
-  server.listen(process.env.PORT || 8000, () => {
-    console.log(`server is running at port ${process.env.PORT}`);
-  })
-);
+// connectDB().then(
+//   server.listen(process.env.PORT || 8000, () => {
+//     console.log(`server is running at port ${process.env.PORT}`);
+//   })
+// );
 
 export { io, server };
