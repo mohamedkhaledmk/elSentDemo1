@@ -240,6 +240,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
             <FaArrowRight />{" "}
           </button>
         </div>
+        {console.log("auction", singleAuction)}
         <div className="w-full flex gap-4 flex-col">
           <div>
             <h2 className="text-3xl font-extrabold text-white">
