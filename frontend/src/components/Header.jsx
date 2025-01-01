@@ -191,7 +191,7 @@ const Header = () => {
               onClick={() => setSidebarOpen(!sidebarOpen)}
             />
             {sidebarOpen && (
-              <div className="absolute top-16 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
+              <div className="absolute top-24 right-4 bg-color-dark shadow-lg rounded-md w-40 z-50">
                 <Link
                   to="/user-profile/profile"
                   className="block px-4 py-2 text-[#797D62] hover:bg-[#E5C59E] transition-all"
