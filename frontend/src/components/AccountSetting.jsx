@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUser, reset, updateProfile } from "../store/auth/authSlice";
 import Loading from "./Loading";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AccountSetting = () => {
   const { user, isLoading, isSuccess, isError, message } = useSelector(
@@ -30,7 +31,7 @@ const AccountSetting = () => {
   const imgRef = useRef(null);
   //console.log(imgUrl, "imgUrl......");
   //console.log(user?.profilePicture, "user?.profilePicture........");
-
+  const navigate = useNavigate();
   const handleFormSubmit = (e) => {
     dispatch(reset());
     e.preventDefault();
@@ -67,7 +68,7 @@ const AccountSetting = () => {
     });
     setImgUrl(null);
     dispatch(getCurrentUser());
-
+    navigate(`/user-profile/profile`);
     dispatch(reset());
   };
 
