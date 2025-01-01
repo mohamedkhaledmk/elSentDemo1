@@ -1,16 +1,26 @@
 import dotenv from "dotenv";
-import { app } from "./app.js"; // Import your express app
+import { app } from "./app.js";
 import connectDB from "./db/index.js";
+import http from "http";
+import { init as io } from "./utils/socket.js";
 
-// This will allow Vercel to handle the app as a serverless function
-import { createServer } from "@vercel/node";
+const server = http.createServer(app);
 
-dotenv.config({ path: "./env" });
-
-connectDB().then(() => {
-  console.log(`Connected to database`);
-  console.log(`Server is running at port ${process.env.PORT || 8000}`);
+const ioInstance = io(server);
+ioInstance.on("connection", (socket) => {
+  console.log("Socket is connected!");
 });
 
-// This line ensures Vercel can properly handle the Express app in serverless mode
-export default createServer(app);
+process;
+dotenv.config({
+  path: "./env",
+});
+
+connectDB().then(
+  server.listen(process.env.PORT || 8000, () => {
+    console.log(`server is running at port ${process.env.PORT}`);
+  })
+);
+
+export { io, server };
+export default app;
