@@ -20,15 +20,7 @@ const limiter = rateLimit({
 });
 app.use(mongoSanitize());
 // Middleware configuration
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173", // First allowed origin
-      "https://el-sent-demo1-front.vercel.app", // Second allowed origin
-    ],
-    credentials: true,
-  })
-);
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static(path.join(process.cwd(), "public")));
