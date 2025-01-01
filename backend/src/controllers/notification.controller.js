@@ -9,8 +9,8 @@ import Bid from "../models/bid.model.js";
 // @access Private
 // soche
 const sendNotification = asyncHandler(async (req, res) => {
-  const { auctionId, type, newBidAmount } = req.body;
-
+  const { auctionId, type, newBidAmount, fullName } = req.body;
+  console.log("fullName", fullName);
   //check auctionid , type , ammount
   if (!auctionId || !type || !newBidAmount) {
     return res
@@ -30,7 +30,9 @@ const sendNotification = asyncHandler(async (req, res) => {
   if (type === "BID_PLACED") {
     var notification = {
       user: null,
-      message: `${req?.user?.fullName} has placed a ${newBidAmount}$ bid on ${auction?.name}`,
+      message: `${
+        req?.user?.fullName || fullName
+      } has placed a ${newBidAmount}$ bid on ${auction?.name}`,
       type: "BID_PLACED",
       auction: auctionId,
       link: `/single-auction-detail/${auctionId}`,
@@ -49,7 +51,9 @@ const sendNotification = asyncHandler(async (req, res) => {
     // Create a notification for each user ID
     userIds.forEach(async (id) => {
       notification.message = `${
-        id === req?.user?._id.toString() ? "you" : req?.user?.fullName
+        id === req?.user?._id.toString()
+          ? "you"
+          : req?.user?.fullName || fullName
       } placed a ${newBidAmount}$ bid on  ${auction?.name}`;
 
       await new Notification({ ...notification, user: id }).save();

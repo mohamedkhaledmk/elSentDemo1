@@ -104,6 +104,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
             auctionId: params.id,
             type: "BID_PLACED",
             newBidAmount: singleAuction.startingPrice,
+            fullName: loggedInUser?.fullName,
           })
         );
         toast.success("Bid placed successfully!");
@@ -182,6 +183,7 @@ const SingleAuctionDetail = ({ noPadding }) => {
           auctionId: params.id,
           type: "BID_PLACED",
           newBidAmount: newBidAmount,
+          fullName: loggedInUser?.fullName,
         })
       );
     }
