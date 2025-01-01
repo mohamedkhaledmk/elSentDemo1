@@ -44,8 +44,7 @@ const AuctionUsers = ({ match }) => {
   const handleRefund = async (userId) => {
     try {
       await axios.post("http://localhost:8000/api/v1/paymob/refund", {
-        userId,
-        auctionId,
+        auction: singleAuction,
       });
       toast.success("Refund processed successfully");
     } catch (error) {

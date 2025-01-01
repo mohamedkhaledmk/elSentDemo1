@@ -40,6 +40,6 @@ router
   .route("/update-user/:id")
   .put(verifyUser, verifyAdmin, uploadSingle, updateUserById);
 router.route("/:userid").get(verifyUser, verifyAdmin, getUserById);
-router.route("/").get(verifyUser, /*verifyAdmin,*/ getAllUsers);
+router.route("/").get(verifyUser, verifyAdmin, getAllUsers);
 
 export default router;

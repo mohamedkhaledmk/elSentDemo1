@@ -6,7 +6,7 @@ const getAllUsers = async () => {
   const response = await axios.get(`${API_URL}/users`, {
     withCredentials: true,
   });
-  console.log("response get all users", response.data);
+  //console.log('response get all users', response.data);
   return response.data;
 };
 
