@@ -49,7 +49,9 @@ app.use('/api', limiter); // (/api)=> all routes start with /api
 
 //Data sanitization against cross site scripting attacks (XSS)
 app.use(xss());
-
+app.get('/',(req,res)=>{
+  res.send("heloooogdfgpdofjg")
+})
 // Routes import
 
 import userRouter from "./routes/user.routes.js";
